@@ -1,0 +1,247 @@
+<meta charset="utf-8">
+<title>Pawi Tap Moves</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Sniglet:wght@400;800&display=swap">
+<style>
+/* Layout: three new tappable sea scenes for Pawi, plus a note on the Haribon pick. */
+:root{
+  --bg:#eef0f6; --fg:#171a2b; --muted:#585d78; --line:#d4d7e4; --surface:#fbfbfe; --accent:#c4552c;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-game:"Sniglet","Segoe UI",system-ui,sans-serif;
+  --sky:#1b1e4b; --sea:#173f68; --sea2:#1d4f7a; --text:#fff4dc;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.5;padding:0 20px;margin:0}
+.wrap{max-width:900px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:64ch;margin:0 0 26px}
+.picked{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:4px 12px 4px 6px;font-size:14px;margin:0 0 26px}
+.picked b{background:var(--accent);color:var(--surface);border-radius:99px;padding:1px 8px;font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px}
+.card{display:flex;flex-direction:column;gap:6px;min-width:0}
+.card h3{font-family:var(--f-display);font-weight:800;font-size:19px;margin:6px 0 0}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.tag{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.rec{display:inline-block;background:var(--accent);color:var(--surface);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:2px}
+.learn{font-size:13px;color:var(--fg);border-left:3px solid var(--accent);padding-left:8px;margin-top:2px}
+.play{align-self:flex-start;font:inherit;font-weight:700;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:5px 14px;border-radius:99px;cursor:pointer}
+.play:hover{border-color:var(--accent)}
+button:focus-visible{outline:3px solid #f2b23c;outline-offset:2px}
+
+.scene{position:relative;height:230px;border-radius:14px;overflow:hidden;cursor:pointer;background:linear-gradient(var(--sea) 0%,var(--sea2) 100%);border:none;padding:0;width:100%;display:block}
+.scene svg.bd{position:absolute;inset:0;width:100%;height:100%}
+.scene .hint{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-family:var(--f-body);font-size:11px;color:rgba(255,244,220,.6);pointer-events:none}
+.mover{position:absolute;left:50%;bottom:22px;width:120px;height:120px;margin-left:-60px;transform-origin:50% 100%}
+.mover svg{width:120px;height:120px;display:block;overflow:visible}
+.mover .bob{animation:bob 2.6s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.fx{position:absolute;inset:0;pointer-events:none}
+.grass{position:absolute;right:16px;bottom:16px;width:44px;height:96px;transform-origin:50% 100%;animation:sway 3s ease-in-out infinite}
+.grass svg{width:100%;height:100%;display:block}
+@keyframes sway{50%{transform:skewX(-6deg)}}
+
+.part{transform-box:view-box}
+.flipL{transform-origin:66px 140px}.flipR{transform-origin:134px 140px}
+.mouth{transform-box:view-box;transform-origin:100px 104px}
+.paddle .flipL{animation:padL .32s ease-in-out infinite}
+.paddle .flipR{animation:padR .32s ease-in-out infinite}
+.fast .flipL{animation-duration:.16s}.fast .flipR{animation-duration:.16s}
+@keyframes padL{0%,100%{transform:rotate(-22deg)}50%{transform:rotate(26deg)}}
+@keyframes padR{0%,100%{transform:rotate(22deg)}50%{transform:rotate(-26deg)}}
+.chomp .mouth{animation:chomp .22s ease-in-out infinite}
+@keyframes chomp{50%{transform:scale(1.4,2.2)}}
+
+/* D: up to the surface for a breath */
+.breathe{animation:breathe 2.4s ease-in-out}
+@keyframes breathe{
+  0%{transform:none}
+  8%{transform:translateY(4px) scale(1.06,.94)}
+  38%{transform:translateY(-100px)}
+  44%{transform:translateY(-106px) scale(1.04,.96)}
+  62%{transform:translateY(-102px)}
+  92%{transform:translateY(2px) scale(1.05,.95)}
+  100%{transform:none}}
+/* E: swim over to the seagrass for a snack */
+.snack{animation:snack 2.6s ease-in-out}
+@keyframes snack{
+  0%{transform:none}
+  25%{transform:translate(var(--dx),-26px) rotate(12deg)}
+  30%,66%{transform:translate(var(--dx),-22px) rotate(8deg)}
+  92%{transform:translate(0,2px) scale(1.05,.95)}
+  100%{transform:none}}
+/* F: zoom off one side and back in from the other */
+.dash{animation:dash 2s ease-in-out}
+@keyframes dash{
+  0%{transform:none}
+  10%{transform:translateX(14px) scale(1.06,.92)}
+  30%{transform:translate(-210px,-28px) rotate(-16deg)}
+  31%{transform:translate(-210px,-28px);opacity:0}
+  32%{transform:translate(210px,-28px) rotate(-16deg);opacity:0}
+  34%{opacity:1}
+  72%{transform:translate(-14px,-6px) rotate(-6deg)}
+  86%{transform:translate(6px,2px) rotate(4deg) scale(1.06,.94)}
+  100%{transform:none}}
+
+.bubble{position:absolute;border:2px solid rgba(160,225,240,.8);border-radius:50%;animation:rise 1.4s ease-out forwards}
+@keyframes rise{from{transform:translateY(0) scale(.6);opacity:1}to{transform:translateY(-110px) scale(1.1);opacity:0}}
+.ripple{position:absolute;width:30px;height:8px;margin-left:-15px;border:2px solid rgba(200,240,250,.85);border-radius:50%;animation:ripple 1s ease-out forwards}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+.word{position:absolute;font-family:var(--f-game);font-weight:800;font-size:19px;color:var(--text);text-shadow:2px 2px 0 rgba(0,0,0,.4);white-space:nowrap;animation:pop 1.1s ease-out forwards}
+@keyframes pop{0%{transform:scale(.3);opacity:0}25%{transform:scale(1.15);opacity:1}70%{transform:scale(1);opacity:1}100%{transform:translateY(-14px);opacity:0}}
+.streak{position:absolute;height:3px;border-radius:3px;background:rgba(200,240,250,.7);animation:streak .5s ease-out forwards}
+@keyframes streak{from{opacity:.9}to{transform:translateX(40px) scaleX(.2);opacity:0}}
+
+.notes{margin-top:34px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 18px;max-width:70ch}
+.notes b{font-family:var(--f-display)}
+.notes p{margin:4px 0;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <h1>New moves for Pawi</h1>
+  <p class="lead">Three new tap moves for Pawi. Two of them also show something real about sea turtles. Tap a scene, or its Play button, to see it.</p>
+  <div class="picked"><b>Picked</b> Haribon: Flap and hover (Option A)</div>
+
+  <div class="row">
+    <div class="card">
+      <button class="scene" data-move="breathe" aria-label="Play Up for air"></button>
+      <span class="tag">Option D<span class="rec">Recommended</span></span>
+      <h3>Up for air</h3>
+      <p>Swims up to the surface, pokes its head out, takes a big breath with a “puff!”, and glides back down.</p>
+      <p class="learn">Teaches: sea turtles breathe air, so they swim up to the surface.</p>
+      <button class="play">Play</button>
+    </div>
+    <div class="card">
+      <button class="scene" data-move="snack" data-grass="1" aria-label="Play Seagrass snack"></button>
+      <span class="tag">Option E</span>
+      <h3>Seagrass snack</h3>
+      <p>Swims over to the seagrass, takes a few bites (“nom nom!”), and swims back to its spot.</p>
+      <p class="learn">Teaches: green sea turtles eat seagrass.</p>
+      <button class="play">Play</button>
+    </div>
+    <div class="card">
+      <button class="scene" data-move="dash" aria-label="Play Zoom dash"></button>
+      <span class="tag">Option F</span>
+      <h3>Zoom dash</h3>
+      <p>Paddles super fast, zooms off one side, and comes zipping back in from the other.</p>
+      <p class="learn">Just for fun.</p>
+      <button class="play">Play</button>
+    </div>
+  </div>
+
+  <div class="notes">
+    <p><b>Why D:</b> it’s clearly swimming, it stays in the scene, and it shows a real fact without any words to read.</p>
+    <p><b>Why there’s no “hide in its shell” move:</b> sea turtles can’t pull their heads into their shells, so that move would teach kids something wrong.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var PAWI =
+    '<ellipse cx="72" cy="186" rx="17" ry="9" fill="#5aa874"/><ellipse cx="128" cy="186" rx="17" ry="9" fill="#5aa874"/>' +
+    '<g class="part flipL"><ellipse cx="42" cy="146" rx="30" ry="13" transform="rotate(-28 42 146)" fill="#5aa874"/></g>' +
+    '<g class="part flipR"><ellipse cx="158" cy="146" rx="30" ry="13" transform="rotate(28 158 146)" fill="#5aa874"/></g>' +
+    '<ellipse cx="100" cy="152" rx="62" ry="40" fill="#2f6e4a"/><ellipse cx="100" cy="150" rx="53" ry="32" fill="#4f9a66"/>' +
+    '<path d="M100 128 l16 9 -6 18 h-20 l-6 -18z" fill="#7cc48f"/>' +
+    '<path d="M60 142 l16 -4 6 18 -10 13 -14 -8z" fill="#7cc48f"/><path d="M140 142 l-16 -4 -6 18 10 13 14 -8z" fill="#7cc48f"/>' +
+    '<ellipse cx="100" cy="116" rx="22" ry="16" fill="#8fd0a0"/>' +
+    '<circle cx="100" cy="80" r="42" fill="#8fd0a0"/><circle cx="82" cy="50" r="6" fill="#6cb884"/><circle cx="112" cy="46" r="4.5" fill="#6cb884"/><circle cx="124" cy="56" r="3.5" fill="#6cb884"/>' +
+    '<circle cx="83" cy="82" r="15" fill="#f6ead0"/><circle cx="117" cy="82" r="15" fill="#f6ead0"/>' +
+    '<circle cx="84" cy="84" r="10" fill="#2b1d10"/><circle cx="116" cy="84" r="10" fill="#2b1d10"/>' +
+    '<circle cx="88" cy="79" r="4" fill="#fff"/><circle cx="120" cy="79" r="4" fill="#fff"/>' +
+    '<circle cx="66" cy="102" r="7" fill="#f2a7b5" opacity=".7"/><circle cx="134" cy="102" r="7" fill="#f2a7b5" opacity=".7"/>' +
+    '<g class="mouth"><path d="M89 104q11 9 22 0" stroke="#2f6e4a" stroke-width="3" fill="none" stroke-linecap="round"/></g>';
+  // Night sky above a water surface line, sand below.
+  var BD =
+    '<svg class="bd" viewBox="0 0 260 230" preserveAspectRatio="none" aria-hidden="true">' +
+    '<path d="M0 0h260v36q-22 8-43 0t-43 0-43 0-43 0-43 0-45 0z" fill="#1b1e4b"/>' +
+    '<circle cx="214" cy="16" r="8" fill="#f6e3a8"/>' +
+    '<path d="M0 36q22 8 43 0t43 0 43 0 43 0 43 0 45 0" stroke="#8fd3e6" stroke-width="2" fill="none" opacity=".7"/>' +
+    '<path d="M20 230 q8-50 -4-90 M30 230 q-8-40 6-70" stroke="#2f7a55" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="130" cy="232" rx="150" ry="26" fill="#d8c08a"/></svg>';
+  var GRASS =
+    '<div class="grass"><svg viewBox="0 0 44 96" aria-hidden="true">' +
+    '<path class="b1" d="M10 96 q-6-40 4-90" stroke="#3a9563" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+    '<path class="b2" d="M22 96 q8-36 -2-78" stroke="#4fae76" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+    '<path class="b3" d="M34 96 q-4-30 6-64" stroke="#3a9563" stroke-width="7" fill="none" stroke-linecap="round"/></svg></div>';
+
+  document.querySelectorAll('.scene').forEach(function(sc){
+    sc.innerHTML = BD + (sc.dataset.grass ? GRASS : '') +
+      '<div class="mover"><div class="bob"><svg viewBox="0 0 200 200" aria-hidden="true">' + PAWI + '</svg></div></div>' +
+      '<div class="fx"></div><span class="hint">Tap Pawi</span>';
+  });
+
+  var DUR = {breathe:2400, snack:2600, dash:2000};
+
+  function spawn(fx, cls, x, y, extra){
+    var e = document.createElement('i');
+    e.className = cls;
+    e.style.left = x + 'px'; e.style.top = y + 'px';
+    if (extra) extra(e);
+    fx.appendChild(e);
+    setTimeout(function(){ e.remove(); }, 1800);
+  }
+  function bubbles(sc, fx, mover, n, gap, start){
+    for (var i = 0; i < n; i++) later(sc, (start || 0) + i * gap, function(){
+      var r = mover.getBoundingClientRect(), s = sc.getBoundingClientRect(), size = 5 + Math.random() * 8;
+      spawn(fx, 'bubble', r.left - s.left + r.width / 2 + (Math.random() * 40 - 20), r.top - s.top + 30,
+        function(e){ e.style.width = e.style.height = size + 'px'; });
+    });
+  }
+  function later(sc, ms, fn){ sc._timers.push(setTimeout(fn, ms)); }
+
+  function play(sc){
+    var mover = sc.querySelector('.mover'), svg = mover.querySelector('svg'), fx = sc.querySelector('.fx');
+    var move = sc.dataset.move, w = sc.clientWidth;
+    (sc._timers || []).forEach(clearTimeout); sc._timers = [];
+    mover.className = 'mover'; svg.classList.remove('paddle', 'fast', 'chomp');
+    void mover.offsetWidth;
+    mover.classList.add(move); svg.classList.add('paddle');
+    var surfaceY = 230 * 36 / 230;
+
+    if (move === 'breathe'){
+      bubbles(sc, fx, mover, 4, 180);
+      later(sc, 950, function(){
+        spawn(fx, 'ripple', w / 2, surfaceY);
+        later(sc, 250, function(){ spawn(fx, 'ripple', w / 2, surfaceY); });
+        spawn(fx, 'word', w / 2 + 30, surfaceY - 30);
+        fx.lastChild.textContent = 'puff!';
+        svg.classList.remove('paddle');
+      });
+      later(sc, 1500, function(){ svg.classList.add('paddle'); });
+    } else if (move === 'snack'){
+      // Reach the seagrass on the right edge of the scene.
+      mover.style.setProperty('--dx', Math.max(40, w - 16 - 44 - w / 2 - 34) + 'px');
+      bubbles(sc, fx, mover, 3, 200);
+      var grass = sc.querySelector('.grass');
+      later(sc, 700, function(){
+        svg.classList.remove('paddle'); svg.classList.add('chomp');
+        spawn(fx, 'word', w - 150, 64);
+        fx.lastChild.textContent = 'nom nom!';
+        grass.animate([{transform: 'scaleY(1)'}, {transform: 'scaleY(.82)'}], {duration: 900, fill: 'forwards'});
+      });
+      later(sc, 1720, function(){ svg.classList.remove('chomp'); svg.classList.add('paddle'); });
+      later(sc, 3400, function(){ grass.animate([{transform: 'scaleY(.82)'}, {transform: 'scaleY(1)'}], {duration: 600, fill: 'forwards'}); });
+    } else {
+      svg.classList.add('fast');
+      for (var k = 0; k < 10; k++) later(sc, 120 + k * 120, function(){
+        var r = mover.getBoundingClientRect(), s = sc.getBoundingClientRect();
+        spawn(fx, 'streak', r.left - s.left + r.width * (0.3 + Math.random() * 0.4), r.top - s.top + 40 + Math.random() * 60,
+          function(e){ e.style.width = (16 + Math.random() * 20) + 'px'; });
+      });
+      bubbles(sc, fx, mover, 5, 100, 1500);
+    }
+    later(sc, DUR[move], function(){ mover.className = 'mover'; svg.classList.remove('paddle', 'fast', 'chomp'); });
+  }
+
+  document.querySelectorAll('.card').forEach(function(card){
+    var sc = card.querySelector('.scene');
+    sc.addEventListener('click', function(){ play(sc); });
+    card.querySelector('.play').addEventListener('click', function(){ play(sc); });
+  });
+})();
+</script>

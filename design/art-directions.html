@@ -1,0 +1,566 @@
+<title>Night Safari Art Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@700;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Fredoka:wght@500;600;700&family=Mali:wght@500;700&family=Sniglet:wght@400;800&family=Quicksand:wght@500;700&family=Lilita+One&family=Varela+Round&display=swap">
+<style>
+/* Layout: four phones, each the same encounter (tarsier on a branch at night, question below) in a different art direction, with a short spec beside it. */
+:root{
+  --bg:#eef0f6; --fg:#171a2b; --muted:#585d78; --line:#d4d7e4; --surface:#fbfbfe; --accent:#3d4aa8;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#a9b2ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#a9b2ff;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.55;padding:0 20px}
+.wrap{max-width:1000px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:62ch;margin:0}
+.dir{display:grid;grid-template-columns:300px minmax(0,1fr);gap:36px;align-items:start;padding-block:44px;border-top:1px solid var(--line)}
+.dir:first-of-type{margin-top:32px}
+@media (max-width:720px){.dir{grid-template-columns:minmax(0,1fr)}.phone{margin:0 auto}}
+.tag{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.spec h2{font-family:var(--f-display);font-weight:800;font-size:28px;margin:2px 0 6px;line-height:1.1}
+.spec p{margin:0 0 14px;max-width:52ch;font-size:17px}
+.spec ul{margin:0 0 14px;padding-left:20px;color:var(--muted)}
+.spec li{margin-bottom:4px}
+.spec li b{color:var(--fg)}
+.rec{display:inline-block;background:var(--accent);color:var(--surface);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;margin-left:8px;vertical-align:5px}
+.meter{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.meter span b{color:var(--fg)}
+
+.phone{width:300px;max-width:100%;height:620px;border-radius:42px;border:9px solid #07070c;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.notch{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:84px;height:20px;border-radius:12px;background:#07070c;z-index:5}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:34px 16px 8px;font-size:12px}
+.prog{flex:1;height:7px;border-radius:9px;margin:0 10px;overflow:hidden}
+.prog i{display:block;height:100%;width:38%}
+.scene{height:300px;position:relative;flex:none}
+.scene svg{display:block;width:100%;height:100%}
+.qa{padding:12px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.q{font-size:19px;line-height:1.2;margin-bottom:2px}
+.opt{border-radius:14px;padding:10px 14px;font-size:15px;font-weight:700;cursor:pointer;text-align:left;font-family:inherit;transition:transform .12s}
+.opt:active{transform:scale(.96)}
+.opt:focus-visible{outline:3px solid #f2d16b;outline-offset:2px}
+.tars{animation:breathe 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes breathe{50%{transform:scaleY(1.035) scaleX(.985)}}
+.lid{opacity:0;animation:blink 4.2s infinite}
+@keyframes blink{0%,94%,100%{opacity:0}96%,98%{opacity:1}}
+.ff{animation:drift 5s ease-in-out infinite}
+.ff:nth-of-type(2n){animation-duration:6.5s;animation-delay:-2s}
+.ff:nth-of-type(3n){animation-duration:4.4s;animation-delay:-1s}
+@keyframes drift{50%{transform:translate(8px,-10px);opacity:.35}}
+.sway{animation:sway 4s ease-in-out infinite;transform-box:fill-box;transform-origin:0 0}
+@keyframes sway{50%{transform:rotate(2.5deg)}}
+@media (prefers-reduced-motion:reduce){.tars,.lid,.ff,.sway{animation:none}}
+
+/* 1 Storybook */
+.p1{background:#0e1430;color:#ecebff;font-family:"Baloo 2",sans-serif}
+.p1 .prog{background:#232c63}.p1 .prog i{background:#f2d16b}
+.p1 .q{font-weight:800}
+.p1 .opt{background:#182050;border:2px solid #313b7a;color:#ecebff;font-family:"Atkinson Hyperlegible",sans-serif;box-shadow:0 4px 0 #0a0f2a}
+.p1 .opt.ok{background:#1f5a3a;border-color:#7bd389}
+/* 2 Paper lantern */
+.p2{background:#1d2150;color:#fff4dc;font-family:"Sniglet",sans-serif}
+.p2 .prog{background:#2c3170}.p2 .prog i{background:#f08a3c}
+.p2 .q{font-weight:800}
+.p2 .opt{background:#f6ead0;border:none;color:#3b2a14;box-shadow:3px 4px 0 rgba(0,0,0,.35);font-family:"Atkinson Hyperlegible",sans-serif;clip-path:polygon(0 4%,100% 0,99% 100%,1% 96%)}
+.p2 .opt.ok{background:#b9e08f}
+/* 3 Painted */
+.p3{background:#18213d;color:#eef0ff;font-family:"Mali",sans-serif}
+.p3 .prog{background:rgba(255,255,255,.12)}.p3 .prog i{background:#cfe3ff}
+.p3 .q{font-weight:700}
+.p3 .opt{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);color:#eef0ff;font-family:"Mali",sans-serif;backdrop-filter:blur(6px)}
+.p3 .opt.ok{background:rgba(150,230,180,.25);border-color:#9fe3b8}
+/* 4 Glow */
+.p4{background:#04151a;color:#e6fffb;font-family:"Fredoka",sans-serif}
+.p4 .prog{background:#0b2c33}.p4 .prog i{background:#38f2d0;box-shadow:0 0 10px #38f2d0}
+.p4 .q{font-weight:700}
+.p4 .opt{background:#08262c;border:2px solid #1d6a6f;color:#e6fffb;font-family:"Fredoka",sans-serif}
+.p4 .opt.ok{border-color:#38f2d0;box-shadow:0 0 14px rgba(56,242,208,.5);background:#0b3a3c}
+/* 5 Low-poly */
+.p5{background:#2a1f55;color:#fff1e6;font-family:"Fredoka",sans-serif}
+.p5 .prog{background:#3d2f75}.p5 .prog i{background:#ffb26b}
+.p5 .q{font-weight:700}
+.p5 .opt{background:#3d2f75;border:none;color:#fff1e6;clip-path:polygon(4% 0,100% 0,96% 100%,0 100%);font-family:"Fredoka",sans-serif}
+.p5 .opt.ok{background:#3f9a6e}
+/* 6 Horizon */
+.p6{background:#140f2e;color:#f6eefc;font-family:"Quicksand",sans-serif}
+.p6 .prog{background:rgba(255,255,255,.12);height:3px}.p6 .prog i{background:#ffc6d9}
+.p6 .q{font-weight:700;letter-spacing:.01em}
+.p6 .opt{background:transparent;border:1.5px solid rgba(255,214,230,.4);color:#f6eefc;border-radius:999px;font-family:"Quicksand",sans-serif}
+.p6 .opt.ok{background:rgba(255,198,217,.22);border-color:#ffc6d9}
+/* 7 Googly cartoon */
+.p7{background:#4a22c9;color:#fff;font-family:"Lilita One",sans-serif}
+.p7 .prog{background:#2d1280;border:2px solid #111}.p7 .prog i{background:#ffde3b}
+.p7 .q{font-size:21px;letter-spacing:.01em}
+.p7 .opt{background:#ffde3b;border:3px solid #111;color:#111;box-shadow:0 5px 0 #111;font-family:"Lilita One",sans-serif;font-weight:400;font-size:17px}
+.p7 .opt:nth-of-type(3){background:#ff6fb5}.p7 .opt:nth-of-type(4){background:#3be0ff}
+.p7 .opt.ok{background:#4ce06a}
+/* 8 Pastel */
+.p8{background:#e9e3f5;color:#4a3f66;font-family:"Varela Round",sans-serif}
+.p8 .prog{background:#d6cdea}.p8 .prog i{background:#9b8fd1}
+.p8 .q{font-weight:400}
+.p8 .opt{background:#fffaf2;border:none;color:#4a3f66;box-shadow:0 3px 0 #d6cdea;font-family:"Varela Round",sans-serif;font-weight:400}
+.p8 .opt.ok{background:#cfeccf}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--accent)}
+</style>
+
+<div class="wrap">
+<h1>Pick the look for Creature Collector</h1>
+<p class="lead">All eight phones show the same moment: a tarsier on a branch at night and its question. Only the art style changes. The tarsiers breathe and blink, and you can tap an answer to feel the buttons. In the real game, the flashlight darkness sits on top of these scenes.</p>
+
+<!-- 1 -->
+<section class="dir">
+  <div class="phone p1">
+    <div class="notch"></div>
+    <div class="bar"><span>✕</span><span class="prog"><i></i></span><span style="color:#ff8a7a">♥♥♥</span></div>
+    <div class="scene">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Storybook-style tarsier in a moonlit jungle">
+        <defs>
+          <linearGradient id="s1sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1230"/><stop offset="1" stop-color="#26306a"/></linearGradient>
+          <radialGradient id="s1moon"><stop offset="0" stop-color="#fff1c2" stop-opacity=".45"/><stop offset="1" stop-color="#fff1c2" stop-opacity="0"/></radialGradient>
+          <radialGradient id="s1fur" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ecc392"/><stop offset=".55" stop-color="#c99160"/><stop offset="1" stop-color="#8e5e36"/></radialGradient>
+          <radialGradient id="s1body" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#d6a273"/><stop offset=".55" stop-color="#a8703f"/><stop offset="1" stop-color="#6e4422"/></radialGradient>
+          <radialGradient id="s1ring" cx=".35" cy=".3"><stop offset="0" stop-color="#ffe9a6"/><stop offset="1" stop-color="#d9a52c"/></radialGradient>
+          <filter id="s1blur"><feGaussianBlur stdDeviation="3"/></filter>
+        </defs>
+        <rect width="300" height="300" fill="url(#s1sky)"/>
+        <g fill="#fff"><circle cx="30" cy="30" r="1.2"/><circle cx="80" cy="60" r="1"/><circle cx="140" cy="22" r="1.4"/><circle cx="190" cy="70" r=".9"/><circle cx="60" cy="110" r="1"/><circle cx="270" cy="120" r="1.2"/></g>
+        <circle cx="236" cy="62" r="70" fill="url(#s1moon)"/>
+        <circle cx="236" cy="62" r="22" fill="#fff1c2"/><circle cx="229" cy="57" r="4.5" fill="#eadba5"/><circle cx="244" cy="69" r="3" fill="#eadba5"/>
+        <path d="M0 300V190Q50 170 100 185T200 180T300 175V300Z" fill="#17284a"/>
+        <g fill="#0f2a22"><circle cx="10" cy="210" r="34"/><circle cx="60" cy="200" r="28"/><circle cx="110" cy="214" r="36"/><circle cx="170" cy="204" r="30"/><circle cx="225" cy="212" r="38"/><circle cx="285" cy="200" r="30"/><rect y="210" width="300" height="90"/></g>
+        <rect x="20" width="22" height="300" fill="#0a1e18"/><rect x="262" width="18" height="300" fill="#0a1e18"/>
+        <path d="M25 228Q150 205 278 236" stroke="#3a2616" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <g class="sway" stroke="#173d2c" stroke-width="2.5" fill="none"><path d="M80 0Q84 40 78 70"/><path d="M200 0Q196 30 204 54"/></g>
+        <g transform="translate(95 95) scale(.6)">
+          <g class="tars">
+            <path d="M148 168 C190 160 200 120 182 88" stroke="#7a4e2a" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <ellipse cx="100" cy="152" rx="46" ry="36" fill="url(#s1body)" stroke="#4a2a14" stroke-width="3"/>
+            <ellipse cx="100" cy="162" rx="26" ry="22" fill="#e2b98c"/>
+            <g stroke="#4a2a14" stroke-width="3"><ellipse cx="50" cy="52" rx="20" ry="27" fill="url(#s1fur)"/><ellipse cx="150" cy="52" rx="20" ry="27" fill="url(#s1fur)"/></g>
+            <ellipse cx="50" cy="56" rx="10" ry="16" fill="#e09a8a"/><ellipse cx="150" cy="56" rx="10" ry="16" fill="#e09a8a"/>
+            <circle cx="100" cy="98" r="56" fill="url(#s1fur)" stroke="#4a2a14" stroke-width="3"/>
+            <circle cx="77" cy="94" r="25" fill="url(#s1ring)" stroke="#4a2a14" stroke-width="2"/><circle cx="123" cy="94" r="25" fill="url(#s1ring)" stroke="#4a2a14" stroke-width="2"/>
+            <circle cx="77" cy="95" r="16" fill="#140d08"/><circle cx="123" cy="95" r="16" fill="#140d08"/>
+            <circle cx="83" cy="88" r="5.5" fill="#fff"/><circle cx="129" cy="88" r="5.5" fill="#fff"/><circle cx="72" cy="101" r="2.4" fill="#fff" opacity=".8"/><circle cx="118" cy="101" r="2.4" fill="#fff" opacity=".8"/>
+            <g class="lid" fill="#c99160"><circle cx="77" cy="94" r="26"/><circle cx="123" cy="94" r="26"/></g>
+            <g class="lid" stroke="#4a2a14" stroke-width="3" fill="none"><path d="M60 96q17 12 34 0"/><path d="M106 96q17 12 34 0"/></g>
+            <ellipse cx="100" cy="120" rx="5" ry="3.4" fill="#4a2a14"/>
+            <path d="M91 128q9 7 18 0" stroke="#4a2a14" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="58" cy="118" r="8" fill="#ff8fa3" opacity=".45"/><circle cx="142" cy="118" r="8" fill="#ff8fa3" opacity=".45"/>
+            <circle cx="73" cy="184" r="9" fill="url(#s1fur)" stroke="#4a2a14" stroke-width="3"/><circle cx="127" cy="184" r="9" fill="url(#s1fur)" stroke="#4a2a14" stroke-width="3"/>
+          </g>
+        </g>
+        <g fill="#06140d"><path d="M-10 290Q40 230 100 262Q50 286 -10 290Z"/><path d="M310 280Q250 226 200 258Q250 282 310 280Z"/></g>
+        <g><circle class="ff" cx="60" cy="150" r="2.4" fill="#fff3b0"/><circle class="ff" cx="240" cy="160" r="2.4" fill="#fff3b0"/><circle class="ff" cx="200" cy="120" r="2.4" fill="#fff3b0"/></g>
+        <g filter="url(#s1blur)" fill="#f2d16b" opacity=".6"><circle class="ff" cx="60" cy="150" r="6"/><circle class="ff" cx="240" cy="160" r="6"/><circle class="ff" cx="200" cy="120" r="6"/></g>
+      </svg>
+    </div>
+    <div class="qa">
+      <div class="q">What does a tarsier eat?</div>
+      <button class="opt" data-ok="1">Insects</button><button class="opt">Leaves</button><button class="opt">Rice</button>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Option 1</span>
+    <h2>Moonlit storybook <span class="rec">Recommended</span></h2>
+    <p>Like a picture book at bedtime. Creatures are soft and rounded with gentle shading and a thin outline, like stickers. Scenes are layered jungle silhouettes under a big moon.</p>
+    <ul>
+      <li><b>Creatures:</b> shaded sticker style, rosy cheeks, glossy eyes, breathing and blinking</li>
+      <li><b>Scenes:</b> stars, moon glow, hills, canopy, swaying vines, fireflies</li>
+      <li><b>Buttons:</b> chunky navy tiles that press down</li>
+    </ul>
+    <div class="meter"><span>Cute: <b>High</b></span><span>Readable: <b>High</b></span><span>Effort: <b>Medium</b>, already started</span></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="dir">
+  <div class="phone p2">
+    <div class="notch"></div>
+    <div class="bar"><span>✕</span><span class="prog"><i></i></span><span style="color:#ff9c7a">♥♥♥</span></div>
+    <div class="scene">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Cut-paper tarsier under paper lanterns">
+        <defs>
+          <filter id="s2p" x="-10%" y="-10%" width="120%" height="130%"><feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="1" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.5"/><feDropShadow dx="0" dy="4" stdDeviation="2.5" flood-color="#000" flood-opacity=".45"/></filter>
+          <filter id="s2glow"><feGaussianBlur stdDeviation="8"/></filter>
+          <filter id="s2grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0"/></filter>
+        </defs>
+        <rect width="300" height="300" fill="#1d2150"/>
+        <path d="M0 22Q150 60 300 18" stroke="#3a2a1c" stroke-width="2" fill="none"/>
+        <g filter="url(#s2glow)" opacity=".7"><circle cx="60" cy="44" r="18" fill="#ff9a3c"/><circle cx="150" cy="54" r="18" fill="#ff6b5a"/><circle cx="240" cy="40" r="18" fill="#ffc23c"/></g>
+        <g filter="url(#s2p)"><rect x="49" y="30" width="22" height="30" rx="9" fill="#f08a3c"/><rect x="139" y="40" width="22" height="30" rx="9" fill="#e5574a"/><rect x="229" y="26" width="22" height="30" rx="9" fill="#f2b23c"/></g>
+        <g filter="url(#s2p)"><path d="M0 300V180Q60 150 130 176T300 165V300Z" fill="#2a3a7a"/></g>
+        <g filter="url(#s2p)"><path d="M0 300V215Q70 190 150 214T300 205V300Z" fill="#1f5a4a"/></g>
+        <g filter="url(#s2p)"><path d="M10 236Q150 214 290 242" stroke="#7a4e2a" stroke-width="12" fill="none" stroke-linecap="round"/></g>
+        <g transform="translate(95 100) scale(.6)" filter="url(#s2p)">
+          <g class="tars">
+            <path d="M148 168 C190 160 200 120 182 88" stroke="#8a5a30" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <ellipse cx="100" cy="152" rx="46" ry="36" fill="#b8763e"/>
+            <ellipse cx="50" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="150" cy="52" rx="20" ry="27" fill="#d99a5c"/>
+            <ellipse cx="50" cy="56" rx="10" ry="16" fill="#f2a7b5"/><ellipse cx="150" cy="56" rx="10" ry="16" fill="#f2a7b5"/>
+            <circle cx="100" cy="98" r="56" fill="#e0a96d"/>
+            <circle cx="77" cy="94" r="25" fill="#f6ead0"/><circle cx="123" cy="94" r="25" fill="#f6ead0"/>
+            <circle cx="77" cy="95" r="18" fill="#f2b23c"/><circle cx="123" cy="95" r="18" fill="#f2b23c"/>
+            <circle cx="78" cy="96" r="10" fill="#2b1d10"/><circle cx="122" cy="96" r="10" fill="#2b1d10"/>
+            <circle cx="73" cy="184" r="9" fill="#e0a96d"/><circle cx="127" cy="184" r="9" fill="#e0a96d"/>
+          </g>
+        </g>
+        <g transform="translate(95 100) scale(.6)"><circle cx="83" cy="90" r="4" fill="#fff"/><circle cx="127" cy="90" r="4" fill="#fff"/><path d="M94 120h12l-6 7z" fill="#7a4b26"/>
+          <g class="lid" fill="#e0a96d"><circle cx="77" cy="94" r="26"/><circle cx="123" cy="94" r="26"/></g><g class="lid" stroke="#3b2a14" stroke-width="3" fill="none"><path d="M60 96q17 12 34 0"/><path d="M106 96q17 12 34 0"/></g></g>
+        <g filter="url(#s2p)"><path d="M-10 300Q30 240 90 268Q60 300 -10 300Z" fill="#164a3a"/><path d="M310 300Q260 236 210 266Q250 300 310 300Z" fill="#164a3a"/></g>
+        <rect width="300" height="300" filter="url(#s2grain)"/>
+      </svg>
+    </div>
+    <div class="qa">
+      <div class="q">What does a tarsier eat?</div>
+      <button class="opt" data-ok="1">Insects</button><button class="opt">Leaves</button><button class="opt">Rice</button>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Option 2</span>
+    <h2>Paper lantern night</h2>
+    <p>Everything looks cut from colored paper and layered like a diorama, lit by a string of paper lanterns, the way a Filipino fiesta night feels.</p>
+    <ul>
+      <li><b>Creatures:</b> flat paper pieces with soft shadows between layers</li>
+      <li><b>Scenes:</b> paper hills with rough edges, glowing lanterns, paper grain</li>
+      <li><b>Buttons:</b> cream paper tags</li>
+    </ul>
+    <div class="meter"><span>Cute: <b>Medium</b></span><span>Readable: <b>High</b></span><span>Effort: <b>Medium</b></span></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="dir">
+  <div class="phone p3">
+    <div class="notch"></div>
+    <div class="bar"><span>✕</span><span class="prog"><i></i></span><span style="color:#ffb3b3">♥♥♥</span></div>
+    <div class="scene">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Watercolor-style tarsier in a misty night forest">
+        <defs>
+          <filter id="s3wc" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="5"/><feDisplacementMap in="SourceGraphic" scale="10"/><feGaussianBlur stdDeviation=".6"/></filter>
+          <filter id="s3ink"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="2"/><feDisplacementMap in="SourceGraphic" scale="3"/></filter>
+          <filter id="s3mist"><feGaussianBlur stdDeviation="10"/></filter>
+          <filter id="s3grain"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .09 0"/></filter>
+          <linearGradient id="s3sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2547"/><stop offset="1" stop-color="#3c5a7a"/></linearGradient>
+        </defs>
+        <rect width="300" height="300" fill="url(#s3sky)"/>
+        <circle cx="220" cy="70" r="46" fill="#dfe8ff" opacity=".18" filter="url(#s3mist)"/>
+        <circle cx="220" cy="70" r="24" fill="#eef2ff" filter="url(#s3wc)" opacity=".9"/>
+        <g filter="url(#s3wc)" opacity=".85"><path d="M0 300V170Q70 140 150 170T300 160V300Z" fill="#2b4466"/></g>
+        <ellipse cx="150" cy="200" rx="200" ry="22" fill="#cfe0ff" opacity=".18" filter="url(#s3mist)"/>
+        <g filter="url(#s3wc)" opacity=".9"><path d="M0 300V214Q80 192 160 216T300 206V300Z" fill="#1d3a46"/><path d="M14 236Q150 212 288 240" stroke="#4b3526" stroke-width="12" fill="none"/></g>
+        <g transform="translate(95 98) scale(.6)">
+          <g class="tars">
+            <g filter="url(#s3wc)" opacity=".85">
+              <path d="M148 168 C190 160 200 120 182 88" stroke="#a0703f" stroke-width="10" fill="none"/>
+              <ellipse cx="100" cy="152" rx="46" ry="36" fill="#a8703f"/>
+              <ellipse cx="50" cy="52" rx="20" ry="27" fill="#d2a070"/><ellipse cx="150" cy="52" rx="20" ry="27" fill="#d2a070"/>
+              <circle cx="100" cy="98" r="56" fill="#cf9b66"/>
+              <circle cx="77" cy="94" r="24" fill="#e8c25a"/><circle cx="123" cy="94" r="24" fill="#e8c25a"/>
+            </g>
+            <g filter="url(#s3ink)" fill="none" stroke="#1b1410" stroke-width="2.6" stroke-linecap="round">
+              <ellipse cx="102" cy="150" rx="45" ry="35"/><ellipse cx="52" cy="52" rx="19" ry="26"/><ellipse cx="148" cy="52" rx="19" ry="26"/><circle cx="101" cy="97" r="55"/><circle cx="78" cy="94" r="24"/><circle cx="122" cy="94" r="24"/><path d="M91 128q9 7 18 0"/>
+            </g>
+            <circle cx="78" cy="96" r="14" fill="#130d08"/><circle cx="122" cy="96" r="14" fill="#130d08"/>
+            <circle cx="83" cy="90" r="4.5" fill="#fff"/><circle cx="127" cy="90" r="4.5" fill="#fff"/>
+            <g class="lid" fill="#cf9b66"><circle cx="78" cy="94" r="25"/><circle cx="122" cy="94" r="25"/></g><g class="lid" stroke="#1b1410" stroke-width="3" fill="none"><path d="M61 96q17 12 34 0"/><path d="M105 96q17 12 34 0"/></g>
+          </g>
+        </g>
+        <ellipse cx="80" cy="270" rx="120" ry="16" fill="#cfe0ff" opacity=".14" filter="url(#s3mist)"/>
+        <rect width="300" height="300" filter="url(#s3grain)"/>
+      </svg>
+    </div>
+    <div class="qa">
+      <div class="q">What does a tarsier eat?</div>
+      <button class="opt" data-ok="1">Insects</button><button class="opt">Leaves</button><button class="opt">Rice</button>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Option 3</span>
+    <h2>Painted night</h2>
+    <p>Soft watercolor washes with ink outlines, drifting mist, and a cool blue moonlight. Calm and artistic, like a nature documentary painted by hand.</p>
+    <ul>
+      <li><b>Creatures:</b> watercolor fills with loose ink lines</li>
+      <li><b>Scenes:</b> misty layers, soft moon, paper grain</li>
+      <li><b>Buttons:</b> frosted glass</li>
+    </ul>
+    <div class="meter"><span>Cute: <b>Medium</b></span><span>Readable: <b>Medium</b></span><span>Effort: <b>High</b>, needs texture images</span></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="dir">
+  <div class="phone p4">
+    <div class="notch"></div>
+    <div class="bar"><span>✕</span><span class="prog"><i></i></span><span style="color:#ff7ad9">♥♥♥</span></div>
+    <div class="scene">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Glowing tarsier in a bioluminescent forest">
+        <defs>
+          <filter id="s4g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="s4big"><feGaussianBlur stdDeviation="12"/></filter>
+          <radialGradient id="s4fur" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#d9a476"/><stop offset="1" stop-color="#6b4527"/></radialGradient>
+        </defs>
+        <rect width="300" height="300" fill="#04151a"/>
+        <circle cx="60" cy="240" r="60" fill="#38f2d0" opacity=".12" filter="url(#s4big)"/>
+        <circle cx="250" cy="250" r="60" fill="#ff7ad9" opacity=".12" filter="url(#s4big)"/>
+        <path d="M0 300V200Q80 176 150 200T300 192V300Z" fill="#07262b"/>
+        <path d="M18 234Q150 210 284 240" stroke="#1a3d3a" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <g filter="url(#s4g)">
+          <path d="M30 300V262" stroke="#38f2d0" stroke-width="4"/><ellipse cx="30" cy="260" rx="16" ry="9" fill="#38f2d0"/>
+          <path d="M56 300V272" stroke="#38f2d0" stroke-width="3"/><ellipse cx="56" cy="270" rx="10" ry="6" fill="#7dfbe6"/>
+          <path d="M262 300V258" stroke="#ff7ad9" stroke-width="4"/><ellipse cx="262" cy="256" rx="17" ry="10" fill="#ff7ad9"/>
+          <path d="M236 300V276" stroke="#ff7ad9" stroke-width="3"/><ellipse cx="236" cy="274" rx="9" ry="5" fill="#ffb3ec"/>
+          <path d="M120 0Q118 50 130 80" stroke="#38f2d0" stroke-width="1.6" fill="none" opacity=".7"/><circle cx="130" cy="82" r="3" fill="#7dfbe6"/>
+          <path d="M190 0Q196 36 186 60" stroke="#ff7ad9" stroke-width="1.6" fill="none" opacity=".7"/><circle cx="186" cy="62" r="3" fill="#ffb3ec"/>
+        </g>
+        <g transform="translate(95 98) scale(.6)">
+          <g class="tars">
+            <g fill="url(#s4fur)" stroke="#38f2d0" stroke-width="3" filter="url(#s4g)">
+              <ellipse cx="100" cy="152" rx="46" ry="36"/><ellipse cx="50" cy="52" rx="20" ry="27"/><ellipse cx="150" cy="52" rx="20" ry="27"/><circle cx="100" cy="98" r="56"/>
+            </g>
+            <circle cx="77" cy="94" r="25" fill="#ffe36b" filter="url(#s4g)"/><circle cx="123" cy="94" r="25" fill="#ffe36b" filter="url(#s4g)"/>
+            <circle cx="77" cy="95" r="15" fill="#0a0604"/><circle cx="123" cy="95" r="15" fill="#0a0604"/>
+            <circle cx="83" cy="89" r="5" fill="#fff"/><circle cx="129" cy="89" r="5" fill="#fff"/>
+            <g class="lid" fill="#9c6a40"><circle cx="77" cy="94" r="26"/><circle cx="123" cy="94" r="26"/></g><g class="lid" stroke="#38f2d0" stroke-width="3" fill="none"><path d="M60 96q17 12 34 0"/><path d="M106 96q17 12 34 0"/></g>
+            <path d="M91 128q9 7 18 0" stroke="#2a1608" stroke-width="3" fill="none"/>
+          </g>
+        </g>
+        <g filter="url(#s4g)"><circle class="ff" cx="70" cy="150" r="2.5" fill="#7dfbe6"/><circle class="ff" cx="230" cy="130" r="2.5" fill="#ffb3ec"/><circle class="ff" cx="200" cy="90" r="2" fill="#7dfbe6"/><circle class="ff" cx="40" cy="100" r="2" fill="#ffb3ec"/></g>
+      </svg>
+    </div>
+    <div class="qa">
+      <div class="q">What does a tarsier eat?</div>
+      <button class="opt" data-ok="1">Insects</button><button class="opt">Leaves</button><button class="opt">Rice</button>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Option 4</span>
+    <h2>Glow forest</h2>
+    <p>A magical forest where plants and mushrooms glow in the dark. Creatures have a bright rim light, like in a fantasy adventure game. The most "video game" of the four.</p>
+    <ul>
+      <li><b>Creatures:</b> shaded with glowing outlines and bright eyes</li>
+      <li><b>Scenes:</b> glowing mushrooms, vines, and floating sparks</li>
+      <li><b>Buttons:</b> dark tiles that glow when correct</li>
+    </ul>
+    <div class="meter"><span>Cute: <b>Medium</b></span><span>Readable: <b>Medium</b></span><span>Effort: <b>Medium</b></span></div>
+    <p style="font-size:15px;color:var(--muted);margin-top:12px">Note: real tarsiers don't glow. Fireflies and some mushrooms do, so we'd keep the glow on plants and lights and away from the animals' bodies, so kids aren't taught wrong facts.</p>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="dir">
+  <div class="phone p5">
+    <div class="notch"></div>
+    <div class="bar"><span>✕</span><span class="prog"><i></i></span><span style="color:#ff9b8a">♥♥♥</span></div>
+    <div class="scene">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Low-poly faceted tarsier at twilight">
+        <defs><linearGradient id="s5sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1f55"/><stop offset=".7" stop-color="#7a3f7a"/><stop offset="1" stop-color="#e0786a"/></linearGradient></defs>
+        <rect width="300" height="300" fill="url(#s5sky)"/>
+        <polygon points="232,40 252,46 258,66 246,84 226,84 212,68 214,48" fill="#ffd9a0"/><polygon points="232,40 252,46 258,66 236,62" fill="#ffe8c2"/>
+        <polygon points="0,200 60,150 110,190 170,140 230,185 300,150 300,300 0,300" fill="#4a2f6e"/>
+        <polygon points="60,150 110,190 40,210" fill="#3e2760"/><polygon points="170,140 230,185 160,200" fill="#3e2760"/>
+        <polygon points="0,230 50,205 120,232 190,208 260,230 300,215 300,300 0,300" fill="#264a46"/>
+        <polygon points="50,205 120,232 60,250" fill="#1f3d3a"/><polygon points="190,208 260,230 200,250" fill="#1f3d3a"/>
+        <g><polygon points="22,240 38,180 54,240" fill="#2f6650"/><polygon points="38,180 54,240 38,240" fill="#255443"/><polygon points="250,236 268,166 286,236" fill="#2f6650"/><polygon points="268,166 286,236 268,236" fill="#255443"/></g>
+        <polygon points="0,236 300,226 300,240 0,248" fill="#6b4224"/><polygon points="0,236 300,226 300,231 0,241" fill="#8a5a33"/>
+        <g transform="translate(95 96) scale(.6)">
+          <g class="tars">
+            <polygon points="60,130 100,116 142,130 150,166 120,190 80,190 52,166" fill="#b8723c"/>
+            <polygon points="100,116 142,130 150,166 100,160" fill="#9a5c2e"/><polygon points="52,166 80,190 100,160" fill="#cf8a4f"/>
+            <polygon points="30,30 50,20 68,36 66,70 44,78 30,60" fill="#e0a06a"/><polygon points="50,20 68,36 66,70 50,50" fill="#c58550"/>
+            <polygon points="170,30 150,20 132,36 134,70 156,78 170,60" fill="#e0a06a"/><polygon points="150,20 132,36 134,70 150,50" fill="#c58550"/>
+            <polygon points="100,40 146,58 158,100 140,142 100,156 60,142 42,100 54,58" fill="#e3a873"/>
+            <polygon points="100,40 146,58 158,100 100,98" fill="#f0bd8c"/><polygon points="42,100 60,142 100,156 100,98" fill="#c98b56"/><polygon points="158,100 140,142 100,156 100,98" fill="#b97a47"/>
+            <polygon points="77,70 98,80 100,104 82,118 60,110 56,86" fill="#ffd25e"/><polygon points="123,70 102,80 100,104 118,118 140,110 144,86" fill="#ffd25e"/>
+            <polygon points="77,70 98,80 78,92 56,86" fill="#ffe399"/><polygon points="123,70 102,80 122,92 144,86" fill="#ffe399"/>
+            <circle cx="79" cy="95" r="12" fill="#1b0f08"/><circle cx="121" cy="95" r="12" fill="#1b0f08"/>
+            <polygon points="82,86 90,88 86,94" fill="#fff"/><polygon points="124,86 132,88 128,94" fill="#fff"/>
+            <g class="lid"><polygon points="77,70 98,80 100,104 82,118 60,110 56,86" fill="#e3a873"/><polygon points="123,70 102,80 100,104 118,118 140,110 144,86" fill="#e3a873"/></g>
+            <polygon points="94,124 106,124 100,131" fill="#4a2a14"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="qa">
+      <div class="q">What does a tarsier eat?</div>
+      <button class="opt" data-ok="1">Insects</button><button class="opt">Leaves</button><button class="opt">Rice</button>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Option 5</span>
+    <h2>Low-poly twilight</h2>
+    <p>Everything is built from flat-colored facets, like a gem or folded paper, with a warm twilight sky. It feels modern and is very cheap to draw: no textures, only shapes.</p>
+    <ul>
+      <li><b>Creatures:</b> faceted shapes in 2–3 tones each</li>
+      <li><b>Scenes:</b> triangle hills and trees, sunset-to-night gradient</li>
+      <li><b>Buttons:</b> slanted flat tiles</li>
+    </ul>
+    <p class="src">Inspired by <a href="https://ustwogames.co.uk/news/the-environment-art-of-alba-a-wildlife-adventure/">Alba: A Wildlife Adventure</a>, a wildlife game praised for simple flat-colored animals that are still easy to tell apart (<a href="https://www.xboxtavern.com/alba-a-wildlife-adventure-review/">review</a>).</p>
+    <div class="meter"><span>Cute: <b>Medium</b></span><span>Readable: <b>High</b></span><span>Effort: <b>Low</b></span></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="dir">
+  <div class="phone p6">
+    <div class="notch"></div>
+    <div class="bar"><span>✕</span><span class="prog"><i></i></span><span style="color:#ffc6d9">♥♥♥</span></div>
+    <div class="scene">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Minimal layered horizon with a tarsier on a branch">
+        <defs>
+          <linearGradient id="s6sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#140f2e"/><stop offset=".55" stop-color="#4a2a6e"/><stop offset=".85" stop-color="#c9628a"/><stop offset="1" stop-color="#f3a6a0"/></linearGradient>
+          <radialGradient id="s6fur" cx=".7" cy=".75" r=".8"><stop offset="0" stop-color="#f0a99a"/><stop offset=".35" stop-color="#9a6a5a"/><stop offset="1" stop-color="#4a3048"/></radialGradient>
+        </defs>
+        <rect width="300" height="300" fill="url(#s6sky)"/>
+        <g fill="#fff" opacity=".85"><circle cx="20" cy="20" r=".9"/><circle cx="70" cy="44" r="1.2"/><circle cx="120" cy="16" r=".8"/><circle cx="170" cy="50" r="1"/><circle cx="220" cy="24" r="1.3"/><circle cx="270" cy="60" r=".9"/><circle cx="40" cy="90" r=".8"/><circle cx="250" cy="100" r=".8"/><circle cx="150" cy="90" r=".7"/></g>
+        <circle cx="70" cy="120" r="14" fill="#ffe6ee" opacity=".9"/>
+        <path d="M0 300V200L40 180L90 210L140 170L200 205L250 178L300 195V300Z" fill="#7a3a72" opacity=".65"/>
+        <path d="M0 300V222L60 205L110 228L170 200L230 226L300 210V300Z" fill="#4a2350"/>
+        <path d="M0 300V246L80 232L150 250L220 236L300 248V300Z" fill="#26143a"/>
+        <g fill="#140b22"><rect x="26" y="120" width="5" height="140"/><path d="M28 110l-14 40h28z"/><path d="M28 130l-18 46h36z"/><rect x="268" y="100" width="5" height="160"/><path d="M270 90l-15 44h30z"/><path d="M270 116l-19 50h38z"/></g>
+        <path d="M30 238Q150 222 272 244" stroke="#140b22" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <g transform="translate(100 104) scale(.56)">
+          <g class="tars">
+            <path d="M148 168 C190 160 200 120 182 88" stroke="#3a2440" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <ellipse cx="100" cy="152" rx="46" ry="36" fill="url(#s6fur)"/>
+            <ellipse cx="50" cy="52" rx="20" ry="27" fill="url(#s6fur)"/><ellipse cx="150" cy="52" rx="20" ry="27" fill="url(#s6fur)"/>
+            <circle cx="100" cy="98" r="56" fill="url(#s6fur)"/>
+            <circle cx="77" cy="94" r="22" fill="#ffd9a8"/><circle cx="123" cy="94" r="22" fill="#ffd9a8"/>
+            <circle cx="77" cy="95" r="14" fill="#1a0f1e"/><circle cx="123" cy="95" r="14" fill="#1a0f1e"/>
+            <circle cx="82" cy="89" r="4" fill="#fff"/><circle cx="128" cy="89" r="4" fill="#fff"/>
+            <g class="lid" fill="#7a5060"><circle cx="77" cy="94" r="23"/><circle cx="123" cy="94" r="23"/></g>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="qa">
+      <div class="q">What does a tarsier eat?</div>
+      <button class="opt" data-ok="1">Insects</button><button class="opt">Leaves</button><button class="opt">Rice</button>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Option 6</span>
+    <h2>Twilight horizon</h2>
+    <p>Calm and elegant: smooth sunset-to-night skies, mountain layers that fade with distance, and creatures lit by the warm glow from the horizon. The quietest of the eight.</p>
+    <ul>
+      <li><b>Creatures:</b> soft shapes with warm rim light from the horizon</li>
+      <li><b>Scenes:</b> layered silhouettes, purple-pink gradients, stars</li>
+      <li><b>Buttons:</b> thin outlined pills</li>
+    </ul>
+    <p class="src">Inspired by <a href="https://theinspirationgrid.com/altos-odyssey-a-stunning-new-game-by-team-alto">Alto's Odyssey</a>, known for its minimalist, colorful landscapes and day-night color cycles (<a href="https://www.killscreen.com/altos-adventure-creators-tease-next-game-altos-odyssey/">article</a>).</p>
+    <div class="meter"><span>Cute: <b>Low–medium</b></span><span>Readable: <b>Medium</b></span><span>Effort: <b>Low</b></span></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="dir">
+  <div class="phone p7">
+    <div class="notch"></div>
+    <div class="bar"><span>✕</span><span class="prog"><i></i></span><span style="color:#ff6fb5">♥♥♥</span></div>
+    <div class="scene">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Bold cartoon tarsier with big googly eyes">
+        <defs><pattern id="s7dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="2" fill="#6b45e8"/><path d="M16 13l1.5 3 3 .4-2.2 2 .6 3-2.9-1.5-2.9 1.5.6-3-2.2-2 3-.4z" fill="#ffde3b" opacity=".55"/></pattern></defs>
+        <rect width="300" height="300" fill="#4a22c9"/><rect width="300" height="300" fill="url(#s7dots)"/>
+        <circle cx="240" cy="54" r="26" fill="#ffde3b" stroke="#111" stroke-width="4"/><path d="M240 28a26 26 0 0 1 0 52a18 26 0 0 0 0-52z" fill="#f0c21c"/>
+        <path d="M0 300V214Q60 184 120 208T240 198T300 206V300Z" fill="#26c46a" stroke="#111" stroke-width="4"/>
+        <path d="M10 238Q150 216 290 244" stroke="#111" stroke-width="15" fill="none" stroke-linecap="round"/><path d="M10 238Q150 216 290 244" stroke="#a35a24" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <g transform="translate(95 92) scale(.6)">
+          <g class="tars" stroke="#111" stroke-width="6" stroke-linejoin="round">
+            <path d="M148 168 C190 160 200 120 182 88" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M148 168 C190 160 200 120 182 88" stroke="#e88a3a" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <ellipse cx="100" cy="152" rx="46" ry="36" fill="#e88a3a"/>
+            <ellipse cx="50" cy="50" rx="22" ry="29" fill="#ffa64d"/><ellipse cx="150" cy="50" rx="22" ry="29" fill="#ffa64d"/>
+            <ellipse cx="50" cy="54" rx="10" ry="16" fill="#ff6fb5" stroke-width="0"/><ellipse cx="150" cy="54" rx="10" ry="16" fill="#ff6fb5" stroke-width="0"/>
+            <circle cx="100" cy="100" r="56" fill="#ffa64d"/>
+            <circle cx="74" cy="88" r="28" fill="#fff"/><circle cx="128" cy="86" r="30" fill="#fff"/>
+            <circle cx="82" cy="94" r="11" fill="#111" stroke-width="0"/><circle cx="120" cy="92" r="12" fill="#111" stroke-width="0"/>
+            <g class="lid"><circle cx="74" cy="88" r="28" fill="#ffa64d"/><circle cx="128" cy="86" r="30" fill="#ffa64d"/></g>
+            <path d="M84 130q16 18 32 0z" fill="#c2185b"/><path d="M93 136q7 8 14 0" fill="#ff6fb5" stroke-width="0"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="qa">
+      <div class="q">What does a tarsier eat?</div>
+      <button class="opt" data-ok="1">Insects</button><button class="opt">Leaves</button><button class="opt">Rice</button>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Option 7</span>
+    <h2>Googly cartoon</h2>
+    <p>Loud, silly, and full of personality: thick black outlines, huge googly eyes, bright purples and yellows, and every button a different color. Kids laugh at it.</p>
+    <ul>
+      <li><b>Creatures:</b> exaggerated cartoon faces with big expressions</li>
+      <li><b>Scenes:</b> flat bright backgrounds with star patterns</li>
+      <li><b>Buttons:</b> chunky multi-color blocks with black outlines</li>
+    </ul>
+    <p class="src">Inspired by <a href="https://www.notebookcheck.net/top-7-educational-apps-that-actually-teach-your-children.1071676.0.html">Endless Alphabet</a>, loved for its quirky monster characters, and the bright, chunky look of Toca Boca (<a href="https://www.weekend.com/post/best-educational-apps-for-kids">roundup</a>).</p>
+    <div class="meter"><span>Cute: <b>High</b> (funny)</span><span>Readable: <b>High</b></span><span>Effort: <b>Low–medium</b></span></div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="dir">
+  <div class="phone p8">
+    <div class="notch"></div>
+    <div class="bar"><span>✕</span><span class="prog"><i></i></span><span style="color:#e58a9b">♥♥♥</span></div>
+    <div class="scene">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Soft pastel tarsier in a dusky lavender scene">
+        <defs><linearGradient id="s8sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d86c4"/><stop offset="1" stop-color="#f0c9cf"/></linearGradient></defs>
+        <rect width="300" height="300" fill="url(#s8sky)"/>
+        <circle cx="228" cy="66" r="24" fill="#fff6e3"/>
+        <g fill="#fff6e3"><circle cx="40" cy="40" r="2"/><circle cx="110" cy="26" r="1.5"/><circle cx="160" cy="60" r="2"/><circle cx="60" cy="96" r="1.5"/></g>
+        <ellipse cx="60" cy="236" rx="120" ry="60" fill="#a9c3a4"/><ellipse cx="250" cy="240" rx="110" ry="56" fill="#9ab896"/>
+        <ellipse cx="150" cy="290" rx="200" ry="60" fill="#87a886"/>
+        <g fill="#7f9e80"><circle cx="34" cy="180" r="26"/><rect x="31" y="190" width="6" height="40" fill="#b08f74"/><circle cx="270" cy="176" r="24"/><rect x="267" y="186" width="6" height="40" fill="#b08f74"/></g>
+        <path d="M18 236Q150 220 282 240" stroke="#b08f74" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <g transform="translate(97 102) scale(.58)">
+          <g class="tars">
+            <path d="M148 168 C190 160 200 120 182 88" stroke="#c9a07c" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <ellipse cx="100" cy="152" rx="46" ry="36" fill="#c9a07c"/>
+            <ellipse cx="100" cy="162" rx="26" ry="22" fill="#f1dcc2"/>
+            <ellipse cx="50" cy="52" rx="20" ry="27" fill="#ddb892"/><ellipse cx="150" cy="52" rx="20" ry="27" fill="#ddb892"/>
+            <ellipse cx="50" cy="56" rx="10" ry="16" fill="#f2bcc4"/><ellipse cx="150" cy="56" rx="10" ry="16" fill="#f2bcc4"/>
+            <circle cx="100" cy="98" r="56" fill="#ddb892"/>
+            <circle cx="77" cy="96" r="12" fill="#4a3f66"/><circle cx="123" cy="96" r="12" fill="#4a3f66"/>
+            <circle cx="81" cy="92" r="3.5" fill="#fff"/><circle cx="127" cy="92" r="3.5" fill="#fff"/>
+            <g class="lid" fill="#ddb892"><circle cx="77" cy="96" r="13"/><circle cx="123" cy="96" r="13"/></g>
+            <circle cx="62" cy="118" r="9" fill="#f2a0ae" opacity=".6"/><circle cx="138" cy="118" r="9" fill="#f2a0ae" opacity=".6"/>
+            <path d="M93 120q7 6 14 0" stroke="#4a3f66" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="qa">
+      <div class="q">What does a tarsier eat?</div>
+      <button class="opt" data-ok="1">Insects</button><button class="opt">Leaves</button><button class="opt">Rice</button>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Option 8</span>
+    <h2>Pastel dusk</h2>
+    <p>Gentle and cozy: soft lavender skies, sage-green hills, and simple round creatures with small dot eyes and rosy cheeks. Calm, never overwhelming, and great for Grades 1–3.</p>
+    <ul>
+      <li><b>Creatures:</b> simple round shapes, no outlines, dot eyes</li>
+      <li><b>Scenes:</b> rounded hills and trees in muted pastels</li>
+      <li><b>Buttons:</b> cream rounded tiles</li>
+    </ul>
+    <p class="src">Inspired by the soft, friendly characters of Sago Mini and the calm, not-overstimulating look of Khan Academy Kids (<a href="https://www.weekend.com/post/best-educational-apps-for-kids">roundup</a>, <a href="https://pastory.app/articles/best-preschool-learning-apps/">review</a>).</p>
+    <div class="meter"><span>Cute: <b>High</b></span><span>Readable: <b>High</b></span><span>Effort: <b>Low</b></span></div>
+  </div>
+</section>
+</div>
+
+<script>
+document.querySelectorAll('.qa').forEach(function(qa){
+  qa.querySelectorAll('.opt').forEach(function(b){
+    b.addEventListener('click', function(){
+      qa.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('ok'); x.style.animation=''; });
+      if (b.dataset.ok) { b.classList.add('ok'); }
+      else { b.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:300}); }
+    });
+  });
+});
+</script>

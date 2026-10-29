@@ -1,0 +1,305 @@
+<meta charset="utf-8">
+<title>Creature Collector Partner Pick</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Sniglet:wght@400;800&display=swap">
+<style>
+/* Layout: one working phone (pick → name → home) beside notes on how it fits into the app. */
+:root{
+  --bg:#eef0f6; --fg:#171a2b; --muted:#585d78; --line:#d4d7e4; --surface:#fbfbfe; --accent:#c4552c;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-game:"Sniglet","Segoe UI",system-ui,sans-serif;
+  --sky:#1b1e4b; --deep:#14163a; --track:#2c3170; --cream:#f6ead0; --chip:#efe0bd; --ink:#3b2a14; --ink2:#7a6a52;
+  --orange:#f08a3c; --gold:#f2b23c; --text:#fff4dc; --soft:#cbc4e8; --glow:#f08a3c;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.5;padding:0 20px;margin:0}
+.wrap{max-width:900px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:64ch;margin:0 0 30px}
+.grid{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;justify-content:center}
+.col{width:300px;max-width:100%;display:flex;flex-direction:column;gap:10px}
+.notes{flex:1 1 320px;min-width:0;max-width:440px}
+.notes h2{font-family:var(--f-display);font-weight:800;font-size:22px;margin:0 0 8px}
+.notes ul{margin:0 0 22px;padding-left:20px;display:grid;gap:8px}
+.notes li::marker{color:var(--accent)}
+.notes .q{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px 14px}
+.notes .q b{display:block;font-family:var(--f-display);font-size:16px;margin-bottom:2px}
+.notes .q p{margin:0;color:var(--muted);font-size:15px}
+.ctl{display:flex;gap:8px;flex-wrap:wrap}
+.ctl button{font:inherit;font-weight:700;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:5px 12px;border-radius:99px;cursor:pointer}
+.ctl button:hover{border-color:var(--accent)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* the phone */
+.phone{width:300px;height:610px;max-width:100%;border-radius:40px;border:8px solid #07070c;overflow:hidden;position:relative;background:var(--sky);color:var(--text);font-family:var(--f-game)}
+.notch{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:76px;height:18px;border-radius:10px;background:#07070c;z-index:30}
+.step{position:absolute;inset:0;padding:34px 16px 16px;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s}
+.step.on{opacity:1;pointer-events:auto}
+.title{font-size:23px;font-weight:800;text-align:center;line-height:1.1;margin:4px 0 2px}
+.sub{font-family:var(--f-body);font-size:12.5px;color:var(--soft);text-align:center;margin:0}
+
+/* the scene where the partner stands */
+.scene{position:relative;height:270px;margin:10px -16px 0;overflow:hidden}
+.scene .bd{position:absolute;inset:0;opacity:0;transition:opacity .5s}
+.scene .bd.on{opacity:1}
+.string{position:absolute;top:0;left:50%;width:2px;height:26px;background:#3b3f78}
+.parol{position:absolute;top:22px;left:50%;margin-left:-22px;width:44px;height:60px}
+.parol svg{overflow:visible;filter:drop-shadow(0 0 10px var(--glow));transition:filter .4s}
+.mate{position:absolute;left:50%;bottom:14px;width:130px;margin-left:-65px}
+.mate svg{display:block;width:130px;height:130px}
+.mate.hop{animation:hop .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hop{0%{transform:translateY(0) scale(1,1)}30%{transform:translateY(-26px) scale(.95,1.05)}60%{transform:translateY(0) scale(1.06,.94)}100%{transform:none}}
+.mate .bob{animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.bubble{position:absolute;left:14px;right:14px;top:84px;background:var(--cream);color:var(--ink);font-family:var(--f-body);font-weight:700;font-size:12.5px;line-height:1.3;padding:7px 10px;text-align:center;box-shadow:2px 3px 0 rgba(0,0,0,.35);clip-path:polygon(0 4%,100% 0,99% 100%,1% 96%);animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.who{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 2px}
+.who b{font-size:26px;font-weight:800}
+.kind{font-family:var(--f-body);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--chip);color:var(--ink);padding:2px 7px;border-radius:4px}
+.real{font-family:var(--f-body);font-size:12px;color:var(--soft);text-align:center;margin:0 0 10px}
+
+/* three paper tokens */
+.tokens{display:flex;justify-content:center;gap:14px;margin-bottom:12px}
+.tok{width:70px;border:none;background:none;padding:0;cursor:pointer;color:var(--soft);font-family:var(--f-game);font-size:13px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:3px;transition:transform .2s}
+.tok i{display:block;width:62px;height:62px;border-radius:50%;background:var(--track);overflow:hidden;box-shadow:2px 3px 0 rgba(0,0,0,.35);transition:background .2s}
+.tok svg{width:62px;height:62px;transform:translateY(6px) scale(1.25)}
+.tok[aria-pressed="true"]{transform:translateY(-6px);color:var(--text)}
+.tok[aria-pressed="true"] i{background:var(--cream);box-shadow:0 0 0 3px var(--glow),2px 3px 0 rgba(0,0,0,.35)}
+
+.btn{font-family:var(--f-game);font-weight:800;font-size:17px;border:none;cursor:pointer;padding:12px 14px;width:100%;background:var(--orange);color:var(--cream);box-shadow:3px 4px 0 rgba(0,0,0,.35);clip-path:polygon(0 6%,100% 0,98% 100%,2% 94%);transition:transform .12s;margin-top:auto}
+.btn:active{transform:scale(.94)}
+
+/* step 2: name your partner */
+.big{width:170px;height:170px;margin:26px auto 8px;position:relative}
+.big svg{width:170px;height:170px}
+.field{background:var(--cream);color:var(--ink);padding:12px 14px 10px;box-shadow:3px 4px 0 rgba(0,0,0,.35);clip-path:polygon(0 3%,100% 0,99% 100%,1% 97%);margin-top:10px}
+.field label{display:block;font-family:var(--f-body);font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:4px}
+.field input{width:100%;font-family:var(--f-game);font-size:24px;font-weight:800;color:var(--ink);background:var(--chip);border:none;border-bottom:3px dashed var(--ink2);padding:6px 10px}
+.field small{display:block;font-family:var(--f-body);font-size:11.5px;color:var(--ink2);margin-top:6px}
+
+/* step 3: home */
+.hello{font-size:24px;font-weight:800;line-height:1.05;margin:4px 0 0}
+.rank{font-family:var(--f-body);font-size:12px;color:var(--soft);margin:2px 0 0}
+.home .scene{height:300px}
+.home .bubble{top:70px;right:auto;left:16px;width:170px;text-align:left}
+.tapme{font-family:var(--f-body);font-size:11px;color:var(--soft);text-align:center;margin:-4px 0 10px}
+.card{background:var(--cream);color:var(--ink);padding:10px 12px;box-shadow:3px 4px 0 rgba(0,0,0,.35);clip-path:polygon(0 4%,100% 0,99% 100%,1% 96%);font-weight:800;font-size:15px;margin-bottom:10px}
+.card small{display:block;font-family:var(--f-body);font-weight:400;font-size:12px;color:var(--ink2)}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:20}
+.confetti i{position:absolute;top:-12px;width:8px;height:12px;animation:fall 1.6s ease-in forwards}
+@keyframes fall{to{transform:translateY(640px) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <h1>Choose your partner</h1>
+  <p class="lead">On the first launch, after typing their name and grade, each student picks the partner who explores with them. Right now everyone gets Tarsi. Tap the three animals, choose one, give it a name, and see it on the home screen.</p>
+
+  <div class="grid">
+    <div class="col">
+      <div class="phone" id="ph"><div class="notch"></div>
+
+        <!-- 1. pick -->
+        <section class="step on" id="s1">
+          <p class="title">Choose your partner</p>
+          <p class="sub">They’ll explore with you all the way.</p>
+          <div class="scene" id="scene1"></div>
+          <div class="who"><b id="nm">Tarsi</b><span class="kind" id="kd">Forest</span></div>
+          <p class="real" id="rl">Philippine tarsier</p>
+          <div class="tokens" role="group" aria-label="Partners">
+            <button class="tok" data-k="tarsi" aria-pressed="true"><i></i>Tarsi</button>
+            <button class="tok" data-k="pawi" aria-pressed="false"><i></i>Pawi</button>
+            <button class="tok" data-k="haribon" aria-pressed="false"><i></i>Haribon</button>
+          </div>
+          <button class="btn" id="choose">Choose Tarsi</button>
+        </section>
+
+        <!-- 2. name -->
+        <section class="step" id="s2">
+          <p class="title" id="nmTitle">Tarsi is your partner!</p>
+          <p class="sub">Want to give them a different name?</p>
+          <div class="big" id="big"></div>
+          <div class="field">
+            <label for="pname">Partner’s name</label>
+            <input id="pname" maxlength="12" autocomplete="off" value="Tarsi">
+            <small>You can change it later in the Shop’s dressing room.</small>
+          </div>
+          <button class="btn" id="go">Let’s go!</button>
+        </section>
+
+        <!-- 3. home -->
+        <section class="step home" id="s3">
+          <p class="hello">Magandang gabi, Ana!</p>
+          <p class="rank">Night Ranger · Level 1</p>
+          <div class="scene" id="scene3"></div>
+          <p class="tapme" id="tapme">Tap Tarsi</p>
+          <div class="card">Rainforest · Stage 1<small>Lights in the dark</small></div>
+        </section>
+        <div class="confetti" id="conf"></div>
+      </div>
+      <div class="ctl"><button id="again">Start over</button></div>
+    </div>
+
+    <div class="notes">
+      <h2>How it fits in the app</h2>
+      <ul>
+        <li><b>When:</b> once, on the first launch, right after name and grade.</li>
+        <li><b>Three starters</b>, one from each part of the islands: Tarsi from the forest, Pawi from the sea, and Haribon from the sky. Each one says a real fact about itself.</li>
+        <li><b>Everywhere Tarsi appears now</b>, the chosen partner appears instead: home, the startup loading screen, the stage loader, the peekaboo exit and stage-leave cards, the goodbye screen, and the Shop dressing room.</li>
+        <li><b>Outfits fit all three.</b> The salakot sits on Haribon’s crest, glasses sit on Pawi’s face, and so on.</li>
+        <li><b>Growing up works the same:</b> Baby → Young → Grown → Elder as the kid answers questions.</li>
+        <li>The partner can still be found in the wild. A kid with Pawi still catches a sea turtle in the Ocean stages for the Dex.</li>
+      </ul>
+      <div class="q">
+        <b>One thing to decide</b>
+        <p>Students already playing have Tarsi. They could keep Tarsi, or see this picker once the next time they open the app. Their progress stays either way.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var ART = {
+    tarsi:
+      '<path d="M146 168 C190 160 200 120 182 88" stroke="#8a5a30" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="100" cy="152" rx="46" ry="36" fill="#b8763e"/><ellipse cx="100" cy="162" rx="25" ry="20" fill="#e8c094"/>' +
+      '<ellipse cx="50" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="50" cy="56" rx="10" ry="16" fill="#f2a7b5"/>' +
+      '<ellipse cx="150" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="150" cy="56" rx="10" ry="16" fill="#f2a7b5"/>' +
+      '<circle cx="100" cy="98" r="56" fill="#e0a96d"/>' +
+      '<circle cx="77" cy="94" r="25" fill="#f6ead0"/><circle cx="123" cy="94" r="25" fill="#f6ead0"/>' +
+      '<circle cx="77" cy="95" r="18" fill="#f2b23c"/><circle cx="123" cy="95" r="18" fill="#f2b23c"/>' +
+      '<circle cx="78" cy="96" r="11" fill="#2b1d10"/><circle cx="122" cy="96" r="11" fill="#2b1d10"/>' +
+      '<circle cx="83" cy="90" r="4.5" fill="#fff"/><circle cx="127" cy="90" r="4.5" fill="#fff"/>' +
+      '<circle cx="56" cy="120" r="8" fill="#f2a7b5" opacity=".7"/><circle cx="144" cy="120" r="8" fill="#f2a7b5" opacity=".7"/>' +
+      '<path d="M94 119h12l-6 7z" fill="#7a4b26"/><path d="M90 130q10 8 20 0" stroke="#7a4b26" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="73" cy="184" r="9" fill="#e0a96d"/><circle cx="127" cy="184" r="9" fill="#e0a96d"/>',
+    pawi:
+      '<ellipse cx="72" cy="186" rx="17" ry="9" fill="#5aa874"/><ellipse cx="128" cy="186" rx="17" ry="9" fill="#5aa874"/>' +
+      '<ellipse cx="42" cy="146" rx="30" ry="13" transform="rotate(-28 42 146)" fill="#5aa874"/>' +
+      '<ellipse cx="158" cy="146" rx="30" ry="13" transform="rotate(28 158 146)" fill="#5aa874"/>' +
+      '<ellipse cx="100" cy="152" rx="62" ry="40" fill="#2f6e4a"/><ellipse cx="100" cy="150" rx="53" ry="32" fill="#4f9a66"/>' +
+      '<path d="M100 128 l16 9 -6 18 h-20 l-6 -18z" fill="#7cc48f"/>' +
+      '<path d="M60 142 l16 -4 6 18 -10 13 -14 -8z" fill="#7cc48f"/><path d="M140 142 l-16 -4 -6 18 10 13 14 -8z" fill="#7cc48f"/>' +
+      '<ellipse cx="100" cy="116" rx="22" ry="16" fill="#8fd0a0"/>' +
+      '<circle cx="100" cy="80" r="42" fill="#8fd0a0"/><circle cx="82" cy="50" r="6" fill="#6cb884"/><circle cx="112" cy="46" r="4.5" fill="#6cb884"/><circle cx="124" cy="56" r="3.5" fill="#6cb884"/>' +
+      '<circle cx="83" cy="82" r="15" fill="#f6ead0"/><circle cx="117" cy="82" r="15" fill="#f6ead0"/>' +
+      '<circle cx="84" cy="84" r="10" fill="#2b1d10"/><circle cx="116" cy="84" r="10" fill="#2b1d10"/>' +
+      '<circle cx="88" cy="79" r="4" fill="#fff"/><circle cx="120" cy="79" r="4" fill="#fff"/>' +
+      '<circle cx="66" cy="102" r="7" fill="#f2a7b5" opacity=".7"/><circle cx="134" cy="102" r="7" fill="#f2a7b5" opacity=".7"/>' +
+      '<path d="M89 104q11 9 22 0" stroke="#2f6e4a" stroke-width="3" fill="none" stroke-linecap="round"/>',
+    haribon:
+      '<path d="M58 76 L44 26 L76 54 L78 10 L98 46 L108 6 L118 46 L138 12 L132 54 L160 30 L146 78z" fill="#9a7448"/>' +
+      '<path d="M70 70 L64 36 L86 58 L94 26 L104 52 L120 28 L122 58 L142 46 L134 72z" fill="#d9bd8a"/>' +
+      '<ellipse cx="54" cy="142" rx="22" ry="40" transform="rotate(18 54 142)" fill="#6b4a2e"/>' +
+      '<ellipse cx="146" cy="142" rx="22" ry="40" transform="rotate(-18 146 142)" fill="#6b4a2e"/>' +
+      '<ellipse cx="100" cy="148" rx="42" ry="40" fill="#7a5434"/><ellipse cx="100" cy="158" rx="26" ry="27" fill="#f1e2c4"/>' +
+      '<path d="M84 184 l-7 9 M84 184 v10 M84 184 l7 9 M116 184 l-7 9 M116 184 v10 M116 184 l7 9" stroke="#f2b23c" stroke-width="4.5" stroke-linecap="round"/>' +
+      '<circle cx="100" cy="90" r="45" fill="#efe0bf"/>' +
+      '<circle cx="80" cy="86" r="15" fill="#fff8e6"/><circle cx="120" cy="86" r="15" fill="#fff8e6"/>' +
+      '<circle cx="81" cy="88" r="10" fill="#6f8fb0"/><circle cx="119" cy="88" r="10" fill="#6f8fb0"/>' +
+      '<circle cx="81" cy="89" r="5.5" fill="#1d1a24"/><circle cx="119" cy="89" r="5.5" fill="#1d1a24"/>' +
+      '<circle cx="84" cy="83" r="3" fill="#fff"/><circle cx="122" cy="83" r="3" fill="#fff"/>' +
+      '<path d="M86 101 Q100 92 114 101 L109 116 Q103 127 96 121 Q101 117 99 112 L90 110z" fill="#61779a"/>' +
+      '<circle cx="62" cy="108" r="7" fill="#f2a7b5" opacity=".6"/><circle cx="138" cy="108" r="7" fill="#f2a7b5" opacity=".6"/>'
+  };
+  var INFO = {
+    tarsi:   {kind:'Forest', real:'Philippine tarsier',  glow:'#f08a3c', say:'Each of my eyes is as big as my brain!'},
+    pawi:    {kind:'Sea',    real:'Green sea turtle (pawikan)', glow:'#5ec4d9', say:'I can nap underwater for hours!'},
+    haribon: {kind:'Sky',    real:'Philippine eagle',    glow:'#f2b23c', say:'I’m the national bird of the Philippines!'}
+  };
+  var NAMES = {tarsi:'Tarsi', pawi:'Pawi', haribon:'Haribon'};
+  var BACKDROPS = {
+    tarsi:
+      '<path d="M0 205 Q150 168 300 205 V262 H0z" fill="#1f4a3a"/>' +
+      '<path d="M-10 70 q40 10 60 50 q-50 -8 -60 -50z" fill="#2d6a4c"/><path d="M310 60 q-44 12 -62 52 q52 -10 62 -52z" fill="#2d6a4c"/>' +
+      '<path d="M-10 214 q30 -40 70 -26 q-20 30 -70 26z" fill="#2f7a55"/><path d="M310 220 q-30 -44 -74 -28 q22 32 74 28z" fill="#2f7a55"/>' +
+      '<rect x="40" y="226" width="220" height="10" rx="5" fill="#6b4422"/>',
+    pawi:
+      '<path d="M0 188 q25 -12 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 V262 H0z" fill="#1d4f7a"/>' +
+      '<path d="M0 214 q25 -10 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 V262 H0z" fill="#2a6a9a"/>' +
+      '<ellipse cx="150" cy="240" rx="110" ry="16" fill="#d8c08a"/>' +
+      '<circle cx="40" cy="120" r="5" fill="none" stroke="#5ec4d9" stroke-width="2"/><circle cx="256" cy="96" r="7" fill="none" stroke="#5ec4d9" stroke-width="2"/><circle cx="268" cy="132" r="4" fill="none" stroke="#5ec4d9" stroke-width="2"/>',
+    haribon:
+      '<g fill="#343a7a"><ellipse cx="46" cy="110" rx="40" ry="14"/><ellipse cx="70" cy="100" rx="26" ry="16"/><ellipse cx="258" cy="80" rx="42" ry="13"/><ellipse cx="240" cy="70" rx="22" ry="14"/></g>' +
+      '<path d="M0 220 L60 170 L110 205 L170 150 L230 200 L300 160 V262 H0z" fill="#26305e"/>' +
+      '<rect x="40" y="226" width="220" height="10" rx="5" fill="#6b4422"/>'
+  };
+
+  function svg(k, extra){ return '<svg viewBox="0 0 200 200" aria-hidden="true"' + (extra||'') + '>' + ART[k] + '</svg>'; }
+  function star(r1, r2){
+    var p = [];
+    for (var i = 0; i < 10; i++){ var r = i % 2 ? r2 : r1, a = Math.PI / 5 * i - Math.PI / 2; p.push((22 + r * Math.cos(a)).toFixed(1) + ',' + (22 + r * Math.sin(a)).toFixed(1)); }
+    return p.join(' ');
+  }
+  function sceneHTML(k, withBubble, say){
+    var bds = '';
+    for (var key in BACKDROPS) bds += '<svg class="bd' + (key === k ? ' on' : '') + '" data-k="' + key + '" viewBox="0 0 300 262" preserveAspectRatio="none" width="100%" height="100%" aria-hidden="true">' + BACKDROPS[key] + '</svg>';
+    return bds +
+      '<div class="string"></div>' +
+      '<div class="parol"><svg viewBox="0 0 44 60" width="44" height="60" aria-hidden="true"><polygon class="pstar" points="' + star(21, 9) + '" fill="' + INFO[k].glow + '"/><polygon points="' + star(9, 4) + '" fill="#fff4dc"/><path d="M15 40 l-3 18 M22 42 v18 M29 40 l3 18" stroke="' + INFO[k].glow + '" stroke-width="2" class="ptail"/></svg></div>' +
+      (withBubble ? '<div class="bubble">' + say + '</div>' : '') +
+      '<div class="mate"><div class="bob">' + svg(k) + '</div></div>';
+  }
+
+  var ph = document.getElementById('ph');
+  var cur = 'tarsi';
+  var scene1 = document.getElementById('scene1');
+  document.querySelectorAll('.tok').forEach(function(b){ b.querySelector('i').innerHTML = svg(b.dataset.k); });
+
+  function pick(k, first){
+    cur = k;
+    ph.style.setProperty('--glow', INFO[k].glow);
+    scene1.innerHTML = sceneHTML(k, true, INFO[k].say);
+    if (!first){ var m = scene1.querySelector('.mate'); m.classList.add('hop'); }
+    document.getElementById('nm').textContent = NAMES[k];
+    document.getElementById('kd').textContent = INFO[k].kind;
+    document.getElementById('rl').textContent = INFO[k].real;
+    document.getElementById('choose').textContent = 'Choose ' + NAMES[k];
+    document.querySelectorAll('.tok').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.k === k); });
+  }
+  document.querySelectorAll('.tok').forEach(function(b){ b.addEventListener('click', function(){ pick(b.dataset.k); }); });
+
+  function show(id){ document.querySelectorAll('.step').forEach(function(s){ s.classList.toggle('on', s.id === id); }); }
+
+  document.getElementById('choose').addEventListener('click', function(){
+    document.getElementById('nmTitle').textContent = NAMES[cur] + ' is your partner!';
+    document.getElementById('pname').value = NAMES[cur];
+    document.getElementById('big').innerHTML = '<div class="mate hop" style="position:static;margin:0;width:170px"><div class="bob">' + svg(cur) + '</div></div>';
+    show('s2');
+  });
+
+  document.getElementById('go').addEventListener('click', function(){
+    var name = document.getElementById('pname').value.trim() || NAMES[cur];
+    document.getElementById('scene3').innerHTML = sceneHTML(cur, true, 'Hi Ana! I’m ' + name + '. Let’s find the creatures hiding tonight!');
+    document.getElementById('tapme').textContent = 'Tap ' + name;
+    show('s3');
+    confetti();
+  });
+  document.getElementById('scene3').addEventListener('click', function(){
+    var m = this.querySelector('.mate'); if (!m) return;
+    m.classList.remove('hop'); void m.offsetWidth; m.classList.add('hop');
+  });
+  document.getElementById('pname').addEventListener('keydown', function(e){ if (e.key === 'Enter') document.getElementById('go').click(); });
+
+  function confetti(){
+    var c = document.getElementById('conf'), cols = ['#f08a3c','#f2b23c','#e5574a','#5ec4d9','#7cc48f','#f6ead0'];
+    c.innerHTML = '';
+    for (var i = 0; i < 36; i++){
+      var d = document.createElement('i');
+      d.style.left = (Math.random() * 100) + '%';
+      d.style.background = cols[i % cols.length];
+      d.style.animationDelay = (Math.random() * 0.5) + 's';
+      c.appendChild(d);
+    }
+    setTimeout(function(){ c.innerHTML = ''; }, 2400);
+  }
+
+  document.getElementById('again').addEventListener('click', function(){ pick('tarsi', true); show('s1'); });
+  pick('tarsi', true);
+})();
+</script>

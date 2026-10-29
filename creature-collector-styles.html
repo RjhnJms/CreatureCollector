@@ -1,0 +1,704 @@
+<title>Creature Collector Styles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Bungee&family=Fredoka:wght@500;600;700&family=Gaegu:wght@400;700&family=Lexend:wght@400;600&family=Sniglet:wght@400;800&family=Pixelify+Sans:wght@400;600&family=Press+Start+2P&family=Bangers&family=Comic+Neue:wght@700&family=Baloo+2:wght@600;800&display=swap">
+<style>
+/* Layout: a style board. Each art direction gets one live phone (same encounter screen) beside its spec sheet. */
+:root{
+  --bg:#eef0eb; --fg:#1b201c; --muted:#58615a; --line:#d3d8d0; --surface:#fbfcfa; --accent:#2e6a4d; --chip:#dcebe2;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121613; --fg:#e7ebe6; --muted:#9aa39b; --line:#2b322d; --surface:#1a1f1b; --accent:#86c9a6; --chip:#203328; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121613; --fg:#e7ebe6; --muted:#9aa39b; --line:#2b322d; --surface:#1a1f1b; --accent:#86c9a6; --chip:#203328; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55;padding:0 20px}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px}
+header h1{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1.05;margin:0 0 10px;text-wrap:balance;letter-spacing:-.01em}
+header p{color:var(--muted);max-width:62ch;margin:0}
+.hint{display:inline-flex;gap:8px;align-items:center;margin-top:16px;font-size:14px;background:var(--chip);color:var(--accent);padding:6px 12px;border-radius:999px;font-weight:700}
+
+.dir{display:grid;grid-template-columns:320px minmax(0,1fr);gap:40px;align-items:start;padding-block:48px;border-top:1px solid var(--line)}
+.dir:first-of-type{margin-top:36px}
+@media (max-width:760px){.dir{grid-template-columns:minmax(0,1fr);gap:24px}.phone{margin:0 auto}}
+.spec h2{font-family:var(--f-display);font-weight:800;font-size:30px;margin:0 0 4px;line-height:1.1}
+.spec .tag{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.spec .pitch{font-size:18px;margin:8px 0 20px;max-width:46ch}
+.rec{display:inline-block;background:var(--accent);color:var(--surface);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;margin-left:8px;vertical-align:4px}
+.sw{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+.sw div{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);width:76px}
+.sw i{display:block;height:44px;border-radius:8px;border:1px solid var(--line)}
+.type{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:20px}
+.type .big{font-size:28px;line-height:1.1}
+.type .small{font-size:15px;color:var(--muted);margin-top:6px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.cols h3{font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px;color:var(--muted)}
+.cols ul{margin:0;padding-left:18px}
+.cols li{margin-bottom:4px}
+.effort{display:flex;align-items:center;gap:10px;margin-top:20px;font-size:14px;color:var(--muted)}
+.effort b{display:flex;gap:4px}
+.effort b span{width:22px;height:8px;border-radius:4px;background:var(--line)}
+.effort b span.on{background:var(--accent)}
+
+/* shared phone shell */
+.phone{width:320px;max-width:100%;height:640px;border-radius:44px;border:10px solid #121212;position:relative;overflow:hidden;display:flex;flex-direction:column;background:#000}
+.phone .notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:90px;height:22px;border-radius:12px;background:#121212;z-index:5}
+.screen{flex:1;display:flex;flex-direction:column;position:relative;padding:40px 18px 18px}
+.opt{font:inherit;cursor:pointer;text-align:left;width:100%}
+.opt:focus-visible{outline:3px solid #2e6a4d;outline-offset:2px}
+.fb{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);z-index:4;pointer-events:none;white-space:nowrap}
+.tars{animation:bob 3.2s ease-in-out infinite;transform-origin:50% 90%}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.tars,.shake,.fb{animation:none!important}}
+
+/* A. Field journal */
+.j{background-color:#eadcbf;color:#33251a;font-family:"Atkinson Hyperlegible",sans-serif;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .08 0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+  repeating-linear-gradient(to bottom,transparent 0 27px,rgba(70,100,140,.16) 27px 28px);}
+.j::before{content:"";position:absolute;left:30px;top:0;bottom:0;width:1.5px;background:rgba(192,57,43,.35)}
+.j .bar{display:flex;justify-content:space-between;align-items:baseline;font-family:"Gaegu",cursive;font-size:20px;font-weight:700;padding-left:20px}
+.j .hearts{letter-spacing:2px;color:#c0392b}
+.j .photo{align-self:center;margin:10px 0 6px;background:#f8f3e6;padding:10px 10px 6px;transform:rotate(-2.5deg);box-shadow:0 2px 0 rgba(51,37,26,.18);position:relative;width:200px}
+.j .photo::before,.j .photo::after{content:"";position:absolute;width:62px;height:20px;background:rgba(232,201,104,.6);top:-9px}
+.j .photo::before{left:-14px;transform:rotate(-28deg)}
+.j .photo::after{right:-14px;transform:rotate(24deg)}
+.j .cap{font-family:"Gaegu",cursive;font-size:19px;text-align:center;line-height:1.1}
+.j .q{font-family:"Gaegu",cursive;font-size:17px;padding-left:20px;margin-top:8px}
+.j .q strong{display:block;font-family:"Atkinson Hyperlegible",sans-serif;font-size:18px;line-height:1.3}
+.j .opts{display:flex;flex-direction:column;gap:6px;margin-top:8px;padding-left:20px}
+.j .opt{background:none;border:none;color:#33251a;font-size:17px;display:flex;gap:10px;align-items:center;padding:4px 2px}
+.j .opt::before{content:"";width:20px;height:20px;border:2px solid #33251a;border-radius:50% 45% 52% 48%;flex:none}
+.j .opt.picked::before{background:radial-gradient(circle,#4e7a4a 0 45%,transparent 50%)}
+.j .opt.picked{text-decoration:underline wavy #4e7a4a;text-underline-offset:5px}
+.j .opt.wrong{text-decoration:line-through #c0392b 2px}
+.j .stamp{margin-top:auto;align-self:flex-end;font-family:"Gaegu",cursive;font-weight:700;font-size:24px;color:#c0392b;border:3px double #c0392b;padding:2px 16px;border-radius:6px;transform:rotate(-4deg);letter-spacing:.08em;background:none}
+.j .fb{font-family:"Gaegu",cursive;font-weight:700;font-size:34px;color:#c0392b;border:4px double #c0392b;padding:2px 18px;border-radius:8px;background:rgba(248,243,230,.85)}
+.j .fb.show{animation:stampin .35s cubic-bezier(.2,1.6,.4,1) both}
+.j .fb.lose{color:#33251a;border-color:#33251a}
+@keyframes stampin{from{transform:translate(-50%,-50%) rotate(-8deg) scale(1.8);opacity:0}to{transform:translate(-50%,-50%) rotate(-8deg) scale(1);opacity:1}}
+
+/* B. Pinoy folk pop */
+.f{background:#fff6e0;color:#1a1033;font-family:"Lexend",sans-serif;padding:0}
+.f .weave{height:62px;flex:none;background:
+  repeating-linear-gradient(45deg,#d6246e 0 10px,transparent 10px 20px),
+  repeating-linear-gradient(-45deg,#ffc62b 0 10px,#1b3a8c 10px 20px)}
+.f .sign{margin:-26px 16px 0;background:#1b3a8c;border:3px solid #1a1033;border-radius:10px;padding:6px 12px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}
+.f .sign span{font-family:"Bungee",sans-serif;color:#ffc62b;font-size:19px;text-shadow:2px 2px 0 #d6246e}
+.f .sign em{font-style:normal;color:#fff6e0;font-size:13px;font-weight:600}
+.f .sun{width:210px;height:210px;border-radius:50%;margin:14px auto 4px;background:repeating-conic-gradient(#ffc62b 0 12deg,#ffb000 12deg 24deg);border:3px solid #1a1033;display:grid;place-items:center;overflow:hidden}
+.f .label{text-align:center;font-family:"Bungee",sans-serif;font-size:15px;color:#d6246e}
+.f .q{padding:6px 18px 0;font-size:17px;font-weight:600;line-height:1.3}
+.f .opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px 18px 0}
+.f .opt{background:#fff;border:3px solid #1a1033;border-radius:10px;box-shadow:4px 4px 0 #1a1033;padding:10px 4px;text-align:center;font-weight:600;font-size:14px;color:#1a1033}
+.f .opt.picked{background:#1f9e5a;color:#fff}
+.f .opt.wrong{background:#d6246e;color:#fff}
+.f .go{margin:auto 18px 18px;background:#d6246e;color:#fff6e0;font-family:"Bungee",sans-serif;font-size:20px;text-align:center;padding:10px;border:3px solid #1a1033;border-radius:12px;box-shadow:4px 4px 0 #1a1033}
+.f .fb{font-family:"Bungee",sans-serif;font-size:22px;background:#1b3a8c;color:#ffc62b;border:3px solid #1a1033;padding:8px 14px;border-radius:10px;box-shadow:5px 5px 0 #d6246e}
+.f .fb.show{animation:slap .3s ease-out both}
+.f .fb.lose{background:#d6246e;color:#fff6e0;box-shadow:5px 5px 0 #1b3a8c}
+@keyframes slap{from{transform:translate(-50%,-50%) scale(.3) rotate(10deg)}to{transform:translate(-50%,-50%) scale(1) rotate(-3deg)}}
+
+/* C. Chunky toy */
+.t{background:#cdeefd;color:#23354a;font-family:"Fredoka",sans-serif}
+.t .bar{display:flex;justify-content:space-between;align-items:center}
+.t .pillbar{background:#fff;border-radius:999px;padding:4px 12px;font-weight:600;font-size:15px;box-shadow:0 4px 0 #9bcde6}
+.t .prog{flex:1;height:14px;margin:0 10px;background:#fff;border-radius:999px;box-shadow:inset 0 2px 0 #9bcde6;overflow:hidden}
+.t .prog i{display:block;width:40%;height:100%;background:#ff9f1c;border-radius:999px}
+.t .island{margin:18px auto 0;width:240px;height:220px;position:relative}
+.t .island::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:56px;background:#8fd36a;border-radius:50%;box-shadow:0 10px 0 #5aa83c;z-index:0}
+.t .island svg{position:relative;z-index:1}
+.t .label{text-align:center;font-weight:700;font-size:20px;margin-top:18px}
+.t .label small{display:inline-block;background:#ffd166;color:#7a4a00;font-size:12px;padding:2px 10px;border-radius:999px;vertical-align:3px;margin-left:4px}
+.t .q{text-align:center;font-weight:600;font-size:18px;margin:6px 0 10px}
+.t .opts{display:flex;flex-direction:column;gap:10px}
+.t .opt{background:#fff;border:none;border-radius:18px;padding:11px 16px;font-weight:600;font-size:17px;color:#23354a;box-shadow:0 6px 0 #9bcde6;transition:transform .08s,box-shadow .08s}
+.t .opt:active{transform:translateY(4px);box-shadow:0 2px 0 #9bcde6}
+.t .opt.picked{background:#7bd389;color:#0e3d1a;box-shadow:0 6px 0 #3f9a4f}
+.t .opt.wrong{background:#ff8a8a;color:#5c0e0e;box-shadow:0 6px 0 #c94b4b}
+.t .fb{font-weight:700;font-size:26px;background:#fff;color:#23354a;padding:10px 20px;border-radius:24px;box-shadow:0 8px 0 #ff9f1c}
+.t .fb.show{animation:boing .5s cubic-bezier(.3,1.8,.5,1) both}
+@keyframes boing{from{transform:translate(-50%,-50%) scale(.2)}to{transform:translate(-50%,-50%) scale(1)}}
+
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.jump a{font-size:14px;color:var(--fg);text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:5px 12px;border-radius:999px}
+.jump a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* D. Paper cut-out */
+.pp{background:#9fd3e6;color:#3b2a14;font-family:"Atkinson Hyperlegible",sans-serif;padding:36px 0 0;overflow:hidden}
+.pp .ribbon{align-self:center;font-family:"Sniglet",sans-serif;font-weight:800;font-size:20px;background:#e36f2c;color:#fff7ea;padding:6px 34px;clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%,8% 50%);margin-top:6px}
+.pp .scene{position:relative;height:250px}
+.pp .hill{position:absolute;border-radius:50% 50% 0 0;box-shadow:0 -4px 0 rgba(59,42,20,.14)}
+.pp .h1{left:-60px;right:80px;bottom:0;height:120px;background:#5aa05e}
+.pp .h2{left:110px;right:-70px;bottom:0;height:90px;background:#3f8f4a}
+.pp .scene svg{position:absolute;left:50%;bottom:4px;transform:translateX(-50%)}
+.pp .card{background:#f6efe2;margin:0 14px;padding:12px 14px 14px;transform:rotate(-1deg);box-shadow:2px 4px 0 rgba(59,42,20,.25);flex:1;margin-bottom:-4px}
+.pp .q{font-family:"Sniglet",sans-serif;font-weight:800;font-size:19px;line-height:1.2}
+.pp .opts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.pp .opt{background:#e8b13a;border:none;color:#3b2a14;font-size:16px;font-weight:700;padding:9px 12px 9px 34px;position:relative;clip-path:polygon(0 0,100% 3%,99% 100%,1% 96%);box-shadow:none}
+.pp .opt:nth-child(2){background:#f2a7b5}
+.pp .opt:nth-child(3){background:#b9d98a}
+.pp .opt::before{content:"";position:absolute;left:12px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:#f6efe2}
+.pp .opt.picked{background:#3f8f4a;color:#f6efe2}
+.pp .opt.wrong{background:#c0392b;color:#f6efe2}
+.pp .fb{font-family:"Sniglet",sans-serif;font-weight:800;font-size:28px;background:#f6efe2;color:#3f8f4a;padding:10px 22px;box-shadow:3px 5px 0 rgba(59,42,20,.3)}
+.pp .fb.lose{color:#c0392b}
+.pp .fb.show{animation:paperin .4s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes paperin{from{transform:translate(-50%,-30%) rotate(-12deg);opacity:0}to{transform:translate(-50%,-50%) rotate(-3deg);opacity:1}}
+
+/* E. Pixel adventure */
+.px{background:#a8e0ff;color:#303848;font-family:"Pixelify Sans",monospace;padding:36px 12px 12px;image-rendering:pixelated}
+.px .hud{background:#f8f8e8;border:4px solid #303848;border-radius:4px;padding:6px 8px;font-family:"Press Start 2P",monospace;font-size:11px;align-self:flex-start;min-width:180px}
+.px .hp{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:9px}
+.px .hp b{flex:1;height:8px;background:#303848;padding:2px}
+.px .hp b i{display:block;height:100%;width:70%;background:#58d058}
+.px .field{flex:1;position:relative;margin:0 -12px;background:linear-gradient(#a8e0ff 0 60%,#78c850 60%)}
+.px .field::before{content:"";position:absolute;left:50%;bottom:22px;width:190px;height:34px;margin-left:-95px;background:#58a838;border-radius:50%;box-shadow:inset 0 -6px 0 #407830}
+.px .field svg{position:absolute;left:50%;bottom:34px;transform:translateX(-50%)}
+.px .box{background:#f8f8f8;border:4px solid #303848;border-radius:6px;box-shadow:inset 0 0 0 3px #c8c8d8;padding:10px 12px;font-size:19px;line-height:1.25}
+.px .opts{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin-top:8px}
+.px .opt{background:none;border:none;color:#303848;font-size:19px;padding:2px 0 2px 18px;position:relative}
+.px .opt:hover::before,.px .opt:focus-visible::before,.px .opt.picked::before{content:"▶";position:absolute;left:0;font-size:13px;top:5px}
+.px .opt.picked{color:#207830}
+.px .opt.wrong{color:#c03028}
+.px .fb{font-family:"Press Start 2P",monospace;font-size:11px;line-height:1.6;background:#f8f8f8;border:4px solid #303848;padding:10px 12px;border-radius:4px;white-space:normal;width:230px;text-align:center}
+.px .fb.show{animation:blinkin .45s steps(3) both}
+@keyframes blinkin{0%{opacity:0}50%{opacity:1}75%{opacity:0}100%{opacity:1}}
+
+/* F. Comic book */
+.cm{background-color:#ffde59;background-image:radial-gradient(#f2b705 22%,transparent 24%);background-size:9px 9px;color:#111;font-family:"Comic Neue",sans-serif;font-weight:700;padding:36px 12px 12px;gap:10px}
+.cm .cap{font-family:"Bangers",sans-serif;font-size:17px;letter-spacing:.04em;background:#fff36b;border:3px solid #111;padding:3px 10px;align-self:flex-start;transform:rotate(-1deg)}
+.cm .panel{position:relative;height:240px;border:4px solid #111;background-color:#5ec2e8;background-image:radial-gradient(#3aa6d0 25%,transparent 27%);background-size:8px 8px}
+.cm .panel svg{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%)}
+.cm .bubble{position:absolute;right:10px;top:10px;background:#fff;border:3px solid #111;border-radius:50%;padding:10px 14px;font-family:"Bangers",sans-serif;font-size:18px;letter-spacing:.03em}
+.cm .bubble::after{content:"";position:absolute;left:18px;bottom:-14px;border:8px solid transparent;border-top:12px solid #111;border-left-width:4px}
+.cm .q{font-family:"Bangers",sans-serif;font-size:22px;letter-spacing:.03em;background:#fff;border:3px solid #111;padding:6px 10px}
+.cm .opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.cm .opt{background:#fff;border:3px solid #111;padding:10px 4px;text-align:center;font-weight:700;font-size:15px;color:#111;box-shadow:3px 3px 0 #111}
+.cm .opt.picked{background:#3ec46d}
+.cm .opt.wrong{background:#ff6b5a}
+.cm .fb{font-family:"Bangers",sans-serif;font-size:32px;letter-spacing:.04em;color:#fff;background:#e23d28;padding:34px 40px;clip-path:polygon(50% 0,60% 18%,82% 6%,78% 30%,100% 34%,84% 52%,100% 70%,76% 72%,80% 96%,60% 82%,50% 100%,40% 82%,18% 96%,22% 72%,0 70%,16% 52%,0 34%,22% 30%,18% 6%,40% 18%);text-shadow:2px 2px 0 #111}
+.cm .fb.lose{background:#5e6ad2}
+.cm .fb.show{animation:pow .35s cubic-bezier(.2,1.8,.4,1) both}
+@keyframes pow{from{transform:translate(-50%,-50%) scale(.2) rotate(-20deg)}to{transform:translate(-50%,-50%) scale(1) rotate(-6deg)}}
+
+/* G. Night safari */
+.nt{background-color:#0e1430;background-image:radial-gradient(1.5px 1.5px at 20px 30px,#e9e6ff 50%,transparent 51%),radial-gradient(1px 1px at 90px 70px,#e9e6ff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 150px 20px,#e9e6ff 50%,transparent 51%);background-size:180px 120px;color:#e9e6ff;font-family:"Atkinson Hyperlegible",sans-serif;padding:36px 0 16px}
+.nt .bar{display:flex;justify-content:space-between;padding:0 16px;font-family:"Baloo 2",sans-serif;font-weight:600;font-size:15px;color:#b9b4e0}
+.nt .scene{position:relative;height:290px;margin-top:6px;touch-action:none;cursor:crosshair;--x:50%;--y:52%}
+.nt .scene svg{position:absolute;inset:0;width:100%;height:100%}
+.nt .dark{position:absolute;inset:0;background:radial-gradient(circle at var(--x) var(--y),rgba(255,236,170,.10) 0,rgba(14,20,48,0) 60px,rgba(8,11,28,.94) 105px);pointer-events:none}
+.nt .tip{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:13px;color:#b9b4e0;pointer-events:none}
+.nt .q{padding:6px 18px 0;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:21px;line-height:1.2}
+.nt .q span{display:block;font-family:"Atkinson Hyperlegible",sans-serif;font-weight:400;font-size:14px;color:#b9b4e0}
+.nt .opts{display:flex;gap:8px;padding:12px 18px 0}
+.nt .opt{flex:1;background:transparent;border:2px solid #f2d16b;color:#f2d16b;border-radius:999px;padding:9px 4px;text-align:center;font-weight:700;font-size:15px}
+.nt .opt.picked{background:#f2d16b;color:#1a1530}
+.nt .opt.wrong{border-color:#ff8a8a;color:#ff8a8a}
+.nt .fb{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:24px;background:#f2d16b;color:#1a1530;padding:8px 20px;border-radius:999px}
+.nt .fb.lose{background:#ff8a8a}
+.nt .fb.show{animation:boing .45s cubic-bezier(.3,1.6,.5,1) both}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Creature Collector: seven ways it could look</h1>
+  <p>Every phone shows the same moment, a tarsier encounter, so you're comparing only the style. The creature is drawn a different way each time, along with the fonts, buttons, and the words the game uses.</p>
+  <span class="hint">Tap an answer on each phone to see how it reacts</span>
+  <nav class="jump" aria-label="Art directions">
+    <a href="#a">A · Field journal</a><a href="#b">B · Pinoy folk pop</a><a href="#c">C · Chunky toy</a><a href="#d">D · Paper cut-out</a><a href="#e">E · Pixel adventure</a><a href="#f">F · Comic book</a><a href="#g">G · Night safari</a>
+  </nav>
+</header>
+
+<!-- A -->
+<section class="dir" id="a">
+  <div class="phone j-wrap" data-win="Specimen logged!" data-lose="Escaped! Try again">
+    <div class="notch"></div>
+    <div class="screen j">
+      <div class="bar"><span>Rainforest · pg 4</span><span class="hearts">♥ ♥ ♥</span></div>
+      <div class="photo">
+        <svg class="tars" viewBox="0 0 200 200" width="180" height="180" role="img" aria-label="Watercolor tarsier drawing">
+          <defs>
+            <filter id="jw"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter>
+            <filter id="jx"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="9"/><feDisplacementMap in="SourceGraphic" scale="11"/></filter>
+          </defs>
+          <g filter="url(#jx)" opacity=".82">
+            <path d="M5 186 C60 178 140 184 196 174" stroke="#8a6a3c" stroke-width="13" fill="none"/>
+            <path d="M150 170 C182 150 190 120 180 88" stroke="#c9965f" stroke-width="7" fill="none"/>
+            <ellipse cx="100" cy="150" rx="44" ry="36" fill="#c18c55"/>
+            <ellipse cx="52" cy="50" rx="18" ry="25" fill="#d7a978"/>
+            <ellipse cx="148" cy="50" rx="18" ry="25" fill="#d7a978"/>
+            <circle cx="100" cy="96" r="54" fill="#d9ab78"/>
+            <circle cx="77" cy="94" r="21" fill="#e3b347"/>
+            <circle cx="123" cy="94" r="21" fill="#e3b347"/>
+            <ellipse cx="62" cy="124" rx="8" ry="5" fill="#e59a8a"/>
+            <ellipse cx="138" cy="124" rx="8" ry="5" fill="#e59a8a"/>
+          </g>
+          <g filter="url(#jw)" fill="none" stroke="#33251a" stroke-width="2.6" stroke-linecap="round">
+            <ellipse cx="102" cy="148" rx="43" ry="35"/>
+            <ellipse cx="54" cy="51" rx="17" ry="24"/><path d="M54 36 C48 46 50 60 56 66"/>
+            <ellipse cx="146" cy="51" rx="17" ry="24"/><path d="M146 36 C152 46 150 60 144 66"/>
+            <circle cx="101" cy="95" r="53"/>
+            <circle cx="78" cy="94" r="22"/><circle cx="122" cy="94" r="22"/>
+            <path d="M95 119 q5 4 10 0"/><path d="M90 130 q10 7 20 0"/>
+            <circle cx="72" cy="181" r="8"/><circle cx="130" cy="181" r="8"/>
+            <path d="M8 182 C60 174 140 180 194 170"/>
+            <path d="M150 168 C182 148 190 118 180 86"/>
+          </g>
+          <circle cx="79" cy="96" r="10" fill="#1d140d"/><circle cx="121" cy="96" r="10" fill="#1d140d"/>
+          <circle cx="83" cy="92" r="3.2" fill="#fff"/><circle cx="125" cy="92" r="3.2" fill="#fff"/>
+        </svg>
+        <div class="cap">#012 Philippine tarsier</div>
+      </div>
+      <div class="q">Field question:<strong>What does a tarsier eat?</strong></div>
+      <div class="opts">
+        <button class="opt" data-ok="1">Insects</button>
+        <button class="opt" data-ok="0">Leaves</button>
+        <button class="opt" data-ok="0">Rice</button>
+      </div>
+      <div class="stamp">CATCH</div>
+      <div class="fb" hidden></div>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Direction A</span>
+    <h2>Field journal <span class="rec">Recommended</span></h2>
+    <p class="pitch">The whole app is a young explorer's notebook. Creatures are watercolor sketches taped onto lined pages, and catching one stamps it into the book.</p>
+    <div class="sw">
+      <div><i style="background:#eadcbf"></i>Kraft paper</div>
+      <div><i style="background:#33251a"></i>Ink</div>
+      <div><i style="background:#4e7a4a"></i>Fern</div>
+      <div><i style="background:#c0392b"></i>Stamp red</div>
+      <div><i style="background:#e3b347"></i>Specimen gold</div>
+    </div>
+    <div class="type">
+      <div class="big" style="font-family:'Gaegu',cursive;font-weight:700">Specimen #012 logged</div>
+      <div class="small" style="font-family:'Atkinson Hyperlegible',sans-serif">Gaegu for handwritten labels. Atkinson Hyperlegible for questions, a font designed for readers who struggle.</div>
+    </div>
+    <div class="cols">
+      <div><h3>Why it works</h3><ul><li>Doesn't look like any other kids' app</li><li>Fits the science and explorer theme</li><li>Rough, sketchy art hides beginner drawing skills</li></ul></div>
+      <div><h3>Watch out for</h3><ul><li>Keep handwriting fonts to labels only</li><li>Paper texture must stay faint behind text</li></ul></div>
+    </div>
+    <div class="effort">Art effort <b><span class="on"></span><span class="on"></span><span></span></b> Medium</div>
+  </div>
+</section>
+
+<!-- B -->
+<section class="dir" id="b">
+  <div class="phone" data-win="Huli ka! Caught!" data-lose="Ay, tumakas!">
+    <div class="notch"></div>
+    <div class="screen f">
+      <div class="weave"></div>
+      <div class="sign"><span>GUBAT</span><em>Stage 4 · ♥♥♥</em></div>
+      <div class="sun">
+        <svg class="tars" viewBox="0 0 200 200" width="190" height="190" role="img" aria-label="Flat folk-art tarsier">
+          <rect x="0" y="176" width="200" height="16" rx="8" fill="#1f9e5a"/>
+          <path d="M20 176 l12 -18 l12 18 M150 176 l14 -20 l14 20" fill="#1f9e5a"/>
+          <path d="M148 168 Q190 140 176 92" stroke="#b85a24" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <ellipse cx="100" cy="148" rx="44" ry="36" fill="#b85a24"/>
+          <ellipse cx="100" cy="154" rx="24" ry="22" fill="#f4d3a1"/>
+          <polyline points="80,150 86,144 92,150 98,144 104,150 110,144 116,150 120,146" fill="none" stroke="#d6246e" stroke-width="3"/>
+          <ellipse cx="52" cy="50" rx="18" ry="25" fill="#b85a24"/><ellipse cx="52" cy="54" rx="9" ry="15" fill="#d6246e"/>
+          <ellipse cx="148" cy="50" rx="18" ry="25" fill="#b85a24"/><ellipse cx="148" cy="54" rx="9" ry="15" fill="#d6246e"/>
+          <circle cx="100" cy="96" r="54" fill="#d98a46"/>
+          <circle cx="77" cy="94" r="24" fill="#fff6e0"/><circle cx="123" cy="94" r="24" fill="#fff6e0"/>
+          <circle cx="77" cy="94" r="17" fill="#ffc62b"/><circle cx="123" cy="94" r="17" fill="#ffc62b"/>
+          <circle cx="78" cy="95" r="9" fill="#1a1033"/><circle cx="122" cy="95" r="9" fill="#1a1033"/>
+          <rect x="80" y="88" width="4" height="4" fill="#fff"/><rect x="124" y="88" width="4" height="4" fill="#fff"/>
+          <path d="M95 118 h10 l-5 6z" fill="#1a1033"/>
+          <circle cx="62" cy="126" r="6" fill="#d6246e"/><circle cx="138" cy="126" r="6" fill="#d6246e"/>
+          <circle cx="72" cy="180" r="8" fill="#b85a24"/><circle cx="128" cy="180" r="8" fill="#b85a24"/>
+        </svg>
+      </div>
+      <div class="label">MAMAG · TARSIER</div>
+      <div class="q">What does a tarsier eat?</div>
+      <div class="opts">
+        <button class="opt" data-ok="1">Insects</button>
+        <button class="opt" data-ok="0">Leaves</button>
+        <button class="opt" data-ok="0">Rice</button>
+      </div>
+      <div class="go">HULIHIN!</div>
+      <div class="fb" hidden></div>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Direction B</span>
+    <h2>Pinoy folk pop</h2>
+    <p class="pitch">Jeepney sign lettering, banig weave patterns, and fiesta colors. The copy mixes in Filipino words, so kids learn local animal names too.</p>
+    <div class="sw">
+      <div><i style="background:#ffc62b"></i>Fiesta yellow</div>
+      <div><i style="background:#d6246e"></i>Magenta</div>
+      <div><i style="background:#1b3a8c"></i>Jeepney blue</div>
+      <div><i style="background:#1f9e5a"></i>Leaf</div>
+      <div><i style="background:#1a1033"></i>Ink</div>
+    </div>
+    <div class="type">
+      <div class="big" style="font-family:'Bungee',sans-serif;color:#d6246e">HULI KA!</div>
+      <div class="small" style="font-family:'Lexend',sans-serif">Bungee for signs and big moments. Lexend for questions, a font built for reading fluency.</div>
+    </div>
+    <div class="cols">
+      <div><h3>Why it works</h3><ul><li>Strongest local identity of the three</li><li>Flat shapes are quick to draw</li><li>Teachers can use it for Filipino vocabulary too</li></ul></div>
+      <div><h3>Watch out for</h3><ul><li>Gets loud fast. Keep patterns to headers.</li><li>Mixing English and Filipino needs a language toggle</li></ul></div>
+    </div>
+    <div class="effort">Art effort <b><span class="on"></span><span></span><span></span></b> Low</div>
+  </div>
+</section>
+
+<!-- C -->
+<section class="dir" id="c">
+  <div class="phone" data-win="Gotcha! +50 XP" data-lose="Oops! Try again">
+    <div class="notch"></div>
+    <div class="screen t">
+      <div class="bar"><span class="pillbar">3/8</span><span class="prog"><i></i></span><span class="pillbar" style="color:#e5484d">♥ 3</span></div>
+      <div class="island">
+        <svg class="tars" viewBox="0 0 200 200" width="240" height="220" role="img" aria-label="Glossy toy-style tarsier">
+          <defs>
+            <radialGradient id="th" cx="38%" cy="30%" r="75%"><stop offset="0" stop-color="#f6cfa2"/><stop offset="1" stop-color="#b9783f"/></radialGradient>
+            <radialGradient id="tb" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#e3a46a"/><stop offset="1" stop-color="#9c5f2c"/></radialGradient>
+            <radialGradient id="te" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#e09a12"/></radialGradient>
+            <radialGradient id="tr" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#f7b8a0"/><stop offset="1" stop-color="#d77b62"/></radialGradient>
+          </defs>
+          <path d="M148 160 Q190 136 178 92" stroke="#9c5f2c" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <ellipse cx="100" cy="148" rx="44" ry="36" fill="url(#tb)"/>
+          <ellipse cx="52" cy="52" rx="20" ry="26" fill="url(#th)"/><ellipse cx="52" cy="56" rx="10" ry="15" fill="url(#tr)"/>
+          <ellipse cx="148" cy="52" rx="20" ry="26" fill="url(#th)"/><ellipse cx="148" cy="56" rx="10" ry="15" fill="url(#tr)"/>
+          <circle cx="100" cy="96" r="56" fill="url(#th)"/>
+          <ellipse cx="80" cy="62" rx="18" ry="9" fill="#fff" opacity=".45"/>
+          <circle cx="77" cy="96" r="23" fill="url(#te)"/><circle cx="123" cy="96" r="23" fill="url(#te)"/>
+          <circle cx="78" cy="98" r="13" fill="#2a1a10"/><circle cx="122" cy="98" r="13" fill="#2a1a10"/>
+          <circle cx="83" cy="92" r="5" fill="#fff"/><circle cx="127" cy="92" r="5" fill="#fff"/>
+          <circle cx="74" cy="103" r="2.2" fill="#fff"/><circle cx="118" cy="103" r="2.2" fill="#fff"/>
+          <ellipse cx="100" cy="122" rx="5" ry="3.5" fill="#5a3218"/>
+          <path d="M92 130 q8 6 16 0" stroke="#5a3218" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <ellipse cx="60" cy="124" rx="9" ry="6" fill="#ff8fa3" opacity=".7"/><ellipse cx="140" cy="124" rx="9" ry="6" fill="#ff8fa3" opacity=".7"/>
+          <circle cx="74" cy="178" r="10" fill="url(#th)"/><circle cx="126" cy="178" r="10" fill="url(#th)"/>
+        </svg>
+      </div>
+      <div class="label">Tarsi <small>Rare</small></div>
+      <div class="q">What does a tarsier eat?</div>
+      <div class="opts">
+        <button class="opt" data-ok="1">Insects</button>
+        <button class="opt" data-ok="0">Leaves</button>
+        <button class="opt" data-ok="0">Rice</button>
+      </div>
+      <div class="fb" hidden></div>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Direction C</span>
+    <h2>Chunky toy</h2>
+    <p class="pitch">Creatures look like glossy vinyl toys on floating islands. Every button is thick and squishy and sinks when pressed.</p>
+    <div class="sw">
+      <div><i style="background:#cdeefd"></i>Sky</div>
+      <div><i style="background:#8fd36a"></i>Grass</div>
+      <div><i style="background:#b9783f"></i>Cocoa</div>
+      <div><i style="background:#ff9f1c"></i>Tangerine</div>
+      <div><i style="background:#23354a"></i>Navy ink</div>
+    </div>
+    <div class="type">
+      <div class="big" style="font-family:'Fredoka',sans-serif;font-weight:700;color:#23354a">Gotcha! +50 XP</div>
+      <div class="small" style="font-family:'Fredoka',sans-serif">Fredoka for everything. It's round, friendly, and readable at every size.</div>
+    </div>
+    <div class="cols">
+      <div><h3>Why it works</h3><ul><li>Younger kids love squishy, tappable UI</li><li>Big buttons are easy for small fingers</li></ul></div>
+      <div><h3>Watch out for</h3><ul><li>Closest to existing apps, so it's the least unique</li><li>Glossy 3D-looking art takes the most time to make well</li></ul></div>
+    </div>
+    <div class="effort">Art effort <b><span class="on"></span><span class="on"></span><span class="on"></span></b> High</div>
+  </div>
+</section>
+
+<!-- D -->
+<section class="dir" id="d">
+  <div class="phone" data-win="Caught! Into the album" data-lose="Not quite! Try again">
+    <div class="notch"></div>
+    <div class="screen pp">
+      <div class="ribbon">Rainforest</div>
+      <div class="scene">
+        <div class="hill h1"></div><div class="hill h2"></div>
+        <svg class="tars" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Paper cut-out tarsier">
+          <defs>
+            <filter id="pd"><feDropShadow dx="2" dy="3" stdDeviation="1.2" flood-color="#3b2a14" flood-opacity=".35"/></filter>
+            <filter id="pt"><feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="1" seed="4"/><feDisplacementMap in="SourceGraphic" scale="3"/></filter>
+          </defs>
+          <g filter="url(#pd)"><g filter="url(#pt)">
+            <rect x="0" y="174" width="200" height="16" fill="#7a4b26"/>
+            <path d="M148 166 Q192 140 178 92 L170 94 Q180 136 142 158z" fill="#c27a3e"/>
+            <ellipse cx="100" cy="148" rx="44" ry="36" fill="#c27a3e"/>
+            <ellipse cx="52" cy="50" rx="18" ry="25" fill="#c27a3e"/>
+            <ellipse cx="148" cy="50" rx="18" ry="25" fill="#c27a3e"/>
+            <ellipse cx="52" cy="54" rx="9" ry="15" fill="#e88f7c"/>
+            <ellipse cx="148" cy="54" rx="9" ry="15" fill="#e88f7c"/>
+            <circle cx="100" cy="96" r="54" fill="#e0a35f"/>
+            <circle cx="77" cy="94" r="24" fill="#f6efe2"/><circle cx="123" cy="94" r="24" fill="#f6efe2"/>
+            <circle cx="77" cy="95" r="17" fill="#e8b13a"/><circle cx="123" cy="95" r="17" fill="#e8b13a"/>
+            <circle cx="78" cy="96" r="9" fill="#2b1d10"/><circle cx="122" cy="96" r="9" fill="#2b1d10"/>
+            <path d="M94 117 h12 l-6 7z" fill="#7a4b26"/>
+            <circle cx="72" cy="178" r="9" fill="#e0a35f"/><circle cx="128" cy="178" r="9" fill="#e0a35f"/>
+          </g></g>
+          <circle cx="82" cy="91" r="3" fill="#fff"/><circle cx="126" cy="91" r="3" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="card">
+        <div class="q">What does a tarsier eat?</div>
+        <div class="opts">
+          <button class="opt" data-ok="1">Insects</button>
+          <button class="opt" data-ok="0">Leaves</button>
+          <button class="opt" data-ok="0">Rice</button>
+        </div>
+      </div>
+      <div class="fb" hidden></div>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Direction D</span>
+    <h2>Paper cut-out</h2>
+    <p class="pitch">Everything looks cut from construction paper and layered like a school diorama, with slightly rough edges and soft shadows between layers.</p>
+    <div class="sw">
+      <div><i style="background:#9fd3e6"></i>Sky paper</div>
+      <div><i style="background:#3f8f4a"></i>Leaf green</div>
+      <div><i style="background:#e36f2c"></i>Orange</div>
+      <div><i style="background:#e8b13a"></i>Mustard</div>
+      <div><i style="background:#f6efe2"></i>Cream card</div>
+    </div>
+    <div class="type">
+      <div class="big" style="font-family:'Sniglet',sans-serif;font-weight:800">Caught! Into the album</div>
+      <div class="small" style="font-family:'Atkinson Hyperlegible',sans-serif">Sniglet for titles and questions. Atkinson Hyperlegible for longer text.</div>
+    </div>
+    <div class="cols">
+      <div><h3>Why it works</h3><ul><li>Feels like an arts-and-crafts class</li><li>Fits the coloring feature: kids "cut and paste" colors</li><li>Layers make simple parallax motion easy</li></ul></div>
+      <div><h3>Watch out for</h3><ul><li>Too many layers can look messy on small screens</li><li>Every creature needs to be built from separate pieces</li></ul></div>
+    </div>
+    <div class="effort">Art effort <b><span class="on"></span><span class="on"></span><span></span></b> Medium</div>
+  </div>
+</section>
+
+<!-- E -->
+<section class="dir" id="e">
+  <div class="phone" data-win="Gotcha! TARSIER was caught!" data-lose="Oh no! TARSIER dodged!">
+    <div class="notch"></div>
+    <div class="screen px">
+      <div class="hud">TARSIER <span style="float:right">Lv5</span><div class="hp">HP<b><i></i></b></div></div>
+      <div class="field">
+        <svg class="tars pixtars" viewBox="0 0 20 20" width="160" height="160" shape-rendering="crispEdges" role="img" aria-label="Pixel art tarsier"></svg>
+      </div>
+      <div class="box">
+        A wild TARSIER appeared! What does it eat?
+        <div class="opts">
+          <button class="opt" data-ok="1">INSECTS</button>
+          <button class="opt" data-ok="0">LEAVES</button>
+          <button class="opt" data-ok="0">RICE</button>
+          <button class="opt" data-ok="0">FISH</button>
+        </div>
+      </div>
+      <div class="fb" hidden></div>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Direction E</span>
+    <h2>Pixel adventure</h2>
+    <p class="pitch">A retro handheld game look: pixel creatures, a battle-style encounter, and dialog boxes. Answering a question is like choosing a move.</p>
+    <div class="sw">
+      <div><i style="background:#a8e0ff"></i>Sky</div>
+      <div><i style="background:#78c850"></i>Grass</div>
+      <div><i style="background:#58d058"></i>HP green</div>
+      <div><i style="background:#f8f8f8"></i>Dialog</div>
+      <div><i style="background:#303848"></i>Ink</div>
+    </div>
+    <div class="type">
+      <div class="big" style="font-family:'Pixelify Sans',monospace;font-weight:600">A wild TARSIER appeared!</div>
+      <div class="small" style="font-family:'Press Start 2P',monospace;font-size:11px;line-height:1.6">Press Start 2P for the HUD. Pixelify Sans for questions, so kids can read them.</div>
+    </div>
+    <div class="cols">
+      <div><h3>Why it works</h3><ul><li>Instantly reads as a "real game" to kids</li><li>Pixel art is quick to make and easy to keep consistent</li><li>Tiny file sizes, so it runs well on cheap phones</li></ul></div>
+      <div><h3>Watch out for</h3><ul><li>Can look like a Pokémon copy, so the layout needs its own twist</li><li>Pixel fonts are hard to read for Grade 1–2, so keep questions in a clear font</li></ul></div>
+    </div>
+    <div class="effort">Art effort <b><span class="on"></span><span></span><span></span></b> Low</div>
+  </div>
+</section>
+
+<!-- F -->
+<section class="dir" id="f">
+  <div class="phone" data-win="POW! CAUGHT!" data-lose="ZOOM! IT ESCAPED!">
+    <div class="notch"></div>
+    <div class="screen cm">
+      <div class="cap">Meanwhile, in the rainforest…</div>
+      <div class="panel">
+        <div class="bubble">Who's there?!</div>
+        <svg class="tars" viewBox="0 0 200 200" width="210" height="210" role="img" aria-label="Comic-style tarsier with bold outlines">
+          <defs><pattern id="ht" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.5" fill="#111" opacity=".35"/></pattern></defs>
+          <g stroke="#111" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M148 166 Q192 140 178 92" fill="none"/>
+            <ellipse cx="100" cy="150" rx="44" ry="36" fill="#c8773a"/>
+            <ellipse cx="52" cy="50" rx="18" ry="25" fill="#e6a35b"/>
+            <ellipse cx="148" cy="50" rx="18" ry="25" fill="#e6a35b"/>
+            <circle cx="100" cy="96" r="54" fill="#e6a35b"/>
+            <circle cx="77" cy="94" r="23" fill="#ffd23f"/><circle cx="123" cy="94" r="23" fill="#ffd23f"/>
+          </g>
+          <ellipse cx="100" cy="164" rx="40" ry="18" fill="url(#ht)"/>
+          <path d="M60 120 A54 54 0 0 0 140 120 A60 50 0 0 1 60 120z" fill="url(#ht)"/>
+          <ellipse cx="52" cy="55" rx="8" ry="14" fill="#ff8fa0"/><ellipse cx="148" cy="55" rx="8" ry="14" fill="#ff8fa0"/>
+          <circle cx="78" cy="96" r="11" fill="#111"/><circle cx="122" cy="96" r="11" fill="#111"/>
+          <circle cx="83" cy="90" r="4" fill="#fff"/><circle cx="127" cy="90" r="4" fill="#fff"/>
+          <ellipse cx="100" cy="128" rx="9" ry="7" fill="#111"/>
+          <path d="M40 40 l-14 -8 M36 60 l-16 0 M160 40 l14 -8 M164 60 l16 0" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="q">Quick! What does a tarsier eat?</div>
+      <div class="opts">
+        <button class="opt" data-ok="1">Insects</button>
+        <button class="opt" data-ok="0">Leaves</button>
+        <button class="opt" data-ok="0">Rice</button>
+      </div>
+      <div class="fb" hidden></div>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Direction F</span>
+    <h2>Comic book</h2>
+    <p class="pitch">Every encounter plays out like a comic page: panels, speech bubbles, halftone dots, and big sound-effect words when you catch something.</p>
+    <div class="sw">
+      <div><i style="background:#ffde59"></i>Comic yellow</div>
+      <div><i style="background:#5ec2e8"></i>Panel blue</div>
+      <div><i style="background:#e23d28"></i>POW red</div>
+      <div><i style="background:#3ec46d"></i>Correct green</div>
+      <div><i style="background:#111111"></i>Ink</div>
+    </div>
+    <div class="type">
+      <div class="big" style="font-family:'Bangers',sans-serif;letter-spacing:.04em;color:#e23d28">POW! CAUGHT!</div>
+      <div class="small" style="font-family:'Comic Neue',sans-serif;font-weight:700">Bangers for sound effects and questions. Comic Neue for speech bubbles.</div>
+    </div>
+    <div class="cols">
+      <div><h3>Why it works</h3><ul><li>Creatures can "talk," which helps with storytelling and reading practice</li><li>Very energetic, which older kids (Grades 4–6) like</li></ul></div>
+      <div><h3>Watch out for</h3><ul><li>Lots of text, so audio narration matters more</li><li>Thick outlines and halftone take care to keep tidy</li></ul></div>
+    </div>
+    <div class="effort">Art effort <b><span class="on"></span><span class="on"></span><span></span></b> Medium</div>
+  </div>
+</section>
+
+<!-- G -->
+<section class="dir" id="g">
+  <div class="phone" data-win="Found it! Caught!" data-lose="Shh… it hopped away">
+    <div class="notch"></div>
+    <div class="screen nt">
+      <div class="bar"><span>Night expedition</span><span>♥ ♥ ♥</span></div>
+      <div class="scene" id="night">
+        <svg viewBox="0 0 300 290" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Tarsier on a branch at night, lit by a flashlight">
+          <path d="M-10 222 C80 210 200 220 310 205" stroke="#5a3b22" stroke-width="12" fill="none"/>
+          <path d="M0 0 C40 30 20 70 60 90 C30 100 10 80 0 60z M300 10 C260 40 280 80 240 100 C270 110 295 90 300 70z M10 260 C40 230 80 250 70 290 L0 290z M300 250 C260 240 230 270 240 290 L300 290z" fill="#1f5e3a"/>
+          <g class="tars" transform="translate(60 55) scale(.9)">
+            <path d="M148 166 Q192 140 178 92" stroke="#a8703f" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <ellipse cx="100" cy="150" rx="44" ry="36" fill="#a8703f"/>
+            <ellipse cx="52" cy="50" rx="18" ry="25" fill="#c99160"/><ellipse cx="52" cy="54" rx="9" ry="15" fill="#d98b7a"/>
+            <ellipse cx="148" cy="50" rx="18" ry="25" fill="#c99160"/><ellipse cx="148" cy="54" rx="9" ry="15" fill="#d98b7a"/>
+            <circle cx="100" cy="96" r="54" fill="#c99160"/>
+            <circle cx="77" cy="94" r="24" fill="#e8c25a"/><circle cx="123" cy="94" r="24" fill="#e8c25a"/>
+            <circle cx="77" cy="95" r="15" fill="#120d08"/><circle cx="123" cy="95" r="15" fill="#120d08"/>
+            <circle cx="83" cy="89" r="4" fill="#fff"/><circle cx="129" cy="89" r="4" fill="#fff"/>
+            <path d="M95 120 q5 4 10 0" stroke="#5a3b22" stroke-width="3" fill="none"/>
+            <circle cx="72" cy="182" r="8" fill="#c99160"/><circle cx="128" cy="182" r="8" fill="#c99160"/>
+          </g>
+        </svg>
+        <div class="dark"></div>
+        <div class="tip">Drag to move the flashlight</div>
+      </div>
+      <div class="q">You found a tarsier! What does it hunt at night?<span>Tarsiers are nocturnal. They sleep all day and hunt after dark.</span></div>
+      <div class="opts">
+        <button class="opt" data-ok="1">Insects</button>
+        <button class="opt" data-ok="0">Leaves</button>
+        <button class="opt" data-ok="0">Rice</button>
+      </div>
+      <div class="fb" hidden></div>
+    </div>
+  </div>
+  <div class="spec">
+    <span class="tag">Direction G</span>
+    <h2>Night safari</h2>
+    <p class="pitch">Kids explore habitats in the dark with a flashlight and have to search for each creature before the question appears. Night levels can teach which animals are nocturnal.</p>
+    <div class="sw">
+      <div><i style="background:#0e1430"></i>Night sky</div>
+      <div><i style="background:#1f5e3a"></i>Jungle</div>
+      <div><i style="background:#f2d16b"></i>Flashlight</div>
+      <div><i style="background:#b9b4e0"></i>Moon text</div>
+      <div><i style="background:#c99160"></i>Fur</div>
+    </div>
+    <div class="type">
+      <div class="big" style="font-family:'Baloo 2',sans-serif;font-weight:800">Found it! Caught!</div>
+      <div class="small" style="font-family:'Atkinson Hyperlegible',sans-serif">Baloo 2 for titles and questions. Atkinson Hyperlegible for facts.</div>
+    </div>
+    <div class="cols">
+      <div><h3>Why it works</h3><ul><li>Adds a search mini-game before every question</li><li>The lighting does most of the work, so simpler art still looks great</li><li>Can be a special mode alongside a daytime style</li></ul></div>
+      <div><h3>Watch out for</h3><ul><li>Dark screens are hard to see in bright sunlight</li><li>Better as one mode than as the whole app</li></ul></div>
+    </div>
+    <div class="effort">Art effort <b><span class="on"></span><span class="on"></span><span></span></b> Medium</div>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+  var rows = [
+    "...kk..........kk...",
+    "..kbbk........kbbk..",
+    "..kbrbk.kkkk.kbrbk..",
+    "..kbrbkkllllkkbrbk..",
+    "...kbkllllllllkbk...",
+    "...kllllllllllllk...",
+    "..kllkkkkllkkkkllk..",
+    "..klkyyyykkyyyyklk..",
+    "..klkyppykkyppyklk..",
+    "..klkywpykkywpyklk..",
+    "..klkyyyykkyyyyklk..",
+    "..kllkkkkllkkkkllk..",
+    "..krlllllkklllllrk..",
+    "...kllllkllkllllk...",
+    "....kkkkbbbbkkkk....",
+    "...kbbbbllllbbbbkkb.",
+    "...kbbbbllllbbbbk.b.",
+    "dddklkddddddddklkddd",
+    "dddddddddddddddddddd"
+  ];
+  var pal = {k:"#2b1a10",b:"#b8763e",l:"#e0a96d",r:"#e88a8a",y:"#f2c230",p:"#1a1a1a",w:"#ffffff",d:"#6b4423"};
+  var out = "";
+  rows.forEach(function(row,y){
+    for(var x=0;x<row.length;x++){
+      var c = pal[row[x]];
+      if(c) out += '<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="'+c+'"/>';
+    }
+  });
+  document.querySelectorAll('.pixtars').forEach(function(s){ s.innerHTML = out; });
+
+  var night = document.getElementById('night');
+  if(night){
+    var move = function(e){
+      var r = night.getBoundingClientRect();
+      night.style.setProperty('--x', ((e.clientX - r.left) / r.width * 100) + '%');
+      night.style.setProperty('--y', ((e.clientY - r.top) / r.height * 100) + '%');
+    };
+    night.addEventListener('pointerdown', function(e){ move(e); });
+    night.addEventListener('pointermove', function(e){ if(e.pointerType === 'mouse' || e.buttons) move(e); });
+  }
+})();
+document.querySelectorAll('.phone').forEach(function(ph){
+  var fb = ph.querySelector('.fb');
+  var opts = ph.querySelectorAll('.opt');
+  var t;
+  opts.forEach(function(o){
+    o.addEventListener('click', function(){
+      opts.forEach(function(x){ x.classList.remove('picked','wrong','shake'); });
+      var ok = o.dataset.ok === '1';
+      o.classList.add(ok ? 'picked' : 'wrong');
+      if(!ok){ void o.offsetWidth; o.classList.add('shake'); }
+      fb.textContent = ok ? ph.dataset.win : ph.dataset.lose;
+      fb.className = 'fb ' + (ok ? 'win' : 'lose');
+      fb.hidden = false;
+      void fb.offsetWidth;
+      fb.classList.add('show');
+      clearTimeout(t);
+      t = setTimeout(function(){ fb.hidden = true; }, 1800);
+    });
+  });
+});
+</script>

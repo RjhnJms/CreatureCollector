@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creature Art Samples</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #f4ecdc; --card: #fffaf0; --ink: #3b2a14; --muted: #7a6a52; --line: #e2d4b8; --accent: #f08a3c; --tile: #F6EAD0; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #12143a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; }
+}
+:root[data-theme="dark"] { --bg: #12143a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Atkinson Hyperlegible", system-ui, sans-serif; line-height: 1.5; }
+main { max-width: 1000px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 34px; margin: 0 0 6px; line-height: 1.1; }
+.lede { color: var(--muted); margin: 0 0 24px; max-width: 70ch; }
+.dirs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 28px; }
+.dir { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; }
+.dir b { font-family: Sniglet; font-weight: 800; font-size: 19px; display: block; }
+.dir p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.animal { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin-bottom: 18px; }
+.animal h2 { font-family: Sniglet; font-weight: 800; font-size: 22px; margin: 0; }
+.animal .note { color: var(--muted); font-size: 14px; margin: 2px 0 12px; }
+.row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.cell { text-align: center; }
+.tile { background: var(--tile); border-radius: 12px; aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; }
+.tile svg, .tile img { width: 88%; height: 88%; }
+.tile img { image-rendering: auto; }
+.cap { font-family: Sniglet; font-weight: 800; font-size: 14px; margin-top: 6px; }
+.cap.now { color: var(--muted); }
+@media (max-width: 520px) { .row { gap: 6px; } .cap { font-size: 12px; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Each piece of paper casts a soft shadow and has a faint grain -->
+    <filter id="paper" x="-15%" y="-15%" width="135%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .5 0 0 0 -.18" result="speck"/>
+      <feComposite in="speck" in2="SourceGraphic" operator="in" result="grain"/>
+      <feDropShadow in="SourceGraphic" dx="1.6" dy="2.6" stdDeviation="1.3" flood-color="#2a1a08" flood-opacity=".3" result="lifted"/>
+      <feMerge><feMergeNode in="lifted"/><feMergeNode in="grain"/></feMerge>
+    </filter>
+    <linearGradient id="mantle" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2FB8A8"/><stop offset=".5" stop-color="#3C8FD6"/><stop offset="1" stop-color="#6E5BD0"/>
+    </linearGradient>
+    <linearGradient id="dugongBelly" x1="0" y1="0" x2="0" y2="1">
+      <stop offset=".45" stop-color="#9C9498" stop-opacity="0"/><stop offset="1" stop-color="#D9D1D4"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<main>
+  <h1>Creature art samples</h1>
+  <p class="lede">Four creatures whose current art is weakest, redrawn two ways. Both directions keep the cut-paper look, with layered paper shadows and a light grain, and fix the science mistakes. Pick a direction and I'll redraw all 12 creatures (and the partners) in it.</p>
+
+  <div class="dirs">
+    <div class="dir"><b>A · Cute paper-craft</b><p>Big heads, shiny eyes and rosy cheeks, like Tarsi. Every creature looks like a friend, so the set feels consistent and kid-friendly.</p></div>
+    <div class="dir"><b>B · Field-guide paper-craft</b><p>Truer body shapes and markings, like a nature-book illustration, still made of cut paper. Better for spotting real animals later.</p></div>
+  </div>
+
+  <section class="animal">
+    <h2>Philippine flying lemur (colugo)</h2>
+    <p class="note">Now it reads as a grey blob. Both versions show the gliding skin stretched between its legs, its big night eyes, and the mottled, lichen-like coat.</p>
+    <div class="row">
+      <div class="cell"><div class="tile"><img src="img/current_colugo.png" alt="Current flying lemur art"></div><div class="cap now">Now</div></div>
+      <div class="cell"><div class="tile">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Cute paper-craft flying lemur">
+          <g filter="url(#paper)">
+            <path d="M100 78 C70 70 30 72 14 98 L22 104 L18 116 L30 120 L28 134 L44 136 L46 150 L62 150 L68 162 L84 158 L100 170 L116 158 L132 162 L138 150 L154 150 L156 136 L172 134 L170 120 L182 116 L178 104 L186 98 C170 72 130 70 100 78Z" fill="#8A7F6C" stroke="#5E5546" stroke-width="1.5" stroke-linejoin="round"/>
+          </g>
+          <g fill="#D3C9AE" opacity=".85">
+            <circle cx="36" cy="104" r="3"/><circle cx="50" cy="118" r="2.4"/><circle cx="40" cy="126" r="2"/><circle cx="60" cy="134" r="3"/><circle cx="64" cy="108" r="2"/><circle cx="74" cy="148" r="2.4"/>
+            <circle cx="164" cy="104" r="3"/><circle cx="150" cy="118" r="2.4"/><circle cx="160" cy="126" r="2"/><circle cx="140" cy="134" r="3"/><circle cx="136" cy="108" r="2"/><circle cx="126" cy="148" r="2.4"/>
+          </g>
+          <g stroke="#3E372C" stroke-width="2" stroke-linecap="round" fill="none"><path d="M14 98 l-5 -4 M14 98 l-6 2"/><path d="M186 98 l5 -4 M186 98 l6 2"/></g>
+          <g filter="url(#paper)">
+            <ellipse cx="100" cy="120" rx="30" ry="36" fill="#9C917C" stroke="#5E5546" stroke-width="1.5"/>
+          </g>
+          <ellipse cx="100" cy="128" rx="18" ry="22" fill="#CFC3A6"/>
+          <g filter="url(#paper)">
+            <circle cx="74" cy="52" r="9" fill="#8A7F6C" stroke="#5E5546" stroke-width="1.5"/>
+            <circle cx="126" cy="52" r="9" fill="#8A7F6C" stroke="#5E5546" stroke-width="1.5"/>
+            <ellipse cx="100" cy="76" rx="36" ry="32" fill="#A39882" stroke="#5E5546" stroke-width="1.5"/>
+          </g>
+          <ellipse cx="100" cy="88" rx="22" ry="15" fill="#C9BEA4"/>
+          <ellipse cx="86" cy="73" rx="11" ry="12" fill="#1A120A"/><ellipse cx="114" cy="73" rx="11" ry="12" fill="#1A120A"/>
+          <circle cx="82" cy="68" r="4" fill="#fff"/><circle cx="110" cy="68" r="4" fill="#fff"/>
+          <circle cx="90" cy="78" r="1.8" fill="#fff"/><circle cx="118" cy="78" r="1.8" fill="#fff"/>
+          <path d="M96 86 Q100 83 104 86 Q102 90 100 90 Q98 90 96 86Z" fill="#3B2A1A"/>
+          <path d="M95 94 Q100 98 105 94" stroke="#3B2A1A" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <circle cx="72" cy="88" r="5" fill="#F2A7B5" opacity=".55"/><circle cx="128" cy="88" r="5" fill="#F2A7B5" opacity=".55"/>
+        </svg>
+      </div><div class="cap">A · Cute</div></div>
+      <div class="cell"><div class="tile">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Field-guide paper-craft flying lemur gliding">
+          <g filter="url(#paper)">
+            <path d="M100 40 C140 44 176 60 190 92 C178 120 170 150 150 176 C128 168 112 172 100 188 C88 172 72 168 50 176 C30 150 22 120 10 92 C24 60 60 44 100 40Z" fill="#7B7563" stroke="#4E4A3E" stroke-width="1.5"/>
+          </g>
+          <g opacity=".9">
+            <ellipse cx="46" cy="88" rx="12" ry="6" fill="#958E78" transform="rotate(-20 46 88)"/><ellipse cx="62" cy="128" rx="10" ry="5" fill="#5E594B" transform="rotate(30 62 128)"/>
+            <ellipse cx="38" cy="120" rx="8" ry="4" fill="#8C9A6E" transform="rotate(10 38 120)"/><ellipse cx="74" cy="76" rx="9" ry="4" fill="#5E594B" transform="rotate(-10 74 76)"/>
+            <ellipse cx="154" cy="88" rx="12" ry="6" fill="#958E78" transform="rotate(20 154 88)"/><ellipse cx="138" cy="128" rx="10" ry="5" fill="#5E594B" transform="rotate(-30 138 128)"/>
+            <ellipse cx="162" cy="120" rx="8" ry="4" fill="#8C9A6E" transform="rotate(-10 162 120)"/><ellipse cx="126" cy="76" rx="9" ry="4" fill="#5E594B" transform="rotate(10 126 76)"/>
+            <ellipse cx="70" cy="160" rx="9" ry="4" fill="#958E78"/><ellipse cx="130" cy="160" rx="9" ry="4" fill="#958E78"/>
+          </g>
+          <g fill="#E4DCC6"><circle cx="30" cy="100" r="1.6"/><circle cx="56" cy="104" r="1.4"/><circle cx="84" cy="150" r="1.6"/><circle cx="170" cy="100" r="1.6"/><circle cx="144" cy="104" r="1.4"/><circle cx="116" cy="150" r="1.6"/><circle cx="48" cy="146" r="1.4"/><circle cx="152" cy="146" r="1.4"/></g>
+          <g stroke="#55503F" stroke-width="5" stroke-linecap="round" fill="none" opacity=".75">
+            <path d="M92 86 L16 92"/><path d="M108 86 L184 92"/><path d="M94 140 L54 172"/><path d="M106 140 L146 172"/>
+          </g>
+          <g stroke="#2E2A22" stroke-width="1.6" stroke-linecap="round" fill="none"><path d="M12 92 l-6 -3 M12 92 l-6 3"/><path d="M188 92 l6 -3 M188 92 l6 3"/></g>
+          <g filter="url(#paper)">
+            <ellipse cx="100" cy="112" rx="18" ry="46" fill="#6B6555" stroke="#4E4A3E" stroke-width="1.2"/>
+            <ellipse cx="100" cy="58" rx="17" ry="15" fill="#7E7765" stroke="#4E4A3E" stroke-width="1.2"/>
+          </g>
+          <circle cx="88" cy="46" r="4" fill="#5E594B"/><circle cx="112" cy="46" r="4" fill="#5E594B"/>
+          <circle cx="93" cy="56" r="5.5" fill="#120D08"/><circle cx="107" cy="56" r="5.5" fill="#120D08"/>
+          <circle cx="91.5" cy="54.5" r="1.6" fill="#fff"/><circle cx="105.5" cy="54.5" r="1.6" fill="#fff"/>
+          <ellipse cx="100" cy="66" rx="5" ry="3.5" fill="#4A4538"/>
+        </svg>
+      </div><div class="cap">B · Field guide</div></div>
+    </div>
+  </section>
+
+  <section class="animal">
+    <h2>Asian palm civet</h2>
+    <p class="note">Science fix: Asian palm civets have a plain dark tail, not a ringed one. Both versions keep the dark face mask with white spots and the rows of dark spots on the body.</p>
+    <div class="row">
+      <div class="cell"><div class="tile"><img src="img/current_civet.png" alt="Current civet art"></div><div class="cap now">Now</div></div>
+      <div class="cell"><div class="tile">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Cute paper-craft palm civet sitting">
+          <g filter="url(#paper)"><path d="M128 156 C176 158 186 106 156 92 C146 88 140 98 150 104 C164 112 160 140 128 140Z" fill="#3A332C" stroke="#231E19" stroke-width="1.2"/></g>
+          <g filter="url(#paper)"><ellipse cx="100" cy="140" rx="38" ry="34" fill="#8B7A63" stroke="#5A4A38" stroke-width="1.5"/></g>
+          <ellipse cx="100" cy="150" rx="20" ry="20" fill="#B7A588"/>
+          <g fill="#4A3F33"><ellipse cx="72" cy="128" rx="4" ry="3"/><ellipse cx="78" cy="142" rx="4" ry="3"/><ellipse cx="128" cy="128" rx="4" ry="3"/><ellipse cx="122" cy="142" rx="4" ry="3"/><ellipse cx="70" cy="156" rx="3.5" ry="2.5"/><ellipse cx="130" cy="156" rx="3.5" ry="2.5"/></g>
+          <g filter="url(#paper)"><ellipse cx="82" cy="172" rx="11" ry="7" fill="#3A332C"/><ellipse cx="118" cy="172" rx="11" ry="7" fill="#3A332C"/></g>
+          <g filter="url(#paper)">
+            <path d="M66 64 L70 26 L94 52Z" fill="#8B7A63" stroke="#5A4A38" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M134 64 L130 26 L106 52Z" fill="#8B7A63" stroke="#5A4A38" stroke-width="1.5" stroke-linejoin="round"/>
+            <ellipse cx="100" cy="80" rx="40" ry="34" fill="#A08D72" stroke="#5A4A38" stroke-width="1.5"/>
+          </g>
+          <path d="M72 58 L73 38 L86 54Z" fill="#5A4A38"/><path d="M128 58 L127 38 L114 54Z" fill="#5A4A38"/>
+          <path d="M62 76 Q100 58 138 76 Q140 94 120 92 Q100 86 80 92 Q60 94 62 76Z" fill="#3A332C"/>
+          <ellipse cx="82" cy="62" rx="6" ry="3.5" fill="#EEE6D4"/><ellipse cx="118" cy="62" rx="6" ry="3.5" fill="#EEE6D4"/>
+          <ellipse cx="80" cy="97" rx="7" ry="4" fill="#EEE6D4"/><ellipse cx="120" cy="97" rx="7" ry="4" fill="#EEE6D4"/>
+          <circle cx="84" cy="78" r="9" fill="#E8B83A"/><circle cx="116" cy="78" r="9" fill="#E8B83A"/>
+          <circle cx="84" cy="79" r="5.5" fill="#120D08"/><circle cx="116" cy="79" r="5.5" fill="#120D08"/>
+          <circle cx="81.5" cy="75.5" r="2.4" fill="#fff"/><circle cx="113.5" cy="75.5" r="2.4" fill="#fff"/>
+          <ellipse cx="100" cy="102" rx="12" ry="8" fill="#C2B092"/>
+          <ellipse cx="100" cy="98" rx="4.5" ry="3.2" fill="#2A201A"/>
+          <path d="M95 106 Q100 110 105 106" stroke="#2A201A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <circle cx="70" cy="104" r="5" fill="#F2A7B5" opacity=".5"/><circle cx="130" cy="104" r="5" fill="#F2A7B5" opacity=".5"/>
+        </svg>
+      </div><div class="cap">A · Cute</div></div>
+      <div class="cell"><div class="tile">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Field-guide paper-craft palm civet walking">
+          <g filter="url(#paper)"><path d="M156 104 C186 98 198 132 186 166" stroke="#3E352B" stroke-width="10" fill="none" stroke-linecap="round"/></g>
+          <g filter="url(#paper)">
+            <rect x="58" y="120" width="11" height="46" rx="5" fill="#3E352B"/><rect x="138" y="120" width="11" height="46" rx="5" fill="#3E352B"/>
+          </g>
+          <g filter="url(#paper)">
+            <path d="M44 108 C44 88 74 82 112 84 C142 86 160 94 162 108 C162 126 140 132 104 132 C72 132 46 128 44 108Z" fill="#8A7A64" stroke="#5A4A38" stroke-width="1.4"/>
+          </g>
+          <g stroke="#3E352B" stroke-width="3.2" stroke-linecap="round">
+            <path d="M68 96 l6 0 M84 94 l6 0 M100 93 l6 0 M116 93 l6 0 M132 95 l6 0"/>
+            <path d="M64 108 l5 0 M80 107 l5 0 M96 106 l5 0 M112 106 l5 0 M128 107 l5 0 M144 108 l5 0"/>
+            <path d="M74 120 l5 0 M92 120 l5 0 M110 120 l5 0 M128 120 l5 0"/>
+          </g>
+          <g filter="url(#paper)">
+            <rect x="74" y="122" width="11" height="44" rx="5" fill="#2F2821"/><rect x="122" y="122" width="11" height="44" rx="5" fill="#2F2821"/>
+          </g>
+          <g filter="url(#paper)">
+            <path d="M40 92 L46 70 L56 90Z" fill="#3E352B"/>
+            <path d="M58 100 C52 84 24 86 10 102 C12 110 24 116 52 118Z" fill="#8A7A64" stroke="#5A4A38" stroke-width="1.4"/>
+          </g>
+          <path d="M14 101 C22 92 40 92 50 100 C42 106 24 106 14 101Z" fill="#3E352B"/>
+          <ellipse cx="32" cy="110" rx="6" ry="2.6" fill="#EEE6D4"/><ellipse cx="38" cy="92" rx="5" ry="2.2" fill="#EEE6D4"/>
+          <circle cx="32" cy="100" r="3" fill="#E8B83A"/><circle cx="32.4" cy="100" r="1.7" fill="#120D08"/>
+          <circle cx="11" cy="104" r="3" fill="#1A1A1A"/>
+          <g stroke="#3E352B" stroke-width="1" opacity=".6"><path d="M16 108 l-8 4 M16 109 l-7 7"/></g>
+        </svg>
+      </div><div class="cap">B · Field guide</div></div>
+    </div>
+  </section>
+
+  <section class="animal">
+    <h2>Dugong</h2>
+    <p class="note">Science fix: dugongs have a flat, whale-like fluke, not a tall fish tail. Both versions add the downturned bristly snout it uses to graze seagrass, and seagrass to show what it eats.</p>
+    <div class="row">
+      <div class="cell"><div class="tile"><img src="img/current_dugong.png" alt="Current dugong art"></div><div class="cap now">Now</div></div>
+      <div class="cell"><div class="tile">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Cute paper-craft dugong munching seagrass">
+          <g filter="url(#paper)"><path d="M158 104 C170 100 182 96 196 90 C192 100 192 108 198 120 C184 118 172 116 158 118Z" fill="#A9A0A6" stroke="#6E6670" stroke-width="1.5" stroke-linejoin="round"/></g>
+          <g filter="url(#paper)"><path d="M40 112 C40 80 80 68 120 74 C150 78 166 94 166 112 C166 134 140 148 100 148 C64 148 40 138 40 112Z" fill="#A9A0A6" stroke="#6E6670" stroke-width="1.5"/></g>
+          <path d="M48 126 C70 142 130 146 160 124 C150 142 126 148 100 148 C76 148 56 140 48 126Z" fill="#CFC8CC"/>
+          <g filter="url(#paper)"><ellipse cx="96" cy="134" rx="15" ry="7" fill="#8E8590" transform="rotate(28 96 134)"/></g>
+          <g filter="url(#paper)">
+            <ellipse cx="50" cy="106" rx="26" ry="24" fill="#B9B0B6" stroke="#6E6670" stroke-width="1.5"/>
+            <ellipse cx="40" cy="120" rx="17" ry="12" fill="#CDC2C6" stroke="#8E8590" stroke-width="1"/>
+          </g>
+          <g fill="#7C737C"><circle cx="32" cy="118" r="1.2"/><circle cx="37" cy="122" r="1.2"/><circle cx="43" cy="118" r="1.2"/><circle cx="47" cy="124" r="1.2"/><circle cx="34" cy="126" r="1.2"/></g>
+          <ellipse cx="62" cy="92" rx="5" ry="5.5" fill="#1A1414"/><circle cx="60.4" cy="90.4" r="1.8" fill="#fff"/>
+          <circle cx="66" cy="106" r="5" fill="#F2A7B5" opacity=".5"/>
+          <g stroke-linecap="round" fill="none"><path d="M30 128 Q18 146 26 170" stroke="#4F9A66" stroke-width="5"/><path d="M38 130 Q42 150 32 174" stroke="#5BB174" stroke-width="4.5"/></g>
+        </svg>
+      </div><div class="cap">A · Cute</div></div>
+      <div class="cell"><div class="tile">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Field-guide paper-craft dugong grazing over seagrass">
+          <g stroke-linecap="round" fill="none">
+            <path d="M20 198 Q16 176 24 160" stroke="#3A9563" stroke-width="4"/><path d="M34 198 Q40 178 32 156" stroke="#4F9A66" stroke-width="4"/>
+            <path d="M48 198 Q44 182 52 168" stroke="#3A9563" stroke-width="4"/><path d="M150 198 Q146 180 156 166" stroke="#4F9A66" stroke-width="4"/>
+            <path d="M166 198 Q172 182 164 170" stroke="#3A9563" stroke-width="4"/><path d="M182 198 Q178 184 186 172" stroke="#4F9A66" stroke-width="4"/>
+            <path d="M100 198 Q96 184 104 174" stroke="#5BB174" stroke-width="4"/><path d="M116 198 Q120 186 112 176" stroke="#3A9563" stroke-width="4"/>
+          </g>
+          <g filter="url(#paper)">
+            <path d="M34 112 C34 90 72 80 120 84 C150 86 168 94 176 102 L197 93 C193 101 193 108 198 118 L176 112 C160 124 120 130 80 130 C52 130 34 128 34 112Z" fill="#9C9498" stroke="#6A6267" stroke-width="1.4" stroke-linejoin="round"/>
+          </g>
+          <path d="M34 112 C34 90 72 80 120 84 C150 86 168 94 176 102 L176 112 C160 124 120 130 80 130 C52 130 34 128 34 112Z" fill="url(#dugongBelly)"/>
+          <g stroke="#B9B1B5" stroke-width="1.2" opacity=".7" fill="none"><path d="M96 94 l14 -2"/><path d="M128 98 l10 2"/></g>
+          <g filter="url(#paper)">
+            <path d="M40 102 C26 100 16 112 18 128 C26 136 40 132 46 122Z" fill="#8C8488" stroke="#6A6267" stroke-width="1.2"/>
+            <path d="M80 122 C76 140 86 152 98 148 C96 136 92 128 86 120Z" fill="#857D82" stroke="#6A6267" stroke-width="1.2"/>
+          </g>
+          <g fill="#5E575B"><circle cx="22" cy="126" r="1.1"/><circle cx="27" cy="129" r="1.1"/><circle cx="32" cy="127" r="1.1"/><circle cx="25" cy="122" r="1.1"/></g>
+          <circle cx="48" cy="100" r="2.6" fill="#1A1414"/><circle cx="47.3" cy="99.3" r=".8" fill="#fff"/>
+        </svg>
+      </div><div class="cap">B · Field guide</div></div>
+    </div>
+  </section>
+
+  <section class="animal">
+    <h2>Giant clam</h2>
+    <p class="note">Now it's flat and dull. Both versions show its wavy shell lips and the bright, patterned mantle that holds the algae it farms in sunlight.</p>
+    <div class="row">
+      <div class="cell"><div class="tile"><img src="img/current_clam.png" alt="Current giant clam art"></div><div class="cap now">Now</div></div>
+      <div class="cell"><div class="tile">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Cute paper-craft giant clam">
+          <g filter="url(#paper)">
+            <path d="M28 112 L40 84 L54 102 L70 78 L86 98 L100 74 L114 98 L130 78 L146 102 L160 84 L172 112 C150 100 50 100 28 112Z" fill="#F1E8D4" stroke="#B8AA8A" stroke-width="1.5" stroke-linejoin="round"/>
+          </g>
+          <g filter="url(#paper)">
+            <path d="M32 116 C56 92 144 92 168 116 C152 126 130 124 100 126 C70 124 48 126 32 116Z" fill="url(#mantle)" stroke="#2C5F8A" stroke-width="1.2"/>
+          </g>
+          <g fill="#A8F0E6"><circle cx="56" cy="110" r="2.4"/><circle cx="76" cy="104" r="2"/><circle cx="124" cy="104" r="2"/><circle cx="144" cy="110" r="2.4"/><circle cx="100" cy="102" r="2.2"/></g>
+          <g fill="#F2D16B"><circle cx="66" cy="114" r="1.8"/><circle cx="90" cy="110" r="1.6"/><circle cx="110" cy="110" r="1.6"/><circle cx="134" cy="114" r="1.8"/></g>
+          <g filter="url(#paper)">
+            <path d="M30 120 L42 106 L56 122 L72 104 L88 122 L100 102 L112 122 L128 104 L144 122 L158 106 L170 120 C170 152 140 172 100 172 C60 172 30 152 30 120Z" fill="#E9DFC8" stroke="#B8AA8A" stroke-width="1.5" stroke-linejoin="round"/>
+          </g>
+          <g stroke="#CDBF9E" stroke-width="2" fill="none" stroke-linecap="round">
+            <path d="M42 108 Q60 150 96 170"/><path d="M72 106 Q80 146 98 170"/><path d="M128 106 Q120 146 102 170"/><path d="M158 108 Q140 150 104 170"/>
+          </g>
+          <circle cx="84" cy="140" r="6" fill="#1A120A"/><circle cx="116" cy="140" r="6" fill="#1A120A"/>
+          <circle cx="82" cy="138" r="2.2" fill="#fff"/><circle cx="114" cy="138" r="2.2" fill="#fff"/>
+          <path d="M94 150 Q100 155 106 150" stroke="#1A120A" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <circle cx="72" cy="150" r="5" fill="#F2A7B5" opacity=".55"/><circle cx="128" cy="150" r="5" fill="#F2A7B5" opacity=".55"/>
+        </svg>
+      </div><div class="cap">A · Cute</div></div>
+      <div class="cell"><div class="tile">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Field-guide paper-craft giant clam seen from above">
+          <g filter="url(#paper)"><path id="clamShell" d="" fill="#E9DFC8" stroke="#B8AA8A" stroke-width="1.5" stroke-linejoin="round"/></g>
+          <g filter="url(#paper)"><path id="clamMantle" d="" fill="url(#mantle)" stroke="#24507A" stroke-width="1.2" stroke-linejoin="round"/></g>
+          <g id="clamPattern" fill="none" stroke-linecap="round"></g>
+          <ellipse cx="128" cy="100" rx="9" ry="6" fill="#1D3B5C" stroke="#A8F0E6" stroke-width="2"/>
+        </svg>
+      </div><div class="cap">B · Field guide</div></div>
+    </div>
+  </section>
+</main>
+
+<script>
+// Field-guide giant clam: zigzag shell lips around an oval, seen from above.
+(function () {
+  const cx = 100, cy = 100, n = 26;
+  function zig(rx, ry, amp) {
+    let d = '';
+    for (let i = 0; i <= n * 2; i++) {
+      const a = (i / (n * 2)) * Math.PI * 2;
+      const k = i % 2 ? 1 : 1 - amp;
+      d += (i ? 'L' : 'M') + (cx + Math.cos(a) * rx * k).toFixed(1) + ' ' + (cy + Math.sin(a) * ry * k).toFixed(1) + ' ';
+    }
+    return d + 'Z';
+  }
+  document.getElementById('clamShell').setAttribute('d', zig(88, 58, 0.1));
+  document.getElementById('clamMantle').setAttribute('d', zig(74, 42, 0.12));
+  const g = document.getElementById('clamPattern');
+  const colors = ['#A8F0E6', '#F2D16B', '#7CE0A0', '#C9B8FF'];
+  let s = '';
+  for (let i = 0; i < 9; i++) {
+    const x = 42 + i * 13, y = 82 + (i % 3) * 12;
+    s += `<path d="M${x} ${y} q5 -6 10 0 t10 0" stroke="${colors[i % 4]}" stroke-width="2.2"/>`;
+  }
+  for (let i = 0; i < 14; i++) {
+    const a = i * 0.45, x = 100 + Math.cos(a) * 52, y = 100 + Math.sin(a) * 26;
+    s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2" fill="${colors[i % 4]}" stroke="none"/>`;
+  }
+  g.innerHTML = s;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4ecdc; --card: #fffaf0; --ink: #3b2a14; --muted: #7a6a52; --line: #e2d4b8; --accent: #f08a3c;
+  --sky: #1B1E4B; --deep: #12143A; --track: #2C3170; --cream: #F6EAD0; --a-ink: #3B2A14; --a-muted: #CBC4E8; --a-text: #FFF4DC;
+  --orange: #F08A3C; --gold: #F2B23C; --red: #E5574A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; }
+}
+:root[data-theme="dark"] { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Atkinson Hyperlegible", system-ui, sans-serif; line-height: 1.5; }
+main { max-width: 1100px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 34px; margin: 0 0 6px; line-height: 1.1; }
+h2 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 24px; margin: 40px 0 8px; }
+.lede { color: var(--muted); margin: 0 0 28px; max-width: 70ch; }
+.phones { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+.col { display: flex; flex-direction: column; gap: 10px; width: 330px; }
+.col .cap { font-family: Sniglet; font-weight: 800; font-size: 18px; }
+.col p { margin: 0; color: var(--muted); font-size: 15px; }
+
+/* phone */
+.phone { width: 330px; height: 680px; border-radius: 30px; overflow: hidden; background: var(--sky); border: 7px solid #0a0b22; position: relative; color: var(--a-text); }
+.scroll { position: absolute; inset: 0; overflow: hidden; padding: 0 14px; }
+.disp { font-family: Sniglet, system-ui; font-weight: 800; line-height: 1.1; }
+.top { display: flex; align-items: center; gap: 10px; padding: 18px 0 12px; }
+.back { width: 34px; height: 34px; border-radius: 50%; background: rgba(18,20,58,.6); border: 1px solid rgba(203,196,232,.25); display: grid; place-items: center; color: var(--a-text); font-size: 18px; }
+.top .disp { font-size: 28px; }
+.sec { font-family: Sniglet; font-weight: 800; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin: 14px 2px 6px; }
+.paper { background: var(--cream); color: var(--a-ink); box-shadow: 3px 5px 0 rgba(0,0,0,.35); }
+.paper.tl { transform: rotate(-.4deg); } .paper.tr { transform: rotate(.4deg); }
+.row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-top: 1px dashed rgba(59,42,20,.15); }
+.row:first-child { border-top: 0; }
+.ico { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; font-size: 16px; flex: none; }
+.txt { flex: 1; min-width: 0; }
+.txt b { display: block; font-size: 15px; }
+.txt small { display: block; font-size: 12px; color: #7a6a52; line-height: 1.3; }
+.sw { width: 44px; height: 26px; border-radius: 99px; background: #CFC3A6; position: relative; flex: none; }
+.sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+.sw.on { background: var(--orange); } .sw.on::after { left: 21px; }
+.seg { display: flex; gap: 6px; padding: 0 12px 12px; }
+.seg span { flex: 1; text-align: center; font-family: Sniglet; font-weight: 800; font-size: 14px; padding: 7px 4px; border-radius: 6px; background: #EADCBC; color: #7a6a52; }
+.seg span.on { background: var(--orange); color: var(--cream); box-shadow: 2px 3px 0 rgba(0,0,0,.25); }
+.chev { color: #b8a888; font-size: 20px; flex: none; }
+.danger b { color: var(--red); }
+.foot { text-align: center; font-size: 12px; color: var(--a-muted); padding: 14px 0 20px; }
+
+/* home top bar */
+.bar { width: 330px; border-radius: 16px; overflow: hidden; background: linear-gradient(#2C3170, #1B1E4B); padding: 14px; display: flex; align-items: center; justify-content: space-between; }
+.chip { font-size: 12px; font-weight: 700; color: var(--a-muted); background: rgba(18,20,58,.6); border: 1px solid rgba(203,196,232,.25); border-radius: 99px; padding: 3px 10px; }
+.btns { display: flex; gap: 8px; align-items: center; }
+.rb { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(18,20,58,.6); border: 1px solid rgba(203,196,232,.25); color: var(--gold); font-size: 15px; }
+.pill { background: var(--cream); color: var(--a-ink); font-family: Sniglet; font-weight: 800; font-size: 14px; padding: 4px 10px; box-shadow: 3px 4px 0 rgba(0,0,0,.3); }
+
+/* suggestions */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 640px; background: var(--card); border: 1px solid var(--line); }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); font-size: 15px; vertical-align: top; }
+th { font-family: Sniglet; font-weight: 800; font-size: 14px; }
+.tag { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 99px; padding: 1px 9px; white-space: nowrap; }
+.t1 { background: #F08A3C; color: #fff4dc; } .t2 { background: #E8D8B0; color: #3b2a14; } .t3 { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Settings screen</h1>
+  <p class="lede">A paper-card settings page in the app's style, opened from a ⚙️ button on the home screen. Shown here scrolled to the top and to the bottom, with every setting from the table below except the two marked <b>Later</b>. You pick which ones to build.</p>
+
+  <div class="phones">
+    <div class="col">
+      <div class="phone"><div class="scroll">
+        <div class="top"><span class="back">←</span><span class="disp">Settings</span></div>
+
+        <div class="sec">Scene</div>
+        <div class="paper tl">
+          <div class="row" style="padding-bottom:6px"><span class="ico" style="background:#FFE7B8">🌗</span><span class="txt"><b>Day or night</b><small>Auto follows the clock: sunny 6 am to 6 pm</small></span></div>
+          <div class="seg"><span class="on">Auto</span><span>☀️ Day</span><span>🌙 Night</span></div>
+        </div>
+
+        <div class="sec">Sound</div>
+        <div class="paper tr">
+          <div class="row"><span class="ico" style="background:#FDE2C8">🎵</span><span class="txt"><b>Music</b><small>"Up in the Sky"</small></span><span class="sw on"></span></div>
+          <div class="row"><span class="ico" style="background:#DDEBD2">🦅</span><span class="txt"><b>Animal calls</b><small>Real sounds on Dex cards</small></span><span class="sw on"></span></div>
+          <div class="row"><span class="ico" style="background:#D8E6F2">🗣️</span><span class="txt"><b>Read questions aloud</b><small>Reads each question automatically</small></span><span class="sw"></span></div>
+          <div class="row" style="padding-bottom:6px"><span class="ico" style="background:#D8E6F2">🐢</span><span class="txt"><b>Reading speed</b></span></div>
+          <div class="seg"><span class="on">Slow</span><span>Normal</span><span>Fast</span></div>
+        </div>
+
+        <div class="sec">Easier to see</div>
+        <div class="paper tl">
+          <div class="row" style="padding-bottom:6px"><span class="ico" style="background:#EADCBC">🔤</span><span class="txt"><b>Text size</b></span></div>
+          <div class="seg"><span class="on">Normal</span><span>Large</span></div>
+          <div class="row"><span class="ico" style="background:#EADCBC">🍃</span><span class="txt"><b>Calm motion</b><small>Fewer bouncy animations</small></span><span class="sw"></span></div>
+        </div>
+      </div></div>
+      <div class="cap">Top of the page</div>
+      <p>Scene, sound and display, the settings kids will actually change. Big switches and chips are easy for small fingers.</p>
+    </div>
+
+    <div class="col">
+      <div class="phone"><div class="scroll" style="top:-10px">
+        <div class="sec" style="margin-top:22px">About you</div>
+        <div class="paper tr">
+          <div class="row"><span class="ico" style="background:#FDE2C8">🧒</span><span class="txt"><b>Your name</b><small>Ana</small></span><span class="chev">›</span></div>
+          <div class="row" style="padding-bottom:6px"><span class="ico" style="background:#FDE2C8">🎒</span><span class="txt"><b>Grade</b></span></div>
+          <div class="seg"><span>1</span><span>2</span><span class="on">3</span><span>4</span><span>5</span><span>6</span></div>
+        </div>
+
+        <div class="sec">For grown-ups</div>
+        <div class="paper tl">
+          <div class="row"><span class="ico" style="background:#E2DDF2">📊</span><span class="txt"><b>Progress report</b><small>Creatures found, right answers by topic</small></span><span class="chev">›</span></div>
+          <div class="row" style="padding-bottom:6px"><span class="ico" style="background:#E2DDF2">⏰</span><span class="txt"><b>Break reminder</b><small>Tarsi suggests a rest after playing a while</small></span></div>
+          <div class="seg"><span class="on">Off</span><span>15 min</span><span>30 min</span></div>
+          <div class="row danger"><span class="ico" style="background:#F8D6D0">↺</span><span class="txt"><b>Start over</b><small>Erases all progress. Asks first.</small></span><span class="chev">›</span></div>
+        </div>
+
+        <div class="sec">About</div>
+        <div class="paper tr">
+          <div class="row"><span class="ico" style="background:#EADCBC">⭐</span><span class="txt"><b>Credits</b><small>Developers, music, sounds and fonts</small></span><span class="chev">›</span></div>
+        </div>
+        <div class="foot">Creature Collector · version 1.0.0</div>
+      </div></div>
+      <div class="cap">Bottom of the page</div>
+      <p>Grown-up tools sit lower, so kids don't wander into them. "Start over" moves here from the Badges screen and still asks before erasing.</p>
+    </div>
+  </div>
+
+  <h2>How you get there</h2>
+  <div class="phones">
+    <div class="col">
+      <div class="bar"><span class="chip">Night Ranger · Lv 1</span><span class="btns"><span class="rb">⚙️</span><span class="pill">💎 0</span></span></div>
+      <div class="cap">Recommended: ⚙️ replaces 🎵</div>
+      <p>Music on/off moves into Settings, so the top bar stays as clean as it is now.</p>
+    </div>
+    <div class="col">
+      <div class="bar"><span class="chip">Night Ranger · Lv 1</span><span class="btns"><span class="rb">🎵</span><span class="rb">⚙️</span><span class="pill">💎 0</span></span></div>
+      <div class="cap">Or: keep both</div>
+      <p>A quick mute stays on the home screen, at the cost of one more button.</p>
+    </div>
+  </div>
+
+  <h2>Suggested settings</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Setting</th><th>What it does</th><th>Why</th><th>When</th></tr></thead>
+    <tbody>
+      <tr><td><b>Day or night</b></td><td>Auto, Always day or Always night</td><td>Show both looks anytime, e.g. in your presentation</td><td><span class="tag t1">Build now</span></td></tr>
+      <tr><td><b>Music</b></td><td>On or off (moves here from the home screen)</td><td>Classrooms and quiet homes</td><td><span class="tag t1">Build now</span></td></tr>
+      <tr><td><b>Animal calls</b></td><td>On or off</td><td>Some kids play in class without headphones</td><td><span class="tag t1">Build now</span></td></tr>
+      <tr><td><b>Read questions aloud</b></td><td>Reads every question automatically</td><td>Helps kids still learning to read (today they must tap the speaker)</td><td><span class="tag t1">Build now</span></td></tr>
+      <tr><td><b>Reading speed</b></td><td>Slow, Normal or Fast</td><td>Younger kids need it slower</td><td><span class="tag t1">Build now</span></td></tr>
+      <tr><td><b>Your name</b> and <b>grade</b></td><td>Change what was picked during onboarding</td><td>Typos happen, and kids move up a grade</td><td><span class="tag t1">Build now</span></td></tr>
+      <tr><td><b>Start over</b></td><td>Erase progress, after asking</td><td>Moves out of the Badges screen, where it's easy to hit by accident</td><td><span class="tag t1">Build now</span></td></tr>
+      <tr><td><b>Credits</b></td><td>Developers, plus the music, sound and font licenses</td><td>The eagle call's license requires credit</td><td><span class="tag t1">Build now</span></td></tr>
+      <tr><td><b>Text size</b></td><td>Normal or Large</td><td>Easier reading on small phones</td><td><span class="tag t2">Nice to have</span></td></tr>
+      <tr><td><b>Calm motion</b></td><td>Fewer bouncy animations</td><td>Some kids find motion distracting; the app already supports the phone's own setting</td><td><span class="tag t2">Nice to have</span></td></tr>
+      <tr><td><b>Break reminder</b></td><td>Tarsi suggests a rest after 15 or 30 minutes</td><td>Healthy screen time, and teachers and parents like it</td><td><span class="tag t2">Nice to have</span></td></tr>
+      <tr><td><b>Progress report</b></td><td>Creatures found and accuracy per topic</td><td>Shows learning, useful for your project presentation</td><td><span class="tag t2">Nice to have</span></td></tr>
+      <tr><td><b>Grade-based questions</b></td><td>Grade changes question difficulty</td><td>The grade is saved but nothing uses it yet; needs questions per grade</td><td><span class="tag t3">Later</span></td></tr>
+      <tr><td><b>Language</b></td><td>English or Filipino</td><td>Great fit for a Filipino app, but every text and question needs translating</td><td><span class="tag t3">Later</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</main>
+</body>
+</html>

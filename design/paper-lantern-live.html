@@ -1,0 +1,639 @@
+<meta charset="utf-8">
+<title>Paper Lantern Night</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Sniglet:wght@400;800&display=swap">
+<style>
+/* Layout: three playable phones (home, encounter, habitat map) in the Paper lantern night style, each with a short list of what moves. */
+:root{
+  --bg:#eef0f6; --fg:#171a2b; --muted:#585d78; --line:#d4d7e4; --surface:#fbfbfe; --accent:#c4552c;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  /* app palette (fixed: the game is always night) */
+  --sky:#1b1e4b; --sky2:#12143a; --cream:#f6ead0; --ink:#3b2a14; --orange:#f08a3c; --red:#e5574a; --gold:#f2b23c; --pink:#f2a7b5; --leaf:#1f5a4a; --text:#fff4dc;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.55;padding:0 20px;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:64ch;margin:0 0 32px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px;justify-items:center}
+.col{width:310px;max-width:100%;display:flex;flex-direction:column;gap:12px}
+.col h2{font-family:var(--f-display);font-weight:800;font-size:21px;margin:4px 0 0}
+.col ul{margin:0;padding-left:20px;color:var(--muted);font-size:15px}
+.col li{margin-bottom:3px}
+.col li b{color:var(--fg)}
+
+.phone{width:310px;max-width:100%;height:640px;border-radius:44px;border:9px solid #07070c;overflow:hidden;position:relative;background:var(--sky);color:var(--text);font-family:"Sniglet",sans-serif;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.notch{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:84px;height:20px;border-radius:12px;background:#07070c;z-index:30}
+.scene{position:relative;overflow:hidden}
+.scene svg{display:block;width:100%;height:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* paper bits */
+.tagbtn{background:var(--cream);color:var(--ink);border:none;padding:11px 14px;font-family:"Atkinson Hyperlegible",sans-serif;font-weight:700;font-size:16px;text-align:left;cursor:pointer;box-shadow:3px 4px 0 rgba(0,0,0,.35);clip-path:polygon(0 5%,100% 0,99% 100%,1% 95%);transition:transform .12s}
+.tagbtn:active{transform:scale(.95) rotate(-1deg)}
+.paper{background:var(--cream);color:var(--ink);box-shadow:3px 5px 0 rgba(0,0,0,.35)}
+
+/* motion */
+.sway{transform-box:fill-box;transform-origin:50% 0;animation:sway 3.4s ease-in-out infinite}
+.sway.b{animation-duration:4.1s;animation-delay:-1.3s}.sway.c{animation-duration:3.7s;animation-delay:-2.2s}
+@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.swing{animation:swing 1.2s cubic-bezier(.3,1.6,.5,1)!important}
+@keyframes swing{0%{transform:rotate(-22deg)}30%{transform:rotate(16deg)}55%{transform:rotate(-9deg)}80%{transform:rotate(4deg)}100%{transform:rotate(0)}}
+.glowpulse{animation:gp 2.6s ease-in-out infinite}
+@keyframes gp{50%{opacity:.45}}
+.twinkle{animation:tw 2.2s ease-in-out infinite}
+.twinkle:nth-child(2n){animation-delay:-1s}.twinkle:nth-child(3n){animation-delay:-.4s;animation-duration:3s}
+@keyframes tw{50%{opacity:.25}}
+.drift{animation:drift 26s linear infinite}
+.drift.b{animation-duration:38s;animation-delay:-14s}
+@keyframes drift{from{transform:translateX(-120px)}to{transform:translateX(360px)}}
+.ff{animation:ff 5s ease-in-out infinite}.ff:nth-of-type(2n){animation-duration:6.4s;animation-delay:-2s}.ff:nth-of-type(3n){animation-duration:4.3s;animation-delay:-1s}
+@keyframes ff{0%,100%{transform:translate(0,0);opacity:1}50%{transform:translate(10px,-12px);opacity:.3}}
+
+/* paper puppet */
+.puppet{transform-box:fill-box;transform-origin:50% 100%;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-4px) rotate(1.5deg)}}
+.head{transform-box:fill-box;transform-origin:50% 90%;animation:tilt 3.6s ease-in-out infinite}
+@keyframes tilt{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(4deg)}}
+.ear{transform-box:fill-box;transform-origin:50% 100%;animation:ear 5s ease-in-out infinite}
+.ear.r{animation-delay:-.3s}
+@keyframes ear{0%,86%,100%{transform:rotate(0)}90%{transform:rotate(-14deg)}95%{transform:rotate(8deg)}}
+.tail{transform-box:fill-box;transform-origin:0 100%;animation:tail 2.8s ease-in-out infinite}
+@keyframes tail{50%{transform:rotate(7deg)}}
+.lid{opacity:0;animation:blink 4.6s infinite}
+@keyframes blink{0%,93%,100%{opacity:0}95%,97%{opacity:1}}
+.jump{animation:jump .7s cubic-bezier(.3,1.4,.5,1)}
+@keyframes jump{0%{transform:translateY(0) scale(1,1)}20%{transform:translateY(4px) scale(1.12,.86)}50%{transform:translateY(-34px) scale(.92,1.1)}80%{transform:translateY(2px) scale(1.06,.94)}100%{transform:translateY(0) scale(1)}}
+.pop{animation:pop .6s cubic-bezier(.2,1.7,.4,1)}
+@keyframes pop{0%{transform:scale(.4)}100%{transform:scale(1)}}
+.shake{animation:shake .38s}
+@keyframes shake{20%{transform:translateX(-8px) rotate(-2deg)}40%{transform:translateX(8px) rotate(2deg)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}
+
+/* phone A: home */
+.a-scene{height:300px}
+.layer{transition:transform .25s ease-out}
+.bubble{position:absolute;left:14px;top:150px;max-width:150px;background:var(--cream);color:var(--ink);padding:8px 10px;font-family:"Atkinson Hyperlegible",sans-serif;font-size:13px;line-height:1.3;box-shadow:3px 4px 0 rgba(0,0,0,.35);border-radius:4px;transform-origin:100% 100%;transition:transform .3s cubic-bezier(.2,1.6,.4,1),opacity .2s;opacity:0;transform:scale(.4);pointer-events:none;z-index:4}
+.bubble.on{opacity:1;transform:scale(1) rotate(-2deg)}
+.bubble::after{content:"";position:absolute;right:-10px;bottom:10px;border:6px solid transparent;border-left:10px solid var(--cream)}
+.hello{position:absolute;left:16px;top:36px;z-index:3}
+.hello b{display:block;font-size:22px;font-weight:800;line-height:1.05;text-shadow:2px 2px 0 rgba(0,0,0,.35)}
+.hello span{font-size:13px;opacity:.85;font-family:"Atkinson Hyperlegible",sans-serif}
+.a-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.moons{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;transform:rotate(-1deg)}
+.moons b{font-size:16px}
+.moons .m{display:flex;gap:5px}
+.moons i{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink);display:block}
+.moons i.on{background:var(--gold)}
+.moons i.half{background:linear-gradient(90deg,var(--gold) 50%,transparent 50%)}
+.mission{padding:10px 12px;transform:rotate(.8deg)}
+.mission h3{margin:0 0 4px;font-size:17px;font-weight:800;display:flex;justify-content:space-between}
+.mission h3 span{color:var(--red);font-size:14px}
+.task{display:flex;gap:8px;align-items:center;background:none;border:none;padding:3px 0;font-family:"Atkinson Hyperlegible",sans-serif;font-size:15px;color:var(--ink);cursor:pointer;width:100%;text-align:left}
+.task i{width:18px;height:18px;border:2px solid var(--ink);border-radius:4px;flex:none;display:grid;place-items:center;font-style:normal;font-size:13px;line-height:1}
+.task.done{text-decoration:line-through;opacity:.7}
+.task.done i{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.play{display:flex;align-items:center;justify-content:space-between;background:var(--orange);color:#fff7ea;border:none;padding:12px 14px;cursor:pointer;box-shadow:3px 5px 0 rgba(0,0,0,.35);clip-path:polygon(0 6%,100% 0,98% 100%,2% 94%);animation:nudge 3s ease-in-out infinite}
+.play b{font-size:17px;font-weight:800;display:block;line-height:1.1}
+.play small{font-family:"Atkinson Hyperlegible",sans-serif;font-size:13px;opacity:.9}
+@keyframes nudge{0%,88%,100%{transform:rotate(0)}91%{transform:rotate(-2deg) scale(1.03)}94%{transform:rotate(2deg) scale(1.03)}}
+
+/* phone B: encounter */
+.b-top{display:flex;align-items:center;gap:8px;padding:34px 14px 8px;font-size:13px}
+.b-top .prog{flex:1;height:8px;background:#2c3170;border-radius:6px;overflow:hidden}
+.b-top .prog i{display:block;height:100%;width:12%;background:var(--orange);transition:width .5s}
+.hearts{color:#ff9c7a;letter-spacing:2px;font-size:15px}
+.b-scene{height:300px;cursor:crosshair;touch-action:none}
+.dark{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--x,50%) var(--y,85%),rgba(255,200,120,.12) 0,rgba(0,0,0,0) 52px,rgba(8,9,30,.975) 92px);transition:opacity .7s}
+.found .dark{opacity:0}
+.hint{position:absolute;left:0;right:0;bottom:10px;text-align:center;font-size:13px;pointer-events:none;transition:opacity .3s}
+.hint span{background:rgba(0,0,0,.45);padding:4px 10px;border-radius:99px}
+.b-q{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.b-q .q{font-size:20px;font-weight:800;line-height:1.15;min-height:46px}
+.b-q .tagbtn{opacity:0;transform:translateY(-14px) rotate(-3deg)}
+.b-q.ready .tagbtn{animation:drop .5s cubic-bezier(.2,1.5,.4,1) forwards}
+.b-q.ready .tagbtn:nth-of-type(2){animation-delay:.08s}.b-q.ready .tagbtn:nth-of-type(3){animation-delay:.16s}
+@keyframes drop{to{opacity:1;transform:none}}
+.tagbtn.ok{background:#b9e08f}.tagbtn.bad{background:#f4a49a}
+.overlay{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(10,10,32,.82);opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.on{opacity:1;pointer-events:auto}
+.rays{position:absolute;width:520px;height:520px;left:50%;top:44%;margin:-260px 0 0 -260px;background:repeating-conic-gradient(rgba(242,178,60,.22) 0 10deg,transparent 10deg 20deg);border-radius:50%;animation:spin 14s linear infinite;-webkit-mask:radial-gradient(circle,#000 30%,transparent 70%);mask:radial-gradient(circle,#000 30%,transparent 70%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card{position:relative;width:190px;padding:10px 10px 12px;text-align:center;transform:scale(0) rotate(-20deg)}
+.overlay.on .card{animation:cardin .7s .1s cubic-bezier(.2,1.5,.4,1) forwards}
+@keyframes cardin{to{transform:scale(1) rotate(-3deg)}}
+.card::before,.card::after{content:"";position:absolute;width:56px;height:16px;background:rgba(242,178,60,.75);top:-7px}
+.card::before{left:-12px;transform:rotate(-24deg)}.card::after{right:-12px;transform:rotate(22deg)}
+.card b{display:block;font-size:20px;font-weight:800}
+.card small{font-family:"Atkinson Hyperlegible",sans-serif;font-size:13px}
+.stamp{position:absolute;right:-18px;bottom:22px;font-weight:800;font-size:20px;color:var(--red);border:3px double var(--red);padding:2px 8px;border-radius:6px;background:rgba(246,234,208,.9);opacity:0;transform:scale(2.4) rotate(-14deg)}
+.overlay.on .stamp{animation:stampin .35s .75s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes stampin{to{opacity:1;transform:scale(1) rotate(-14deg)}}
+.stars{display:flex;gap:6px;position:relative}
+.stars span{font-size:38px;color:var(--gold);text-shadow:2px 3px 0 rgba(0,0,0,.4);transform:scale(0)}
+.overlay.on .stars span{animation:starpop .45s cubic-bezier(.2,1.8,.4,1) forwards}
+.overlay.on .stars span:nth-child(1){animation-delay:1.0s}.overlay.on .stars span:nth-child(2){animation-delay:1.2s}.overlay.on .stars span:nth-child(3){animation-delay:1.4s}
+@keyframes starpop{to{transform:scale(1)}}
+.again{position:relative;background:var(--orange);color:#fff7ea;border:none;padding:10px 22px;font-size:17px;font-weight:800;cursor:pointer;box-shadow:3px 4px 0 rgba(0,0,0,.4);clip-path:polygon(0 6%,100% 0,98% 100%,2% 94%)}
+.confetti{position:absolute;width:9px;height:12px;pointer-events:none;z-index:25}
+
+/* phone C: map */
+.c-scene{position:absolute;inset:0}
+.c-head{position:absolute;left:0;right:0;top:0;padding:36px 16px 0;z-index:3;display:flex;justify-content:space-between;align-items:flex-end}
+.c-head b{font-size:24px;font-weight:800;text-shadow:2px 2px 0 rgba(0,0,0,.35);display:block;line-height:1}
+.c-head small{font-family:"Atkinson Hyperlegible",sans-serif;font-size:13px;opacity:.85}
+.c-head .pill{background:var(--cream);color:var(--ink);padding:4px 10px;font-size:14px;font-weight:800;box-shadow:2px 3px 0 rgba(0,0,0,.35)}
+.stage{cursor:pointer}
+.stage text{font-family:"Sniglet",sans-serif;font-weight:800}
+.sheet{position:absolute;left:10px;right:10px;bottom:10px;z-index:5;padding:12px 14px;transform:translateY(130%) rotate(-1deg);transition:transform .45s cubic-bezier(.2,1.3,.4,1)}
+.sheet.on{transform:translateY(0) rotate(-1deg)}
+.sheet b{display:block;font-size:19px;font-weight:800}
+.sheet p{margin:2px 0 10px;font-family:"Atkinson Hyperlegible",sans-serif;font-size:14px}
+.sheet .go{width:100%;background:var(--orange);color:#fff7ea;border:none;padding:9px;font-size:17px;font-weight:800;cursor:pointer;clip-path:polygon(0 6%,100% 0,98% 100%,2% 94%)}
+.c-tip{position:absolute;left:0;right:0;bottom:16px;text-align:center;font-size:13px;z-index:4;pointer-events:none}
+.c-tip span{background:rgba(0,0,0,.45);padding:4px 10px;border-radius:99px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="paper" x="-15%" y="-15%" width="130%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="1" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.2"/><feDropShadow dx="0" dy="3.5" stdDeviation="2" flood-color="#000" flood-opacity=".45"/></filter>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .06 0"/></filter>
+    <radialGradient id="lampLight" cx=".2" cy=".2" r=".9"><stop offset="0" stop-color="#ffb35c" stop-opacity=".55"/><stop offset="1" stop-color="#ffb35c" stop-opacity="0"/></radialGradient>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <h1>Paper lantern night, in motion</h1>
+  <p class="lead">Three playable screens in the improved Paper lantern style: parols instead of round lanterns, warm lantern light on the creatures, and paper-puppet animation. Everything here moves, and most of it reacts to you. Try tapping, dragging, and answering.</p>
+
+  <div class="row">
+    <!-- A: HOME -->
+    <div class="col">
+      <div class="phone" id="phoneA">
+        <div class="notch"></div>
+        <div class="scene a-scene" id="aScene">
+          <div class="hello"><b>Magandang gabi,<br>Ana!</b><span>Night Ranger &middot; Level 6</span></div>
+          <div class="bubble" id="bubble">Hi! I can turn my head almost all the way around!</div>
+          <svg viewBox="0 0 300 300" aria-label="Tarsi the tarsier under swaying parols">
+            <rect width="300" height="300" fill="#1b1e4b"/>
+            <g fill="#fff4dc"><circle class="twinkle" cx="160" cy="30" r="1.4"/><circle class="twinkle" cx="210" cy="64" r="1"/><circle class="twinkle" cx="250" cy="22" r="1.3"/><circle class="twinkle" cx="120" cy="90" r="1"/><circle class="twinkle" cx="280" cy="110" r="1.1"/><circle class="twinkle" cx="190" cy="120" r="1"/></g>
+            <g class="layer" data-depth="4"><g class="drift" filter="url(#paper)"><path d="M0 70q10-16 26-8q8-14 24-4q16 0 14 12z" fill="#2c3170"/></g><g class="drift b" filter="url(#paper)"><path d="M0 110q10-14 24-8q10-12 22-2q14 2 10 10z" fill="#2c3170"/></g></g>
+            <g class="layer" data-depth="6" filter="url(#paper)"><path d="M-20 320V196Q60 160 140 186T320 170V320Z" fill="#2a3a7a"/></g>
+            <g class="layer" data-depth="10" filter="url(#paper)"><path d="M-20 320V226Q70 200 160 226T320 212V320Z" fill="#1f5a4a"/></g>
+            <g class="layer" data-depth="12" id="leavesA2"></g>
+            <path d="M-10 48Q150 96 310 40" stroke="#3a2a1c" stroke-width="2" fill="none"/>
+            <g id="parols"></g>
+            <g class="layer" data-depth="14">
+              <g filter="url(#paper)"><path d="M10 250Q150 226 290 256" stroke="#7a4e2a" stroke-width="13" fill="none" stroke-linecap="round"/></g>
+              <g transform="translate(150 128) scale(.58)" id="tarsiHome" style="cursor:pointer">
+                <g class="puppet" id="tarsiBody"></g>
+              </g>
+            </g>
+            <g class="layer" data-depth="20" id="leavesA"></g>
+            <g><circle class="ff" cx="40" cy="200" r="2.4" fill="#fff3b0"/><circle class="ff" cx="270" cy="190" r="2.4" fill="#fff3b0"/><circle class="ff" cx="230" cy="150" r="2" fill="#fff3b0"/></g>
+            <g filter="url(#glow)" fill="#f2b23c" opacity=".7"><circle class="ff" cx="40" cy="200" r="6"/><circle class="ff" cx="270" cy="190" r="6"/><circle class="ff" cx="230" cy="150" r="5"/></g>
+            <rect width="300" height="300" filter="url(#grain)" pointer-events="none"/>
+          </svg>
+        </div>
+        <div class="a-body">
+          <div class="paper moons"><b>5-night streak</b><span class="m"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="half"></i><i></i><i></i></span></div>
+          <div class="paper mission" id="mission">
+            <h3>Tonight's mission <span>+30 gems</span></h3>
+            <button class="task done"><i>&#x2713;</i>Find 2 creatures</button>
+            <button class="task"><i></i>Color 1 creature</button>
+            <button class="task"><i></i>Finish 1 stage</button>
+          </div>
+          <button class="play" id="playBtn"><span><small>Continue</small><b>Rainforest &middot; Stage 4</b></span><span style="font-size:26px">&#x25B6;</span></button>
+        </div>
+      </div>
+      <h2>Home</h2>
+      <ul>
+        <li><b>Parols sway</b> on their string. Tap one to make it swing.</li>
+        <li><b>Tarsi is a paper puppet:</b> bobs, tilts its head, twitches its ears, wags its tail, and blinks. Tap it to make it jump and tell you a fact.</li>
+        <li><b>Parallax:</b> move your mouse over the scene and the paper layers shift at different depths.</li>
+        <li>Clouds drift, stars twinkle, fireflies float. Mission tasks burst confetti when checked.</li>
+      </ul>
+    </div>
+
+    <!-- B: ENCOUNTER -->
+    <div class="col">
+      <div class="phone" id="phoneB">
+        <div class="notch"></div>
+        <div class="b-top"><span>&#x2715;</span><span class="prog"><i id="prog"></i></span><span class="hearts" id="hearts">&#x2665;&#x2665;&#x2665;</span></div>
+        <div class="scene b-scene" id="bScene">
+          <svg viewBox="0 0 300 300" aria-label="Dark rainforest with a hidden tarsier">
+            <rect width="300" height="300" fill="#1b1e4b"/>
+            <g filter="url(#paper)"><path d="M0 300V170Q70 140 150 168T300 160V300Z" fill="#2a3a7a"/><path d="M0 300V214Q70 190 150 212T300 204V300Z" fill="#1f5a4a"/></g>
+            <g filter="url(#paper)"><path d="M0 130Q150 104 300 136" stroke="#7a4e2a" stroke-width="10" fill="none"/><path d="M0 238Q150 214 300 244" stroke="#7a4e2a" stroke-width="12" fill="none"/></g>
+            <g id="leavesBTop"></g>
+            <g id="hideSpot" transform="translate(40 52) scale(.5)"><g class="puppet" id="tarsiHidden"></g></g>
+            <g id="leavesBBot"></g>
+          </svg>
+          <div class="dark" id="dark"></div>
+          <div class="hint" id="hint"><span>Drag the flashlight to search</span></div>
+        </div>
+        <div class="b-q" id="bQ">
+          <div class="q" id="qText">Something is hiding in the trees&hellip;</div>
+          <button class="tagbtn" data-ok="0">Leaves</button>
+          <button class="tagbtn" data-ok="1">Insects</button>
+          <button class="tagbtn" data-ok="0">Rice</button>
+        </div>
+        <div class="overlay" id="overlay">
+          <div class="rays"></div>
+          <div class="card paper">
+            <svg viewBox="0 0 200 200" width="150" height="150" aria-hidden="true"><g transform="translate(0 5)"><g class="puppet" id="tarsiCard"></g></g></svg>
+            <b>Philippine tarsier</b><small>Mamag &middot; Rare</small>
+            <div class="stamp">CAUGHT!</div>
+          </div>
+          <div class="stars"><span>&#x2605;</span><span>&#x2605;</span><span>&#x2605;</span></div>
+          <button class="again" id="again">Play again</button>
+        </div>
+      </div>
+      <h2>Encounter</h2>
+      <ul>
+        <li><b>Flashlight:</b> drag across the dark scene. Hold the beam on the tarsier to find it. It hides in a new spot each time.</li>
+        <li><b>Found:</b> the dark lifts and the answers drop in like falling paper tags.</li>
+        <li><b>Wrong answer:</b> the tag shakes and you lose a heart. <b>Right:</b> paper confetti bursts.</li>
+        <li><b>Catch:</b> light rays spin, the card is taped in, a stamp slams down, and stars pop one by one.</li>
+      </ul>
+    </div>
+
+    <!-- C: MAP -->
+    <div class="col">
+      <div class="phone" id="phoneC">
+        <div class="notch"></div>
+        <div class="c-head"><span><b>Rainforest</b><small>3 stages &middot; 1 review</small></span><span class="pill">&#x2605; 7/12</span></div>
+        <svg class="c-scene" viewBox="0 0 292 622" preserveAspectRatio="xMidYMid slice" aria-label="Habitat map with parol stages along a trail">
+          <rect width="292" height="622" fill="#1b1e4b"/>
+          <g fill="#fff4dc"><circle class="twinkle" cx="40" cy="120" r="1.3"/><circle class="twinkle" cx="250" cy="150" r="1.1"/><circle class="twinkle" cx="140" cy="100" r="1"/><circle class="twinkle" cx="200" cy="250" r="1.2"/><circle class="twinkle" cx="60" cy="330" r="1"/></g>
+          <g class="drift" filter="url(#paper)"><path d="M0 200q12-18 30-9q10-16 28-4q18 0 16 13z" fill="#2c3170"/></g>
+          <g class="drift b" filter="url(#paper)"><path d="M0 380q10-14 24-8q10-12 22-2q14 2 10 10z" fill="#2c3170"/></g>
+          <g filter="url(#paper)" fill="#1f5a4a"><path d="M-10 622V520Q60 490 150 516T302 506V622Z"/><circle cx="0" cy="300" r="46"/><circle cx="292" cy="250" r="50"/><circle cx="0" cy="440" r="40"/><circle cx="292" cy="420" r="44"/></g>
+          <path id="trail" d="M90 548C200 540 220 470 196 440C170 404 80 420 90 360C100 300 210 320 210 260C210 200 110 210 120 150" fill="none" stroke="#3a3f80" stroke-width="5" stroke-dasharray="2 12" stroke-linecap="round"/>
+          <path d="M90 548C200 540 220 470 196 440C170 404 80 420 90 360" fill="none" stroke="#f2b23c" stroke-width="5" stroke-dasharray="2 12" stroke-linecap="round" class="glowpulse"/>
+          <g id="stages"></g>
+          <g id="leavesC"></g>
+          <rect width="292" height="622" filter="url(#grain)" pointer-events="none"/>
+        </svg>
+        <div class="c-tip" id="cTip"><span>Tap a parol</span></div>
+        <div class="sheet paper" id="sheet"><b id="sTitle">Stage 4: Food chains</b><p id="sText">8 questions &middot; 2 creatures hiding &middot; about 5 min</p><button class="go">Start with flashlight</button></div>
+      </div>
+      <h2>Habitat map</h2>
+      <ul>
+        <li><b>Every stage is a parol.</b> Finished ones glow warm, the next one pulses, and locked ones are dark paper.</li>
+        <li>Tap a parol and it <b>swings on its string</b> while the stage card slides up.</li>
+        <li>The lit trail shimmers, and paper clouds drift past.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+
+  // ---- Parol (Filipino star lantern) ----
+  function star(cx, cy, R, r){
+    var pts = [];
+    for (var i = 0; i < 10; i++){
+      var rad = i % 2 ? r : R, a = -Math.PI/2 + i*Math.PI/5;
+      pts.push((cx + Math.cos(a)*rad).toFixed(1) + ',' + (cy + Math.sin(a)*rad).toFixed(1));
+    }
+    return pts.join(' ');
+  }
+  function parol(x, y, size, color, lit, cls){
+    var s = size;
+    return '<g class="sway ' + (cls||'') + '" style="cursor:pointer" data-parol>' +
+      '<line x1="'+x+'" y1="'+(y - s*1.1)+'" x2="'+x+'" y2="'+(y - s*.9)+'" stroke="#3a2a1c" stroke-width="1.5"/>' +
+      (lit ? '<circle class="glowpulse" cx="'+x+'" cy="'+y+'" r="'+(s*1.3)+'" fill="'+color+'" filter="url(#glow)" opacity=".75"/>' : '') +
+      '<g filter="url(#paper)">' +
+        '<path d="M'+(x-s*.35)+' '+(y+s*.6)+' l-'+(s*.15)+' '+(s*1.1)+' M'+x+' '+(y+s*.7)+' l0 '+(s*1.3)+' M'+(x+s*.35)+' '+(y+s*.6)+' l'+(s*.15)+' '+(s*1.1)+'" stroke="'+(lit?'#fff4dc':'#5a5f92')+'" stroke-width="'+(s*.12)+'" stroke-linecap="round"/>' +
+        '<polygon points="'+star(x, y, s, s*.45)+'" fill="'+(lit?color:'#3a3f80')+'"/>' +
+        '<circle cx="'+x+'" cy="'+y+'" r="'+(s*.32)+'" fill="'+(lit?'#fff4dc':'#2c3170')+'"/>' +
+        '<polygon points="'+star(x, y, s*.62, s*.3)+'" fill="none" stroke="'+(lit?'#fff4dc':'#5a5f92')+'" stroke-width="'+(s*.06)+'"/>' +
+      '</g></g>';
+  }
+  document.getElementById('parols').innerHTML =
+    parol(46, 66, 15, '#e5574a', true) + parol(150, 84, 17, '#f2b23c', true, 'b') + parol(254, 60, 15, '#f08a3c', true, 'c');
+
+  // ---- Paper puppet tarsier (drawn once, reused) ----
+  var TARSI =
+    '<g class="tail"><path d="M146 168 C190 160 200 120 182 88" stroke="#8a5a30" stroke-width="10" fill="none" stroke-linecap="round" filter="url(#paper)"/></g>' +
+    '<g filter="url(#paper)"><ellipse cx="100" cy="152" rx="46" ry="36" fill="#b8763e"/><ellipse cx="100" cy="162" rx="25" ry="20" fill="#e8c094"/></g>' +
+    '<g class="head">' +
+      '<g class="ear" filter="url(#paper)"><ellipse cx="50" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="50" cy="56" rx="10" ry="16" fill="#f2a7b5"/></g>' +
+      '<g class="ear r" filter="url(#paper)"><ellipse cx="150" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="150" cy="56" rx="10" ry="16" fill="#f2a7b5"/></g>' +
+      '<g filter="url(#paper)"><circle cx="100" cy="98" r="56" fill="#e0a96d"/></g>' +
+      '<circle cx="100" cy="98" r="56" fill="url(#lampLight)"/>' +
+      '<g filter="url(#paper)"><circle cx="77" cy="94" r="25" fill="#f6ead0"/><circle cx="123" cy="94" r="25" fill="#f6ead0"/></g>' +
+      '<circle cx="77" cy="95" r="18" fill="#f2b23c"/><circle cx="123" cy="95" r="18" fill="#f2b23c"/>' +
+      '<circle cx="78" cy="96" r="11" fill="#2b1d10"/><circle cx="122" cy="96" r="11" fill="#2b1d10"/>' +
+      '<circle cx="83" cy="90" r="4.5" fill="#fff"/><circle cx="127" cy="90" r="4.5" fill="#fff"/><circle cx="74" cy="101" r="2" fill="#fff" opacity=".8"/><circle cx="118" cy="101" r="2" fill="#fff" opacity=".8"/>' +
+      '<g class="lid"><circle cx="77" cy="94" r="26" fill="#e0a96d"/><circle cx="123" cy="94" r="26" fill="#e0a96d"/><path d="M60 96q17 12 34 0M106 96q17 12 34 0" stroke="#3b2a14" stroke-width="3" fill="none" stroke-linecap="round"/></g>' +
+      '<circle cx="56" cy="120" r="8" fill="#f2a7b5" opacity=".7"/><circle cx="144" cy="120" r="8" fill="#f2a7b5" opacity=".7"/>' +
+      '<path d="M94 119h12l-6 7z" fill="#7a4b26"/><path d="M90 130q10 8 20 0" stroke="#7a4b26" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    '</g>' +
+    '<g filter="url(#paper)"><circle cx="73" cy="184" r="9" fill="#e0a96d"/><circle cx="127" cy="184" r="9" fill="#e0a96d"/></g>';
+  ['tarsiBody','tarsiHidden','tarsiCard'].forEach(function(id){ document.getElementById(id).innerHTML = TARSI; });
+
+  // ---- Tropical paper leaves ----
+  var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function mix(hex, to, k){
+    var a = parseInt(hex.slice(1), 16), b = parseInt(to.slice(1), 16);
+    var r = Math.round(((a>>16)&255)*(1-k) + ((b>>16)&255)*k),
+        g = Math.round(((a>>8)&255)*(1-k) + ((b>>8)&255)*k),
+        bl = Math.round((a&255)*(1-k) + (b&255)*k);
+    return '#' + ((1<<24) + (r<<16) + (g<<8) + bl).toString(16).slice(1);
+  }
+  function f(n){ return n.toFixed(1); }
+  var LID = 0;
+  function swayAnim(deg, dur, delay){
+    if (REDUCE) return '';
+    return '<animateTransform attributeName="transform" type="rotate" values="0;' + deg + ';0;' + f(-deg*.6) + ';0" dur="' + dur + 's" begin="' + delay + 's" repeatCount="indefinite"/>';
+  }
+  // One leaf pointing along +x from its stem at (0,0), then placed and rotated.
+  // kind: plain | monstera (split edges and holes) | banana (long, torn edges)
+  function leaf(o){
+    var L = o.len, W = o.w, c = o.color, kind = o.kind || 'plain', id = 'lf' + (LID++);
+    var dark = mix(c, '#000000', .28), light = mix(c, '#ffffff', .16), vein = mix(c, '#ffffff', .3);
+    var outline = 'M0 0C' + f(L*.18) + ' ' + f(-W) + ' ' + f(L*.72) + ' ' + f(-W*.98) + ' ' + L + ' 0C' + f(L*.72) + ' ' + f(W*.98) + ' ' + f(L*.18) + ' ' + W + ' 0 0Z';
+    var upper = 'M0 0C' + f(L*.18) + ' ' + f(-W) + ' ' + f(L*.72) + ' ' + f(-W*.98) + ' ' + L + ' 0Q' + f(L*.5) + ' ' + f(W*.08) + ' 0 0Z';
+    var cuts = '';
+    if (kind === 'monstera'){
+      for (var i = 1; i <= 4; i++){
+        var t = i / 5.4, x = L * t, s = Math.sin(Math.PI * t) * W;
+        cuts += '<polygon points="' + f(x) + ',' + f(-s*1.2) + ' ' + f(x + L*.05) + ',' + f(-s*.32) + ' ' + f(x + L*.1) + ',' + f(-s*1.2) + '" fill="#000"/>';
+        cuts += '<polygon points="' + f(x+L*.03) + ',' + f(s*1.2) + ' ' + f(x + L*.08) + ',' + f(s*.32) + ' ' + f(x + L*.13) + ',' + f(s*1.2) + '" fill="#000"/>';
+        if (i < 4) cuts += '<ellipse cx="' + f(x + L*.09) + '" cy="' + f(-s*.2) + '" rx="' + f(L*.025) + '" ry="' + f(W*.08) + '" fill="#000"/>';
+      }
+    } else if (kind === 'banana'){
+      [.28, .43, .55, .7, .82].forEach(function(t, i){
+        var x = L * t, s = Math.sin(Math.PI * t) * W, side = i % 2 ? 1 : -1;
+        cuts += '<polygon points="' + f(x) + ',' + f(side*s*1.2) + ' ' + f(x + 1.6) + ',' + f(side*s*.25) + ' ' + f(x + 3.4) + ',' + f(side*s*1.2) + '" fill="#000"/>';
+      });
+    }
+    var n = kind === 'banana' ? 10 : 5, veins = '';
+    for (var k = 1; k <= n; k++){
+      var tt = k / (n + 1), vx = L * tt, vs = Math.sin(Math.PI * tt) * W * .82;
+      veins += 'M' + f(vx) + ' 0Q' + f(vx + L*.06) + ' ' + f(-vs*.5) + ' ' + f(vx + L*.13) + ' ' + f(-vs) +
+               'M' + f(vx) + ' 0Q' + f(vx + L*.06) + ' ' + f(vs*.5) + ' ' + f(vx + L*.13) + ' ' + f(vs);
+    }
+    var mask = cuts ? '<mask id="' + id + '" maskUnits="userSpaceOnUse" x="-10" y="' + f(-W*1.5) + '" width="' + (L+20) + '" height="' + f(W*3) + '"><path d="' + outline + '" fill="#fff"/>' + cuts + '</mask>' : '';
+    return '<g transform="translate(' + o.x + ' ' + o.y + ') rotate(' + o.a + ')"><g filter="url(#paper)"><g>' +
+      swayAnim(o.sway || 4, o.dur || (3 + Math.random()*2).toFixed(1), -(Math.random()*3).toFixed(1)) + mask +
+      '<path d="M' + f(-L*.12) + ' 0L0 0" stroke="' + dark + '" stroke-width="' + f(Math.max(2, W*.14)) + '" stroke-linecap="round"/>' +
+      '<g' + (cuts ? ' mask="url(#' + id + ')"' : '') + '>' +
+        '<path d="' + outline + '" fill="' + light + '"/>' +
+        '<path d="' + upper + '" fill="' + dark + '" opacity=".55"/>' +
+        '<path d="' + veins + '" stroke="' + vein + '" stroke-width="' + f(Math.max(.8, W*.045)) + '" fill="none" opacity=".55" stroke-linecap="round"/>' +
+        '<path d="M0 0Q' + f(L*.5) + ' ' + f(-W*.06) + ' ' + f(L*.97) + ' 0" stroke="' + vein + '" stroke-width="' + f(Math.max(1.2, W*.08)) + '" fill="none" stroke-linecap="round"/>' +
+      '</g></g></g></g>';
+  }
+  // A fern frond: a curved stem with leaflets that shrink toward the tip.
+  function fern(o){
+    var L = o.len, c = o.color, light = mix(c, '#ffffff', .14), dark = mix(c, '#000000', .25), parts = '';
+    var stem = 'M0 0Q' + f(L*.5) + ' ' + f(-L*.12) + ' ' + L + ' ' + f(-L*.05);
+    for (var i = 1; i <= 11; i++){
+      var t = i / 12.5, x = L * t, y = -L*.12 * 2 * t * (1 - t) - L*.05 * t * t, size = L * .2 * (1 - t*.75);
+      [-1, 1].forEach(function(side){
+        var ang = side * 62, rad = ang * Math.PI / 180;
+        var tip = [x + Math.cos(rad)*size, y + Math.sin(rad)*size];
+        parts += '<path d="M' + f(x) + ' ' + f(y) + 'Q' + f(x + Math.cos(rad - side*.5)*size*.6) + ' ' + f(y + Math.sin(rad - side*.5)*size*.6) + ' ' + f(tip[0]) + ' ' + f(tip[1]) + 'Q' + f(x + Math.cos(rad + side*.5)*size*.6) + ' ' + f(y + Math.sin(rad + side*.5)*size*.6) + ' ' + f(x) + ' ' + f(y) + 'Z" fill="' + (side < 0 ? light : dark) + '"/>';
+      });
+    }
+    return '<g transform="translate(' + o.x + ' ' + o.y + ') rotate(' + o.a + ')"><g filter="url(#paper)"><g>' +
+      swayAnim(o.sway || 5, o.dur || 3.6, -(Math.random()*3).toFixed(1)) + parts +
+      '<path d="' + stem + '" stroke="' + dark + '" stroke-width="2.4" fill="none" stroke-linecap="round"/></g></g></g>';
+  }
+  function cluster(id, items){
+    document.getElementById(id).innerHTML = items.map(function(o){ return o.fern ? fern(o) : leaf(o); }).join('');
+  }
+  var G1 = '#1c6a48', G2 = '#2a7f56', G3 = '#3a9563', G4 = '#5bb174';
+  // Home: big corner clusters in front, plus a monstera and fern behind the branch
+  cluster('leavesA2', [
+    {x: 304, y: 252, len: 106, w: 46, a: -152, color: G3, kind: 'monstera', sway: 3},
+    {fern: true, x: -4, y: 236, len: 99, a: -38, color: G3}
+  ]);
+  cluster('leavesA', [
+    {x: -12, y: 318, len: 147, w: 24, a: -58, color: G2, kind: 'banana', sway: 3},
+    {fern: true, x: 22, y: 312, len: 106, a: -96, color: G4},
+    {x: -8, y: 312, len: 106, w: 46, a: -24, color: G1, kind: 'monstera', sway: 3},
+    {x: 312, y: 318, len: 138, w: 23, a: -124, color: G2, kind: 'banana', sway: 3},
+    {x: 300, y: 314, len: 97, w: 44, a: -158, color: G1, kind: 'monstera', sway: 3},
+    {x: 268, y: 318, len: 74, w: 17, a: -100, color: G4}
+  ]);
+  // Encounter: leaves hanging from the canopy, and a thick cluster in front
+  cluster('leavesBTop', [
+    {x: 30, y: -8, len: 120, w: 22, a: 76, color: G2, kind: 'banana'},
+    {x: 262, y: -8, len: 110, w: 48, a: 104, color: G2, kind: 'monstera', sway: 3},
+    {x: 150, y: -8, len: 71, w: 17, a: 90, color: G3},
+    {fern: true, x: 205, y: -6, len: 97, a: 72, color: G3},
+    {fern: true, x: 92, y: -6, len: 80, a: 108, color: G2}
+  ]);
+  cluster('leavesBBot', [
+    {x: -10, y: 316, len: 138, w: 23, a: -54, color: G1, kind: 'banana', sway: 3},
+    {x: -6, y: 312, len: 99, w: 44, a: -22, color: G2, kind: 'monstera', sway: 3},
+    {fern: true, x: 120, y: 318, len: 92, a: -70, color: G2},
+    {x: 312, y: 316, len: 126, w: 23, a: -128, color: G1, kind: 'banana', sway: 3},
+    {x: 304, y: 312, len: 97, w: 44, a: -160, color: G2, kind: 'monstera', sway: 3},
+    {x: 190, y: 318, len: 67, w: 16, a: -112, color: G4}
+  ]);
+  // Map: corner clusters and side fronds along the trail
+  cluster('leavesC', [
+    {x: -10, y: 640, len: 150, w: 25, a: -60, color: G2, kind: 'banana', sway: 3},
+    {x: -8, y: 634, len: 106, w: 46, a: -22, color: G1, kind: 'monstera', sway: 3},
+    {fern: true, x: 40, y: 640, len: 101, a: -92, color: G4},
+    {x: 304, y: 640, len: 138, w: 24, a: -122, color: G2, kind: 'banana', sway: 3},
+    {x: 298, y: 632, len: 101, w: 44, a: -158, color: G1, kind: 'monstera', sway: 3},
+    {fern: true, x: -4, y: 330, len: 85, a: -14, color: G3},
+    {fern: true, x: 296, y: 230, len: 80, a: -166, color: G3},
+    {x: 296, y: 470, len: 80, w: 34, a: -170, color: G3, kind: 'monstera', sway: 3}
+  ]);
+
+  // ---- Confetti ----
+  var COLORS = ['#e5574a','#f2b23c','#f08a3c','#f2a7b5','#b9e08f','#9fd3e6','#f6ead0'];
+  function confetti(phone, x, y, n){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    for (var i = 0; i < (n||22); i++){
+      var d = document.createElement('div');
+      d.className = 'confetti';
+      d.style.background = COLORS[i % COLORS.length];
+      d.style.left = x + 'px'; d.style.top = y + 'px';
+      d.style.clipPath = i % 3 ? 'polygon(0 0,100% 10%,90% 100%,5% 90%)' : 'polygon(50% 0,100% 100%,0 100%)';
+      phone.appendChild(d);
+      var a = Math.random()*Math.PI*2, v = 60 + Math.random()*110;
+      var dx = Math.cos(a)*v, dy = Math.sin(a)*v - 80;
+      d.animate([
+        {transform:'translate(0,0) rotate(0)', opacity:1},
+        {transform:'translate('+dx+'px,'+(dy+160)+'px) rotate('+(Math.random()*720-360)+'deg)', opacity:0}
+      ], {duration: 900 + Math.random()*500, easing:'cubic-bezier(.2,.6,.4,1)'}).onfinish = (function(el){ return function(){ el.remove(); }; })(d);
+    }
+  }
+  function localPoint(phone, el){
+    var p = phone.getBoundingClientRect(), r = el.getBoundingClientRect();
+    return {x: r.left - p.left + r.width/2, y: r.top - p.top + r.height/2};
+  }
+  function restart(el, cls){ el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls); }
+
+  // ---- Phone A: home ----
+  var A = document.getElementById('phoneA'), aScene = document.getElementById('aScene');
+  aScene.addEventListener('pointermove', function(e){
+    var r = aScene.getBoundingClientRect();
+    var px = (e.clientX - r.left)/r.width - .5, py = (e.clientY - r.top)/r.height - .5;
+    aScene.querySelectorAll('.layer').forEach(function(l){
+      var d = +l.dataset.depth;
+      l.style.transform = 'translate(' + (-px*d) + 'px,' + (-py*d*.5) + 'px)';
+    });
+  });
+  aScene.addEventListener('pointerleave', function(){
+    aScene.querySelectorAll('.layer').forEach(function(l){ l.style.transform = ''; });
+  });
+  A.querySelectorAll('[data-parol]').forEach(function(p){
+    p.addEventListener('click', function(){
+      restart(p, 'swing');
+      var pt = localPoint(A, p); confetti(A, pt.x, pt.y, 10);
+    });
+  });
+  var facts = [
+    'Hi! I can turn my head almost all the way around!',
+    'Each of my eyes is as big as my brain!',
+    'I sleep all day and hunt bugs at night.',
+    'I can leap from tree to tree, 40 times my body length!',
+    'Let’s find more creatures tonight!'
+  ];
+  var fi = 0, bubble = document.getElementById('bubble'), bt;
+  document.getElementById('tarsiHome').addEventListener('click', function(){
+    var body = document.getElementById('tarsiBody');
+    var wrap = body.parentNode;
+    wrap.style.transformBox = 'fill-box'; wrap.style.transformOrigin = '50% 100%';
+    restart(wrap, 'jump');
+    bubble.textContent = facts[fi++ % facts.length];
+    bubble.classList.add('on');
+    clearTimeout(bt); bt = setTimeout(function(){ bubble.classList.remove('on'); }, 2600);
+  });
+  setTimeout(function(){ bubble.classList.add('on'); bt = setTimeout(function(){ bubble.classList.remove('on'); }, 2600); }, 900);
+  A.querySelectorAll('.task').forEach(function(t){
+    t.addEventListener('click', function(){
+      var on = t.classList.toggle('done');
+      t.querySelector('i').textContent = on ? '✓' : '';
+      if (on){ var pt = localPoint(A, t.querySelector('i')); confetti(A, pt.x, pt.y, 14); }
+    });
+  });
+  document.getElementById('playBtn').addEventListener('click', function(){
+    var pt = localPoint(A, this); confetti(A, pt.x, pt.y, 18);
+  });
+
+  // ---- Phone B: encounter ----
+  var B = document.getElementById('phoneB'), bScene = document.getElementById('bScene'),
+      dark = document.getElementById('dark'), hint = document.getElementById('hint'),
+      bQ = document.getElementById('bQ'), qText = document.getElementById('qText'),
+      hideSpot = document.getElementById('hideSpot'), overlay = document.getElementById('overlay'),
+      heartsEl = document.getElementById('hearts'), prog = document.getElementById('prog');
+  var spots = ['translate(40 52) scale(.5)', 'translate(170 62) scale(.48)', 'translate(110 156) scale(.42)'];
+  var found = false, hold = 0, lastTick = 0, ptr = null, hearts = 3, spotIdx = 0, answered = false;
+
+  function resetB(){
+    found = false; hold = 0; answered = false; hearts = 3;
+    heartsEl.textContent = '♥♥♥';
+    prog.style.width = '12%';
+    spotIdx = (spotIdx + 1) % spots.length;
+    hideSpot.setAttribute('transform', spots[spotIdx]);
+    bScene.classList.remove('found');
+    dark.style.setProperty('--x', '50%'); dark.style.setProperty('--y', '85%');
+    hint.style.opacity = 1;
+    qText.textContent = 'Something is hiding in the trees…';
+    bQ.classList.remove('ready');
+    bQ.querySelectorAll('.tagbtn').forEach(function(b){ b.classList.remove('ok','bad'); });
+    overlay.classList.remove('on');
+  }
+  function move(e){
+    if (found) return;
+    var r = bScene.getBoundingClientRect();
+    ptr = {x: e.clientX, y: e.clientY};
+    dark.style.setProperty('--x', (e.clientX - r.left) + 'px');
+    dark.style.setProperty('--y', (e.clientY - r.top) + 'px');
+    hint.style.opacity = 0;
+  }
+  bScene.addEventListener('pointerdown', function(e){ bScene.setPointerCapture(e.pointerId); move(e); });
+  bScene.addEventListener('pointermove', function(e){ if (e.pointerType === 'mouse' || e.buttons) move(e); });
+
+  function tick(t){
+    var dt = lastTick ? t - lastTick : 16; lastTick = t;
+    if (!found && ptr){
+      var c = document.getElementById('tarsiHidden').getBoundingClientRect();
+      var cx = c.left + c.width/2, cy = c.top + c.height/2;
+      var dist = Math.hypot(ptr.x - cx, ptr.y - cy);
+      hold = dist < 42 ? hold + dt : 0;
+      if (hold > 600){
+        found = true;
+        bScene.classList.add('found');
+        var wrap = document.getElementById('tarsiHidden').parentNode;
+        wrap.style.transformBox = 'fill-box'; wrap.style.transformOrigin = '50% 100%';
+        restart(wrap, 'jump');
+        var pt = localPoint(B, document.getElementById('tarsiHidden'));
+        confetti(B, pt.x, pt.y, 16);
+        setTimeout(function(){ qText.textContent = 'What does a tarsier eat?'; bQ.classList.add('ready'); prog.style.width = '30%'; }, 650);
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  bQ.querySelectorAll('.tagbtn').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (!found || answered) return;
+      if (b.dataset.ok === '1'){
+        answered = true;
+        b.classList.add('ok');
+        prog.style.width = '50%';
+        var pt = localPoint(B, b); confetti(B, pt.x, pt.y, 26);
+        setTimeout(function(){ overlay.classList.add('on'); var c = localPoint(B, overlay.querySelector('.card')); setTimeout(function(){ confetti(B, c.x, c.y, 40); }, 700); }, 800);
+      } else {
+        b.classList.add('bad'); restart(b, 'shake');
+        hearts = Math.max(0, hearts - 1);
+        heartsEl.textContent = '♥'.repeat(hearts) + '♡'.repeat(3 - hearts);
+        restart(heartsEl, 'shake');
+      }
+    });
+  });
+  document.getElementById('again').addEventListener('click', resetB);
+
+  // ---- Phone C: map ----
+  var C = document.getElementById('phoneC'), stagesEl = document.getElementById('stages');
+  var stageData = [
+    {x:90, y:548, n:'1', lit:true, title:'Stage 1: Forest giants', text:'★★★ · Birds, plants, and what they eat'},
+    {x:196, y:440, n:'2', lit:true, title:'Stage 2: Lights in the dark', text:'★★☆ · Nocturnal animals and insects'},
+    {x:90, y:360, n:'3', lit:true, title:'Stage 3: Tree travelers', text:'★★☆ · How animals move and eat'},
+    {x:210, y:260, n:'4', next:true, title:'Stage 4: Food chains', text:'8 questions · 2 creatures hiding · about 5 min'},
+    {x:120, y:150, n:'★', lock:true, title:'Rainforest review', text:'Finish stage 4 to unlock'}
+  ];
+  stagesEl.innerHTML = stageData.map(function(s, i){
+    var color = s.next ? '#f2b23c' : s.lit ? '#e5574a' : '#3a3f80';
+    var big = s.next ? 22 : 18;
+    return '<g class="stage" data-i="'+i+'">' + parol(s.x, s.y, big, color, !s.lock, i % 2 ? 'b' : '') +
+      '<text x="'+s.x+'" y="'+(s.y+5)+'" text-anchor="middle" font-size="'+(s.next?15:13)+'" fill="'+(s.lock?'#5a5f92':'#3b2a14')+'" pointer-events="none">'+s.n+'</text></g>';
+  }).join('');
+  var sheet = document.getElementById('sheet');
+  stagesEl.querySelectorAll('.stage').forEach(function(g){
+    g.addEventListener('click', function(){
+      var s = stageData[+g.dataset.i];
+      restart(g.querySelector('[data-parol]'), 'swing');
+      document.getElementById('sTitle').textContent = s.title;
+      document.getElementById('sText').textContent = s.text;
+      sheet.querySelector('.go').textContent = s.lock ? 'Locked' : (s.lit ? 'Play again' : 'Start with flashlight');
+      document.getElementById('cTip').style.opacity = 0;
+      sheet.classList.remove('on'); void sheet.offsetWidth; sheet.classList.add('on');
+      if (!s.lock){ var pt = localPoint(C, g); confetti(C, pt.x, pt.y, 10); }
+    });
+  });
+  sheet.querySelector('.go').addEventListener('click', function(){ var pt = localPoint(C, this); confetti(C, pt.x, pt.y, 18); });
+})();
+</script>

@@ -1,0 +1,242 @@
+<title>Field Journal Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Gaegu:wght@400;700&display=swap">
+<style>
+/* Layout: two phones side by side. Left is the daytime home page, right is the moment night mode unlocks. Notes sit under each phone. */
+:root{
+  --bg:#eef0eb; --fg:#1b201c; --muted:#58615a; --line:#d3d8d0; --surface:#fbfcfa; --accent:#2e6a4d;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --paper:#eadcbf; --ink:#33251a; --fern:#4e7a4a; --stamp:#c0392b; --gold:#e3b347; --night:#141a3a; --moon:#f2d16b;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121613;--fg:#e7ebe6;--muted:#9aa39b;--line:#2b322d;--surface:#1a1f1b;--accent:#86c9a6;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121613;--fg:#e7ebe6;--muted:#9aa39b;--line:#2b322d;--surface:#1a1f1b;--accent:#86c9a6;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.55;padding:0 20px}
+.wrap{max-width:900px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:60ch;margin:0 0 36px}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px;justify-items:center}
+.col{display:flex;flex-direction:column;gap:14px;width:340px;max-width:100%}
+.col h2{font-family:var(--f-display);font-weight:800;font-size:22px;margin:0}
+.col ol{margin:0;padding-left:20px;color:var(--muted);font-size:15px}
+.col li{margin-bottom:4px}
+.col li b{color:var(--fg)}
+
+.phone{width:340px;max-width:100%;height:720px;border-radius:46px;border:10px solid #121212;position:relative;overflow:hidden;background:var(--paper)}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:92px;height:22px;border-radius:12px;background:#121212;z-index:10}
+.page{position:absolute;inset:0;padding:40px 16px 74px 40px;color:var(--ink);overflow:hidden;
+  background-color:var(--paper);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .08 0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+  repeating-linear-gradient(to bottom,transparent 0 27px,rgba(70,100,140,.15) 27px 28px);}
+.page::before{content:"";position:absolute;left:28px;top:0;bottom:0;width:1.5px;background:rgba(192,57,43,.35)}
+.holes{position:absolute;left:8px;top:90px;display:flex;flex-direction:column;gap:150px}
+.holes i{width:12px;height:12px;border-radius:50%;background:#121212;opacity:.85}
+.hand{font-family:"Gaegu",cursive}
+
+.top{display:flex;justify-content:space-between;align-items:flex-start}
+.title{font-family:"Gaegu",cursive;font-weight:700;font-size:28px;line-height:.95}
+.title small{display:block;font-size:17px;font-weight:400}
+.rank{font-family:"Gaegu",cursive;font-weight:700;font-size:15px;color:var(--stamp);border:2.5px double var(--stamp);border-radius:50%;width:64px;height:64px;display:grid;place-items:center;text-align:center;line-height:1;transform:rotate(8deg)}
+.streak{display:flex;gap:4px;margin:6px 0 10px;font-family:"Gaegu",cursive;font-size:17px;align-items:center}
+.streak span{width:20px;height:20px;border:2px solid var(--ink);border-radius:46% 54% 50% 50%;display:grid;place-items:center;font-size:13px;font-weight:700}
+.streak span.on{background:var(--gold)}
+
+.partner{display:flex;gap:12px;align-items:center}
+.polaroid{background:#f8f3e6;padding:6px 6px 4px;transform:rotate(-4deg);box-shadow:0 2px 0 rgba(51,37,26,.18);position:relative;flex:none}
+.polaroid::before{content:"";position:absolute;width:40px;height:14px;background:rgba(232,201,104,.65);top:-7px;left:50%;margin-left:-20px;transform:rotate(-6deg)}
+.polaroid div{font-family:"Gaegu",cursive;font-size:14px;text-align:center}
+.pinfo{font-size:14px;line-height:1.3}
+.pinfo b{font-family:"Gaegu",cursive;font-size:21px;display:block}
+.bar{height:12px;border:2px solid var(--ink);border-radius:8px 6px 9px 7px;margin-top:6px;overflow:hidden;width:150px}
+.bar i{display:block;height:100%;width:60%;background:repeating-linear-gradient(-45deg,var(--fern) 0 4px,#6b9a5f 4px 8px)}
+
+.sticky{background:#f7e27a;margin:16px 0 0 -6px;padding:10px 12px 8px;transform:rotate(1.2deg);box-shadow:2px 3px 0 rgba(51,37,26,.18);position:relative}
+.sticky h3{font-family:"Gaegu",cursive;font-size:20px;margin:0 0 2px}
+.task{display:flex;gap:8px;align-items:center;font-size:15px;background:none;border:none;padding:3px 0;color:var(--ink);font-family:var(--f-body);cursor:pointer;width:100%;text-align:left}
+.task::before{content:"";width:16px;height:16px;border:2px solid var(--ink);border-radius:3px 4px 3px 5px;flex:none}
+.task.done{text-decoration:line-through;text-decoration-color:var(--fern);text-decoration-thickness:2px}
+.task.done::before{background:var(--fern);box-shadow:inset 0 0 0 2px #f7e27a}
+.task:focus-visible{outline:2px solid var(--fern);outline-offset:2px}
+.reward{position:absolute;right:10px;top:8px;font-family:"Gaegu",cursive;font-size:15px;font-weight:700;color:#7a5a00}
+
+.cont{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cont .where{font-size:14px;line-height:1.3}
+.cont .where b{font-family:"Gaegu",cursive;font-size:22px;display:block}
+.stampbtn{font-family:"Gaegu",cursive;font-weight:700;font-size:22px;color:var(--stamp);border:3px double var(--stamp);background:rgba(248,243,230,.6);padding:2px 14px;border-radius:6px;transform:rotate(-4deg);cursor:pointer;letter-spacing:.06em}
+
+.nightcard{margin-top:16px;background:var(--night);color:#e9e6ff;padding:12px 12px 12px 14px;transform:rotate(-1.2deg);box-shadow:2px 4px 0 rgba(51,37,26,.3);position:relative;overflow:hidden;
+  background-image:radial-gradient(1.5px 1.5px at 30px 20px,#e9e6ff 50%,transparent 51%),radial-gradient(1px 1px at 120px 50px,#e9e6ff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 200px 14px,#e9e6ff 50%,transparent 51%);}
+.nightcard::before{content:"";position:absolute;width:50px;height:16px;background:rgba(232,201,104,.6);top:-6px;right:24px;transform:rotate(10deg)}
+.nightcard .moon{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;background:var(--moon);box-shadow:inset -9px -4px 0 #d9b44a}
+.nightcard h3{font-family:"Gaegu",cursive;font-size:22px;margin:0;color:var(--moon)}
+.nightcard p{margin:2px 0 10px;font-size:14px;color:#b9b4e0;max-width:22ch}
+.eyes{display:flex;gap:14px;margin-bottom:10px}
+.eyes span{display:flex;gap:3px}
+.eyes span i{width:9px;height:9px;border-radius:50%;background:var(--moon)}
+.nightbtn{font-family:"Gaegu",cursive;font-weight:700;font-size:19px;background:var(--moon);color:var(--night);border:none;border-radius:999px;padding:4px 16px;cursor:pointer}
+.nightbtn:focus-visible,.stampbtn:focus-visible{outline:2px solid var(--fern);outline-offset:3px}
+
+.tabs{position:absolute;left:0;right:0;bottom:0;height:66px;display:flex;align-items:flex-end;padding:0 12px 10px;gap:6px;z-index:3}
+.tab{flex:1;font-family:"Gaegu",cursive;font-weight:700;font-size:17px;text-align:center;padding:8px 0 6px;border-radius:10px 10px 4px 4px;color:var(--ink);border:none}
+.tab.t1{background:#f8f3e6;transform:translateY(-6px);box-shadow:0 2px 0 rgba(51,37,26,.2)}
+.tab.t2{background:#b9d98a}.tab.t3{background:#f2a7b5}.tab.t4{background:#9fd3e6}
+
+/* Phone 2: unlock moment */
+.dim{position:absolute;inset:0;background:rgba(10,12,30,.62);z-index:4}
+.pop{position:absolute;left:22px;right:22px;top:120px;z-index:5;background:var(--night);color:#e9e6ff;padding:22px 18px 18px;text-align:center;transform:rotate(-1deg);box-shadow:3px 6px 0 rgba(0,0,0,.35);
+  background-image:radial-gradient(1.5px 1.5px at 30px 30px,#e9e6ff 50%,transparent 51%),radial-gradient(1px 1px at 150px 60px,#e9e6ff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 230px 24px,#e9e6ff 50%,transparent 51%),radial-gradient(1px 1px at 90px 200px,#e9e6ff 50%,transparent 51%)}
+.pop::before,.pop::after{content:"";position:absolute;width:60px;height:18px;background:rgba(232,201,104,.6);top:-8px}
+.pop::before{left:-10px;transform:rotate(-24deg)}.pop::after{right:-10px;transform:rotate(20deg)}
+.sky{height:110px;position:relative;margin:-6px -6px 10px;overflow:hidden}
+.sun{position:absolute;left:50%;width:70px;height:70px;margin-left:-35px;border-radius:50%;background:#f0a04b;top:70px}
+.big-moon{position:absolute;left:50%;width:62px;height:62px;margin-left:-31px;border-radius:50%;background:var(--moon);box-shadow:inset -14px -6px 0 #d9b44a;top:110px}
+.hills{position:absolute;left:-10px;right:-10px;bottom:-30px;height:60px;background:#0b1028;border-radius:50% 50% 0 0}
+.pop h3{font-family:"Gaegu",cursive;font-weight:700;font-size:30px;line-height:1;margin:0;color:var(--moon)}
+.pop p{font-size:15px;margin:8px 0 14px;color:#cfcaf0}
+.sil{display:flex;justify-content:center;gap:10px;margin-bottom:16px}
+.sil div{width:62px;height:62px;border:2px dashed #5a5f92;border-radius:10px;display:grid;place-items:center;font-family:"Gaegu",cursive;font-size:13px;color:#8d89c0;line-height:1.1;padding-top:4px}
+.sil div b{display:block;font-size:24px;color:#5a5f92}
+.pop .go{display:block;width:100%;font-family:"Gaegu",cursive;font-weight:700;font-size:22px;background:var(--moon);color:var(--night);border:none;border-radius:999px;padding:6px;cursor:pointer}
+.pop .later{background:none;border:none;color:#b9b4e0;font-family:"Gaegu",cursive;font-size:18px;margin-top:6px;cursor:pointer}
+.replay{align-self:flex-start;font:inherit;font-size:14px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:5px 14px;cursor:pointer}
+.replay:hover{border-color:var(--accent)}
+
+.anim .sun{animation:set 1.6s ease-in both}
+.anim .big-moon{animation:rise 1.4s .9s cubic-bezier(.2,1.2,.4,1) both}
+.anim .pop{animation:drop .5s cubic-bezier(.2,1.4,.4,1) both}
+.anim .dim{animation:fade .4s both}
+@keyframes set{from{top:22px}to{top:120px}}
+@keyframes rise{from{top:110px}to{top:20px}}
+@keyframes drop{from{transform:translateY(-30px) rotate(-6deg);opacity:0}to{transform:rotate(-1deg);opacity:1}}
+@keyframes fade{from{opacity:0}}
+.phone:not(.anim) .big-moon{top:20px}
+.phone:not(.anim) .sun{top:120px}
+.pulse{animation:pulse .6s 2}
+@keyframes pulse{50%{transform:scale(1.02)}}
+@media (prefers-reduced-motion:reduce){.anim *,.pulse{animation:none!important}.anim .big-moon{top:20px}.anim .sun{top:120px}}
+</style>
+
+<div class="wrap">
+  <h1>Field journal home, with night expeditions</h1>
+  <p class="lead">Left: the home page kids see every day, in the notebook style. Right: what happens when they finish a habitat and a night expedition unlocks. Tap the tasks on the sticky note, or "Go at night" to replay the unlock.</p>
+
+  <div class="pair">
+    <div class="col">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="page">
+          <div class="holes"><i></i><i></i><i></i></div>
+          <div class="top">
+            <div class="title">Ana's<br>Field Journal<small>Grade 3 · Explorer</small></div>
+            <div class="rank">Ranger<br>Lv 6</div>
+          </div>
+          <div class="streak">5-day streak
+            <span class="on">M</span><span class="on">T</span><span class="on">W</span><span class="on">T</span><span class="on">F</span><span>S</span><span>S</span>
+          </div>
+
+          <div class="partner">
+            <div class="polaroid">
+              <svg viewBox="0 0 200 200" width="82" height="82" aria-hidden="true">
+                <defs><filter id="w1"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="9"/><feDisplacementMap in="SourceGraphic" scale="10"/></filter>
+                <filter id="w2"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs>
+                <g filter="url(#w1)" opacity=".82"><ellipse cx="100" cy="150" rx="44" ry="36" fill="#c18c55"/><ellipse cx="52" cy="50" rx="18" ry="25" fill="#d7a978"/><ellipse cx="148" cy="50" rx="18" ry="25" fill="#d7a978"/><circle cx="100" cy="96" r="54" fill="#d9ab78"/><circle cx="77" cy="94" r="21" fill="#e3b347"/><circle cx="123" cy="94" r="21" fill="#e3b347"/></g>
+                <g filter="url(#w2)" fill="none" stroke="#33251a" stroke-width="4" stroke-linecap="round"><ellipse cx="102" cy="148" rx="43" ry="35"/><ellipse cx="54" cy="51" rx="17" ry="24"/><ellipse cx="146" cy="51" rx="17" ry="24"/><circle cx="101" cy="95" r="53"/><circle cx="78" cy="94" r="22"/><circle cx="122" cy="94" r="22"/><path d="M90 130 q10 7 20 0"/></g>
+                <circle cx="79" cy="96" r="10" fill="#1d140d"/><circle cx="121" cy="96" r="10" fill="#1d140d"/><circle cx="83" cy="92" r="3.5" fill="#fff"/><circle cx="125" cy="92" r="3.5" fill="#fff"/>
+              </svg>
+              <div>my partner</div>
+            </div>
+            <div class="pinfo"><b>Tarsi</b>Evolves in 4 more quizzes
+              <div class="bar"><i></i></div>
+            </div>
+          </div>
+
+          <div class="sticky">
+            <h3>Today's expedition</h3>
+            <span class="reward">+30 gems</span>
+            <button class="task done" aria-pressed="true">Catch 2 creatures</button>
+            <button class="task" aria-pressed="false">Color 1 creature</button>
+            <button class="task" aria-pressed="false">Finish 1 stage</button>
+          </div>
+
+          <div class="cont">
+            <div class="where"><b>Rainforest · Stage 4</b>Plants and food chains<br>★ 12 of 15</div>
+            <button class="stampbtn" type="button">EXPLORE</button>
+          </div>
+
+          <div class="nightcard">
+            <div class="moon"></div>
+            <h3>Night expedition</h3>
+            <p>The rainforest is awake after dark. 3 creatures are hiding.</p>
+            <div class="eyes"><span><i></i><i></i></span><span><i></i><i></i></span><span><i></i><i></i></span></div>
+            <button class="nightbtn" type="button" id="goNight">Go at night</button>
+          </div>
+        </div>
+        <div class="tabs">
+          <span class="tab t1">Home</span><span class="tab t2">Map</span><span class="tab t3">Dex</span><span class="tab t4">Badges</span>
+        </div>
+      </div>
+      <h2>Daily home page</h2>
+      <ol>
+        <li><b>Journal cover info</b>: the kid's name, grade, and ranger rank as a stamp.</li>
+        <li><b>Streak</b>: days of the week filled in like a hand-drawn calendar.</li>
+        <li><b>Partner creature</b>: a taped photo and how close it is to evolving.</li>
+        <li><b>Sticky note</b>: 3 daily tasks for a gem reward.</li>
+        <li><b>Continue</b>: jumps straight to the next stage.</li>
+        <li><b>Night card</b>: appears only after a habitat is finished.</li>
+        <li><b>Notebook tabs</b>: Home, Map, Dex, and Badges.</li>
+      </ol>
+    </div>
+
+    <div class="col">
+      <div class="phone anim" id="unlockPhone">
+        <div class="notch"></div>
+        <div class="page">
+          <div class="holes"><i></i><i></i><i></i></div>
+          <div class="top"><div class="title">Ana's<br>Field Journal<small>Grade 3 · Explorer</small></div><div class="rank">Ranger<br>Lv 6</div></div>
+        </div>
+        <div class="dim"></div>
+        <div class="pop">
+          <div class="sky"><div class="sun"></div><div class="big-moon"></div><div class="hills"></div></div>
+          <h3>The sun is setting…</h3>
+          <p>You finished every Rainforest stage. A <b>night expedition</b> is now open. Some animals only come out after dark!</p>
+          <div class="sil">
+            <div><b>?</b>big eyes</div>
+            <div><b>?</b>wings</div>
+            <div><b>?</b>glows</div>
+          </div>
+          <button class="go" type="button">Start night expedition</button>
+          <button class="later" type="button">Maybe later</button>
+        </div>
+      </div>
+      <button class="replay" type="button" id="replay">Replay unlock</button>
+      <h2>Night expedition unlocks</h2>
+      <ol>
+        <li><b>Sunset animation</b>: the sun sinks and the moon rises.</li>
+        <li><b>The reason</b>: tells kids why it unlocked (they finished the habitat).</li>
+        <li><b>Mystery clues</b>: hints like "big eyes" for the tarsier, "wings" for the bat, and "glows" for fireflies.</li>
+        <li><b>Start</b>: opens the dark flashlight stage.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.task').forEach(function(t){
+  t.addEventListener('click', function(){
+    var on = t.classList.toggle('done');
+    t.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+});
+var unlock = document.getElementById('unlockPhone');
+function replay(){
+  unlock.classList.remove('anim'); void unlock.offsetWidth; unlock.classList.add('anim');
+}
+document.getElementById('replay').addEventListener('click', replay);
+document.getElementById('goNight').addEventListener('click', function(){
+  replay();
+  unlock.scrollIntoView({behavior:'smooth', block:'center'});
+});
+</script>

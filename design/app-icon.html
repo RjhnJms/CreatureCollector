@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App Icon Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4ecdc;
+  --card: #fffaf0;
+  --ink: #3b2a14;
+  --muted: #7a6a52;
+  --line: #e2d4b8;
+  --accent: #f08a3c;
+  --wall-a: #2c3170;
+  --wall-b: #1b1e4b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12143a;
+    --card: #1b1e4b;
+    --ink: #fff4dc;
+    --muted: #cbc4e8;
+    --line: #2c3170;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12143a;
+  --card: #1b1e4b;
+  --ink: #fff4dc;
+  --muted: #cbc4e8;
+  --line: #2c3170;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+  line-height: 1.5;
+}
+main { max-width: 1100px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 34px; margin: 0 0 6px; line-height: 1.1; }
+.lede { color: var(--muted); margin: 0 0 32px; max-width: 60ch; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.opt {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.head { display: flex; align-items: baseline; gap: 10px; }
+.letter {
+  font-family: Sniglet, system-ui; font-weight: 800; font-size: 15px;
+  background: var(--accent); color: #fff4dc;
+  border-radius: 6px; padding: 1px 9px;
+}
+.name { font-family: Sniglet, system-ui; font-weight: 800; font-size: 22px; }
+.sizes { display: flex; align-items: flex-end; gap: 18px; }
+.big svg { width: 148px; height: 148px; border-radius: 26%; display: block; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+.round svg { width: 72px; height: 72px; border-radius: 50%; display: block; box-shadow: 0 3px 10px rgba(0,0,0,.25); }
+.cap { font-size: 12px; color: var(--muted); text-align: center; margin-top: 6px; }
+.home {
+  background: linear-gradient(160deg, var(--wall-a), var(--wall-b));
+  border-radius: 12px;
+  padding: 14px 10px 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.app { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.app svg, .app .ghost { width: 46px; height: 46px; border-radius: 50%; display: block; }
+.app .ghost { background: rgba(255,255,255,.12); }
+.app span { font-size: 11px; color: #fff; text-align: center; line-height: 1.2; }
+.app span.dim { color: rgba(255,255,255,.55); }
+p.why { margin: 0; color: var(--muted); font-size: 15px; }
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+</style>
+</head>
+<body>
+
+<svg class="defs" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2C3170"/>
+      <stop offset="1" stop-color="#1B1E4B"/>
+    </linearGradient>
+    <radialGradient id="moonGlow">
+      <stop offset="0" stop-color="#F6EAD0" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#F6EAD0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="parolGlow">
+      <stop offset="0" stop-color="#F2B23C" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#F2B23C" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="eyeGlow">
+      <stop offset="0" stop-color="#F0C85A" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#F0C85A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="spot" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#FFF4DC" stop-opacity=".22"/>
+      <stop offset=".75" stop-color="#FFF4DC" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#FFF4DC" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Tarsi, drawn on the same 100x100 grid as the app's creature art -->
+    <symbol id="tarsi" viewBox="0 0 100 100">
+      <g stroke="#5A3A22" stroke-width="1.6">
+        <path d="M72 84 C92 80 98 62 90 44" fill="none" stroke="#7E5532" stroke-width="4.5" stroke-linecap="round"/>
+        <circle cx="90" cy="44" r="3.4" fill="#7E5532" stroke="none"/>
+        <ellipse cx="50" cy="76" rx="23" ry="18" fill="#C98E5A"/>
+        <ellipse cx="50" cy="81" rx="13" ry="11" fill="#E2B98C" stroke="none"/>
+      </g>
+      <use href="#tarsiHeadArt"/>
+      <g stroke="#5A3A22" stroke-width="1.6" fill="#C98E5A">
+        <circle cx="37" cy="91" r="4.5"/>
+        <circle cx="63" cy="91" r="4.5"/>
+      </g>
+    </symbol>
+
+    <g id="tarsiHeadArt">
+      <g stroke="#5A3A22" stroke-width="1.6">
+        <ellipse cx="25" cy="26" rx="10" ry="13.5" fill="#C98E5A"/>
+        <ellipse cx="75" cy="26" rx="10" ry="13.5" fill="#C98E5A"/>
+      </g>
+      <ellipse cx="25" cy="28" rx="5" ry="8" fill="#E09A8A"/>
+      <ellipse cx="75" cy="28" rx="5" ry="8" fill="#E09A8A"/>
+      <circle cx="50" cy="49" r="28" fill="#C98E5A" stroke="#5A3A22" stroke-width="1.6"/>
+      <circle cx="38.5" cy="47" r="12.5" fill="#F0C85A" stroke="#5A3A22" stroke-width="1.2"/>
+      <circle cx="61.5" cy="47" r="12.5" fill="#F0C85A" stroke="#5A3A22" stroke-width="1.2"/>
+      <circle cx="38.5" cy="47.5" r="8" fill="#120D08"/>
+      <circle cx="61.5" cy="47.5" r="8" fill="#120D08"/>
+      <circle cx="35.6" cy="44.4" r="2.7" fill="#fff"/>
+      <circle cx="58.6" cy="44.4" r="2.7" fill="#fff"/>
+      <circle cx="41" cy="50.5" r="1.2" fill="#fff"/>
+      <circle cx="64" cy="50.5" r="1.2" fill="#fff"/>
+      <ellipse cx="50" cy="59.5" rx="2.25" ry="1.5" fill="#5A3A22"/>
+      <path d="M46 63 Q50 66 54 63" fill="none" stroke="#5A3A22" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="30" cy="58" r="4" fill="#FF8FA3" opacity=".45"/>
+      <circle cx="70" cy="58" r="4" fill="#FF8FA3" opacity=".45"/>
+    </g>
+
+    <symbol id="tarsiHead" viewBox="0 10 100 70">
+      <use href="#tarsiHeadArt"/>
+    </symbol>
+
+    <g id="stars">
+      <circle cx="14" cy="18" r=".9" fill="#fff" opacity=".8"/>
+      <circle cx="30" cy="10" r=".6" fill="#fff" opacity=".6"/>
+      <circle cx="44" cy="22" r=".7" fill="#fff" opacity=".7"/>
+      <circle cx="96" cy="44" r=".7" fill="#fff" opacity=".6"/>
+      <circle cx="8" cy="46" r=".6" fill="#fff" opacity=".5"/>
+      <circle cx="60" cy="8" r=".8" fill="#fff" opacity=".7"/>
+    </g>
+
+    <!-- A: Tarsi peeking over the leaves under the moon -->
+    <symbol id="iconA" viewBox="0 0 108 108">
+      <rect width="108" height="108" fill="url(#sky)"/>
+      <use href="#stars"/>
+      <circle cx="82" cy="24" r="20" fill="url(#moonGlow)"/>
+      <circle cx="82" cy="24" r="10" fill="#F6EAD0"/>
+      <use href="#tarsiHead" x="8" y="28" width="92" height="64.4"/>
+      <path d="M0 92 Q14 80 26 90 Q38 78 54 90 Q70 78 82 89 Q96 80 108 90 V108 H0Z" fill="#000" opacity=".3" transform="translate(0 3)"/>
+      <path d="M0 92 Q14 80 26 90 Q38 78 54 90 Q70 78 82 89 Q96 80 108 90 V108 H0Z" fill="#2A7F56"/>
+      <path d="M-4 100 Q16 88 34 98 Q52 88 70 99 Q88 88 112 98 V108 H-4Z" fill="#1C6A48"/>
+      <path d="M8 104 Q14 86 28 82 Q22 96 8 104Z" fill="#3A9563"/>
+      <path d="M100 104 Q94 86 80 82 Q86 96 100 104Z" fill="#3A9563"/>
+    </symbol>
+
+    <!-- B: two big eyes caught in the flashlight -->
+    <symbol id="iconB" viewBox="0 0 108 108">
+      <rect width="108" height="108" fill="#12143A"/>
+      <use href="#stars" opacity=".5"/>
+      <path d="M8 112 L26 112 L94 70 L36 22 Z" fill="#FFF4DC" opacity=".045"/>
+      <ellipse cx="58" cy="48" rx="36" ry="30" fill="url(#spot)"/>
+      <path d="M-6 30 Q14 38 18 62 Q4 54 -6 58Z" fill="#1C6A48"/>
+      <path d="M114 74 Q92 70 86 96 Q100 86 114 92Z" fill="#1C6A48"/>
+      <path d="M-6 92 Q16 82 30 100 Q12 98 -6 112Z" fill="#2A7F56"/>
+      <circle cx="46" cy="48" r="16" fill="url(#eyeGlow)"/>
+      <circle cx="70" cy="48" r="16" fill="url(#eyeGlow)"/>
+      <circle cx="46" cy="48" r="10.5" fill="#F0C85A"/>
+      <circle cx="70" cy="48" r="10.5" fill="#F0C85A"/>
+      <circle cx="46" cy="48.5" r="6.8" fill="#120D08"/>
+      <circle cx="70" cy="48.5" r="6.8" fill="#120D08"/>
+      <circle cx="43.4" cy="45.6" r="2.4" fill="#fff"/>
+      <circle cx="67.4" cy="45.6" r="2.4" fill="#fff"/>
+    </symbol>
+
+    <!-- C: a parol star lantern -->
+    <symbol id="iconC" viewBox="0 0 108 108">
+      <rect width="108" height="108" fill="url(#sky)"/>
+      <use href="#stars"/>
+      <path d="M-4 14 Q54 34 112 12" fill="none" stroke="#3B2A14" stroke-width="1.4"/>
+      <circle cx="54" cy="46" r="40" fill="url(#parolGlow)"/>
+      <g stroke="#FFF4DC" stroke-width="2.2" stroke-linecap="round" fill="none">
+        <path d="M46 66 L43 92"/>
+        <path d="M54 60 L54 96"/>
+        <path d="M62 66 L65 92"/>
+      </g>
+      <path d="M54 20 L60.47 37.1 L78.73 37.97 L64.46 49.4 L69.29 67.03 L54 57 L38.71 67.03 L43.54 49.4 L29.27 37.97 L47.53 37.1Z" fill="#000" opacity=".35" transform="translate(2 3)"/>
+      <path d="M54 20 L60.47 37.1 L78.73 37.97 L64.46 49.4 L69.29 67.03 L54 57 L38.71 67.03 L43.54 49.4 L29.27 37.97 L47.53 37.1Z" fill="#F08A3C" stroke="#B85A1E" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M54 33 L57.23 41.55 L66.36 41.98 L59.23 47.7 L61.64 56.52 L54 51.5 L46.36 56.52 L48.77 47.7 L41.64 41.98 L50.77 41.55Z" fill="#FFF4DC"/>
+      <circle cx="54" cy="46" r="3" fill="#F2B23C"/>
+    </symbol>
+
+    <!-- D: Tarsi on a cream paper tag, like the app's cards -->
+    <symbol id="iconD" viewBox="0 0 108 108">
+      <rect width="108" height="108" fill="#1B1E4B"/>
+      <use href="#stars"/>
+      <g transform="rotate(-6 54 56)">
+        <path d="M21 25 L88 23 L87 89 L22 88Z" fill="#000" opacity=".35" transform="translate(3 5)"/>
+        <path d="M21 25 L88 23 L87 89 L22 88Z" fill="#F6EAD0"/>
+        <path d="M21 72 Q40 64 54 72 T87 70 L87 89 L22 88Z" fill="#B9E08F" opacity=".55"/>
+        <use href="#tarsi" x="25" y="26" width="58" height="58"/>
+      </g>
+      <path d="M54 4 L52 21" stroke="#F2B23C" stroke-width="1.4"/>
+      <circle cx="52" cy="23" r="2.4" fill="#12143A" stroke="#F2B23C" stroke-width="1.2"/>
+    </symbol>
+
+    <!-- E: Tarsi's silhouette on a branch against a big moon -->
+    <symbol id="iconE" viewBox="0 0 108 108">
+      <rect width="108" height="108" fill="url(#sky)"/>
+      <use href="#stars"/>
+      <circle cx="56" cy="50" r="40" fill="url(#moonGlow)"/>
+      <circle cx="56" cy="50" r="31" fill="#F6EAD0"/>
+      <circle cx="44" cy="38" r="4" fill="#EADCB8"/>
+      <circle cx="70" cy="62" r="5.5" fill="#EADCB8"/>
+      <circle cx="72" cy="36" r="2.5" fill="#EADCB8"/>
+      <g transform="translate(26 20) scale(.6)" fill="#12143A">
+        <path d="M72 84 C92 80 98 62 90 44" fill="none" stroke="#12143A" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="90" cy="44" r="4"/>
+        <ellipse cx="50" cy="76" rx="23" ry="18"/>
+        <ellipse cx="25" cy="26" rx="10" ry="13.5"/>
+        <ellipse cx="75" cy="26" rx="10" ry="13.5"/>
+        <circle cx="50" cy="49" r="28"/>
+        <circle cx="38.5" cy="47" r="11.5" fill="#F0C85A"/>
+        <circle cx="61.5" cy="47" r="11.5" fill="#F0C85A"/>
+        <circle cx="38.5" cy="47.5" r="7" fill="#12143A"/>
+        <circle cx="61.5" cy="47.5" r="7" fill="#12143A"/>
+        <circle cx="35.8" cy="44.6" r="2.4" fill="#fff"/>
+        <circle cx="58.8" cy="44.6" r="2.4" fill="#fff"/>
+      </g>
+      <path d="M-4 82 Q30 72 60 76 Q88 79 112 70 L112 76 Q88 86 60 82 Q30 79 -4 89Z" fill="#12143A"/>
+      <path d="M86 77 Q94 66 104 64" fill="none" stroke="#12143A" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M100 66 Q108 60 112 66 Q104 70 100 66Z" fill="#1C6A48"/>
+      <path d="M-4 108 Q10 90 24 96 Q18 104 -4 108Z" fill="#1C6A48"/>
+      <path d="M112 108 Q96 92 84 100 Q92 108 112 108Z" fill="#1C6A48"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main>
+  <h1>App icon options</h1>
+  <p class="lede">Five directions for the Creature Collector launcher icon, all in the cut-paper night style. Each one is shown large, as a round icon, and among other apps on a home screen.</p>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<script>
+const options = [
+  { id: 'A', name: 'Tarsi Peek', why: 'Tarsi peeks over the leaves under the moon. Warm and friendly, and it puts your mascot front and center.' },
+  { id: 'B', name: 'Eyes in the Dark', why: 'Two glowing eyes caught in a flashlight beam. Mysterious, and it points straight at the game: finding hidden creatures at night.' },
+  { id: 'C', name: 'Parol Star', why: 'A Filipino parol star lantern. Simple, bold, and easy to spot, with a clear Philippine touch, but it doesn\'t show a creature.' },
+  { id: 'D', name: 'Paper Tag', why: 'Tarsi on a cream paper tag, like the cards and buttons inside the app, so the icon looks like it belongs with the app.' },
+  { id: 'E', name: 'Moon Silhouette', why: 'Tarsi\'s silhouette on a branch against a big moon, with only the gold eyes lit. Striking and easy to recognize at small sizes.' },
+];
+const svg = (id, extra = '') => `<svg viewBox="0 0 108 108" ${extra}><use href="#icon${id}"/></svg>`;
+document.getElementById('grid').innerHTML = options.map(o => `
+  <section class="opt" aria-label="Option ${o.id}: ${o.name}">
+    <div class="head"><span class="letter">${o.id}</span><span class="name">${o.name}</span></div>
+    <div class="sizes">
+      <div class="big">${svg(o.id, 'role="img" aria-label="' + o.name + ' icon"')}<div class="cap">Full size</div></div>
+      <div class="round">${svg(o.id, 'aria-hidden="true"')}<div class="cap">Round</div></div>
+    </div>
+    <div class="home" aria-hidden="true">
+      <div class="app"><div class="ghost"></div><span class="dim">Camera</span></div>
+      <div class="app">${svg(o.id)}<span>Creature Collector</span></div>
+      <div class="app"><div class="ghost"></div><span class="dim">Photos</span></div>
+      <div class="app"><div class="ghost"></div><span class="dim">Clock</span></div>
+    </div>
+    <p class="why">${o.why}</p>
+  </section>`).join('');
+</script>
+</body>
+</html>

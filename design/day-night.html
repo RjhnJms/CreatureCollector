@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day And Night</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4ecdc; --card: #fffaf0; --ink: #3b2a14; --muted: #7a6a52; --line: #e2d4b8; --accent: #f08a3c; --row: #f7efdd;
+  --sky: #1B1E4B; --cream: #F6EAD0; --a-text: #FFF4DC; --a-muted: #CBC4E8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; --row: #22265a; }
+}
+:root[data-theme="dark"] { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; --row: #22265a; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Atkinson Hyperlegible", system-ui, sans-serif; line-height: 1.5; }
+main { max-width: 1100px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 34px; margin: 0 0 6px; line-height: 1.1; }
+h2 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 24px; margin: 44px 0 6px; }
+.lede, .sub { color: var(--muted); margin: 0 0 20px; max-width: 70ch; }
+.disp { font-family: Sniglet, system-ui; font-weight: 800; line-height: 1.1; }
+
+/* phones */
+.phones { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+.opt { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; width: 332px; display: flex; flex-direction: column; gap: 10px; }
+.head { display: flex; align-items: baseline; gap: 10px; }
+.tag { font-family: Sniglet; font-weight: 800; font-size: 14px; border-radius: 6px; padding: 1px 9px; color: #fff4dc; background: var(--accent); }
+.tag.now { background: var(--muted); }
+.name { font-family: Sniglet; font-weight: 800; font-size: 21px; }
+.why { margin: 0; color: var(--muted); font-size: 15px; }
+.phone { width: 300px; height: 540px; border-radius: 26px; overflow: hidden; background: var(--sky); border: 6px solid #0a0b22; position: relative; color: var(--a-text); }
+.top { padding: 18px 16px 10px; }
+.pill { display: inline-flex; align-items: center; gap: 5px; background: var(--cream); color: var(--ink); font-family: Sniglet; font-weight: 800; font-size: 13px; padding: 3px 9px; box-shadow: 2px 3px 0 rgba(0,0,0,.35); }
+.pill svg { width: 15px; height: 15px; }
+.top h3 { font-family: Sniglet; font-weight: 800; font-size: 23px; margin: 8px 0 2px; }
+.top p { margin: 0; font-size: 13px; color: var(--a-muted); }
+.scene { position: relative; margin: 0 12px; height: 380px; border-radius: 5px; overflow: hidden; box-shadow: 3px 5px 0 rgba(0,0,0,.35); }
+.scene > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dark { position: absolute; inset: 0; background: radial-gradient(circle at 70% 70%, transparent 0 46px, rgba(8,10,30,.96) 64px); }
+.haze { position: absolute; inset: 0; background: radial-gradient(circle at 34% 62%, transparent 0 48px, rgba(246,234,208,.8) 50px); }
+.lens { position: absolute; left: calc(34% - 52px); top: calc(62% - 52px); width: 104px; height: 104px; border-radius: 50%; border: 7px solid #8a5a3a; box-shadow: 2px 3px 0 rgba(0,0,0,.3), inset 0 0 0 2px rgba(255,255,255,.5); }
+.lens::after { content: ""; position: absolute; width: 12px; height: 46px; background: #6b4226; border-radius: 6px; right: -26px; bottom: -40px; transform: rotate(-45deg); box-shadow: 2px 3px 0 rgba(0,0,0,.3); }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 12px; }
+.split .scene { margin: 0; height: 330px; }
+.dice { text-align: center; font-size: 12px; color: var(--a-muted); padding: 8px 12px 0; }
+
+/* pills row */
+.pills { display: flex; flex-wrap: wrap; gap: 14px; }
+.pillcard { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; flex: 1 1 220px; }
+.pillcard .pill { font-size: 15px; padding: 5px 12px; }
+.pillcard .pill svg { width: 18px; height: 18px; }
+.pillcard p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+
+/* table */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 620px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); font-size: 15px; vertical-align: top; }
+th { font-family: Sniglet; font-weight: 800; font-size: 14px; background: var(--row); }
+tr.same td { color: var(--muted); }
+td.new { font-weight: 700; white-space: nowrap; }
+.chg { color: var(--accent); }
+.note { color: var(--muted); font-size: 14px; margin-top: 10px; }
+.badges { display: flex; flex-wrap: wrap; gap: 14px; }
+.badge { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; flex: 1 1 260px; }
+.badge b { font-family: Sniglet; font-weight: 800; font-size: 18px; display: block; }
+.badge s { color: var(--muted); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="#F2B23C"/></symbol>
+    <symbol id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="#F08A3C"/><g stroke="#F08A3C" stroke-width="2.2" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></g></symbol>
+    <symbol id="both" viewBox="0 0 24 24"><circle cx="9" cy="10" r="4.2" fill="#F08A3C"/><g stroke="#F08A3C" stroke-width="2" stroke-linecap="round"><path d="M9 2.5v1.6M2.5 10h1.6M4.4 5.4l1.1 1.1M13.6 5.4l-1.1 1.1"/></g><path d="M21 16.5A5.5 5.5 0 1 1 13.8 9.3a4.5 4.5 0 0 0 7.2 7.2z" fill="#3B2A14"/></symbol>
+
+    <!-- simple paper eagle head -->
+    <g id="eagle">
+      <g fill="#E9D9B4" stroke="#5A3A22" stroke-width="1.2">
+        <path d="M-20 -6 L-30 -26 L-14 -16 L-12 -34 L-2 -18 L6 -34 L8 -16 L22 -26 L18 -6Z"/>
+        <ellipse cx="0" cy="4" rx="22" ry="20"/>
+      </g>
+      <ellipse cx="0" cy="26" rx="20" ry="12" fill="#8A5A3A" stroke="#5A3A22" stroke-width="1.2"/>
+      <circle cx="-8" cy="0" r="5" fill="#3E64A0"/><circle cx="8" cy="0" r="5" fill="#3E64A0"/>
+      <circle cx="-9" cy="-1.5" r="1.6" fill="#fff"/><circle cx="7" cy="-1.5" r="1.6" fill="#fff"/>
+      <path d="M-6 8 Q0 4 6 8 L2 20 Q0 22 -2 20Z" fill="#61779A" stroke="#3a4a66" stroke-width="1"/>
+    </g>
+    <!-- simple paper tarsier head -->
+    <g id="tarsier">
+      <ellipse cx="-17" cy="-16" rx="8" ry="10" fill="#C98E5A" stroke="#5A3A22" stroke-width="1.2"/>
+      <ellipse cx="17" cy="-16" rx="8" ry="10" fill="#C98E5A" stroke="#5A3A22" stroke-width="1.2"/>
+      <circle r="20" fill="#C98E5A" stroke="#5A3A22" stroke-width="1.2"/>
+      <circle cx="-8" cy="-2" r="9" fill="#F0C85A"/><circle cx="8" cy="-2" r="9" fill="#F0C85A"/>
+      <circle cx="-8" cy="-1.5" r="6" fill="#120D08"/><circle cx="8" cy="-1.5" r="6" fill="#120D08"/>
+      <circle cx="-10" cy="-4" r="2" fill="#fff"/><circle cx="6" cy="-4" r="2" fill="#fff"/>
+    </g>
+    <!-- simple paper dugong -->
+    <g id="dugong">
+      <path d="M-34 0 Q-30 -16 0 -14 Q26 -12 32 -2 Q36 6 26 10 Q0 16 -24 10 L-40 16 L-44 4 L-36 2Z" fill="#9AA6B2" stroke="#4d5a66" stroke-width="1.2"/>
+      <circle cx="22" cy="-4" r="2" fill="#1a1a1a"/>
+    </g>
+
+    <g id="forestDay">
+      <rect width="300" height="380" fill="url(#daySky)"/>
+      <circle cx="232" cy="64" r="30" fill="#FFD37A"/>
+      <circle cx="232" cy="64" r="48" fill="#FFD37A" opacity=".25"/>
+      <g fill="#fff" opacity=".95"><ellipse cx="70" cy="60" rx="34" ry="12"/><ellipse cx="88" cy="52" rx="20" ry="12"/><ellipse cx="170" cy="104" rx="26" ry="9"/></g>
+      <path d="M0 200 Q80 170 160 190 T300 180 V380 H0Z" fill="#7FC28A"/>
+      <path d="M0 250 Q100 225 200 245 T300 235 V380 H0Z" fill="#4F9A66"/>
+      <rect x="40" y="120" width="18" height="200" fill="#7A5232"/><circle cx="49" cy="118" r="44" fill="#3A9563"/>
+      <rect x="236" y="140" width="16" height="180" fill="#7A5232"/><circle cx="244" cy="140" r="38" fill="#2A7F56"/>
+      <path d="M50 240 Q120 228 190 240" stroke="#7A5232" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <use href="#eagle" x="102" y="216"/>
+      <g fill="#2A7F56"><path d="M0 380 Q20 320 40 300 Q30 350 0 380Z"/><path d="M300 380 Q280 320 260 300 Q270 350 300 380Z"/></g>
+    </g>
+    <g id="forestNight">
+      <rect width="300" height="380" fill="url(#nightSky)"/>
+      <g fill="#fff" opacity=".7"><circle cx="30" cy="30" r="1"/><circle cx="120" cy="60" r="1"/><circle cx="200" cy="30" r="1"/><circle cx="260" cy="90" r="1"/></g>
+      <circle cx="232" cy="64" r="20" fill="#FFF1C2"/>
+      <path d="M0 200 Q80 170 160 190 T300 180 V380 H0Z" fill="#2A3A7A"/>
+      <path d="M0 250 Q100 225 200 245 T300 235 V380 H0Z" fill="#244A4E"/>
+      <rect x="40" y="120" width="18" height="200" fill="#5a3c24"/><circle cx="49" cy="118" r="44" fill="#1C6A48"/>
+      <rect x="236" y="140" width="16" height="180" fill="#5a3c24"/><circle cx="244" cy="140" r="38" fill="#1C6A48"/>
+      <path d="M110 286 Q180 274 260 286" stroke="#6b4a2e" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <use href="#tarsier" x="210" y="262"/>
+    </g>
+    <linearGradient id="daySky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FCDEB"/><stop offset="1" stop-color="#E4F4E4"/></linearGradient>
+    <linearGradient id="nightSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B1E4B"/><stop offset="1" stop-color="#2C3170"/></linearGradient>
+    <linearGradient id="seaDay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FCDEB"/><stop offset=".3" stop-color="#bfe6f2"/><stop offset=".3" stop-color="#4FB0C9"/><stop offset="1" stop-color="#1F6E8C"/></linearGradient>
+    <linearGradient id="seaNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B1E4B"/><stop offset=".3" stop-color="#2C3170"/><stop offset=".3" stop-color="#16406a"/><stop offset="1" stop-color="#0b1f3a"/></linearGradient>
+  </defs>
+</svg>
+
+<main>
+  <h1>Day animals, mockup</h1>
+  <p class="lede">Adding <b>Day</b> and <b>Day &amp; night</b> as active times, so creatures that aren't really dawn or dusk animals get honest labels. The game keeps its night-ranger feel: night animals still use the flashlight.</p>
+
+  <h2>1. The search screen</h2>
+  <p class="sub">The search scene changes with the creature's active time.</p>
+  <div class="phones">
+
+    <section class="opt" aria-label="Night search, unchanged">
+      <div class="head"><span class="tag now">Same</span><span class="name">Night</span></div>
+      <div class="phone">
+        <div class="top">
+          <span class="pill"><svg><use href="#moon"/></svg>Night</span>
+          <h3>Something is hiding…</h3>
+          <p>Drag the flashlight around to search the trees.</p>
+        </div>
+        <div class="scene"><svg viewBox="0 0 300 380" preserveAspectRatio="xMidYMid slice"><use href="#forestNight"/></svg><div class="dark"></div></div>
+      </div>
+      <p class="why">No change: the dark scene and the flashlight beam.</p>
+    </section>
+
+    <section class="opt" aria-label="Day search, new">
+      <div class="head"><span class="tag">New</span><span class="name">Day</span></div>
+      <div class="phone">
+        <div class="top">
+          <span class="pill"><svg><use href="#sun"/></svg>Day</span>
+          <h3>Something is hiding…</h3>
+          <p>Drag the magnifying glass to search the trees.</p>
+        </div>
+        <div class="scene"><svg viewBox="0 0 300 380" preserveAspectRatio="xMidYMid slice"><use href="#forestDay"/></svg><div class="haze"></div><div class="lens"></div></div>
+      </div>
+      <p class="why">A sunny sky with white paper clouds. A cream haze, like tracing paper, hides the scene, and a <b>magnifying glass</b> replaces the flashlight. Same game, but it clearly reads as daytime.</p>
+    </section>
+
+    <section class="opt" aria-label="Day and night search, new">
+      <div class="head"><span class="tag">New</span><span class="name">Day &amp; night</span></div>
+      <div class="phone">
+        <div class="top">
+          <span class="pill"><svg><use href="#both"/></svg>Day &amp; night</span>
+          <h3>Something is hiding…</h3>
+          <p>Dugongs are out any time. Today it's night!</p>
+        </div>
+        <div class="split">
+          <div class="scene"><svg viewBox="0 0 150 330"><rect width="150" height="330" fill="url(#seaDay)"/><circle cx="118" cy="20" r="11" fill="#FFD37A"/><use href="#dugong" x="75" y="218" transform="translate(-37 -109) scale(1.5 1.5) translate(0 0)"/><path d="M0 330 Q30 296 50 306 Q80 288 110 308 Q130 298 150 306 V330Z" fill="#E6D3A3"/></svg><div class="haze" style="background:radial-gradient(circle at 50% 66%, transparent 0 30px, rgba(246,234,208,.8) 32px)"></div></div>
+          <div class="scene"><svg viewBox="0 0 150 330"><rect width="150" height="330" fill="url(#seaNight)"/><circle cx="118" cy="20" r="8" fill="#FFF1C2"/><use href="#dugong" x="75" y="218" transform="translate(-37 -109) scale(1.5 1.5) translate(0 0)"/><path d="M0 330 Q30 296 50 306 Q80 288 110 308 Q130 298 150 306 V330Z" fill="#4a4a5a"/></svg><div class="dark" style="background:radial-gradient(circle at 50% 66%, transparent 0 30px, rgba(8,10,30,.95) 40px)"></div></div>
+        </div>
+        <p class="dice">Each visit is randomly a day search (left) or a night search (right).</p>
+      </div>
+      <p class="why">Each visit picks day or night at random, and the hint says so, which teaches that these animals are around at any hour.</p>
+    </section>
+  </div>
+
+  <h2>2. Labels on the Dex card</h2>
+  <div class="pills">
+    <div class="pillcard"><span class="pill"><svg><use href="#moon"/></svg>Active at night</span><p>Unchanged.</p></div>
+    <div class="pillcard"><span class="pill"><svg><use href="#sun"/></svg>Active by day</span><p>New. Sun icon.</p></div>
+    <div class="pillcard"><span class="pill"><svg><use href="#both"/></svg>Active day &amp; night</span><p>New. Sun and moon together.</p></div>
+  </div>
+
+  <h2>3. New active times</h2>
+  <p class="sub">Based on general knowledge, so it's worth double-checking with your teacher or a reference book.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Creature</th><th>Now</th><th>New</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr class="same"><td>Philippine tarsier</td><td>Night</td><td class="new">Night</td><td>Hunts insects at night.</td></tr>
+      <tr class="same"><td>Firefly</td><td>Night</td><td class="new">Night</td><td>Flashes to find mates after dark.</td></tr>
+      <tr class="same"><td>Philippine flying lemur</td><td>Night</td><td class="new">Night</td><td>Glides between trees at night.</td></tr>
+      <tr class="same"><td>Asian palm civet</td><td>Night</td><td class="new">Night</td><td>Forages at night.</td></tr>
+      <tr><td>Philippine eagle</td><td>Dawn</td><td class="new chg">Day</td><td>Hunts in daylight.</td></tr>
+      <tr><td>Clownfish</td><td>Dawn</td><td class="new chg">Day</td><td>Active by day, tucks into its anemone at night.</td></tr>
+      <tr><td>Giant clam</td><td>Dawn</td><td class="new chg">Day</td><td>Algae in its body need sunlight to make its food.</td></tr>
+      <tr><td>Sea star</td><td>Dusk</td><td class="new chg">Night</td><td>Many kinds feed mostly at night.</td></tr>
+      <tr><td>Whale shark</td><td>Dawn</td><td class="new chg">Day &amp; night</td><td>Feeds at any hour.</td></tr>
+      <tr><td>Dugong</td><td>Dusk</td><td class="new chg">Day &amp; night</td><td>Grazes seagrass day and night.</td></tr>
+      <tr><td>Green sea turtle</td><td>Night</td><td class="new chg">Day &amp; night</td><td>Grazes by day; mothers come ashore at night to lay eggs.</td></tr>
+      <tr><td>Rafflesia</td><td>Dusk</td><td class="new chg">Day &amp; night</td><td>It's a plant, so it's there to find any time.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">Result: 5 night, 3 day, 4 day &amp; night. "Dawn" and "Dusk" stay in the code for future animals, but no current creature uses them. The partners Haribon and Pawi keep their own home scenes, unchanged.</p>
+
+  <h2>4. Badges</h2>
+  <div class="badges">
+    <div class="badge"><b>Night owl</b>Catch 3 creatures that come out at night. <br><span style="color:var(--muted);font-size:14px">Unchanged. Day &amp; night creatures count too.</span></div>
+    <div class="badge"><b><s>Early bird</s> → Sun seeker</b>Catch 3 creatures that come out by day. <br><span style="color:var(--muted);font-size:14px">"Early bird" needs dawn creatures, and none would be left. Day &amp; night creatures count too. Anyone who already earned Early bird keeps it, renamed.</span></div>
+  </div>
+</main>
+</body>
+</html>

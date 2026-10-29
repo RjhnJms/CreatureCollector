@@ -1,0 +1,290 @@
+<meta charset="utf-8">
+<title>Partner Tap Moves</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Sniglet:wght@400;800&display=swap">
+<style>
+/* Layout: two rows (Pawi swims, Haribon flies), three tappable night scenes each. */
+:root{
+  --bg:#eef0f6; --fg:#171a2b; --muted:#585d78; --line:#d4d7e4; --surface:#fbfbfe; --accent:#c4552c;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-game:"Sniglet","Segoe UI",system-ui,sans-serif;
+  --sky:#1b1e4b; --sea:#173f68; --sea2:#1d4f7a; --sand:#d8c08a; --cream:#f6ead0; --ink:#3b2a14; --text:#fff4dc; --branch:#6b4422; --hill:#26305e;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.5;padding:0 20px;margin:0}
+.wrap{max-width:900px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:800;font-size:24px;margin:34px 0 14px}
+.lead{color:var(--muted);max-width:64ch;margin:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px}
+.card{display:flex;flex-direction:column;gap:6px;min-width:0}
+.card h3{font-family:var(--f-display);font-weight:800;font-size:19px;margin:6px 0 0}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.tag{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.rec{display:inline-block;background:var(--accent);color:var(--surface);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:2px}
+.play{align-self:flex-start;font:inherit;font-weight:700;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:5px 14px;border-radius:99px;cursor:pointer}
+.play:hover{border-color:var(--accent)}
+button:focus-visible,.scene:focus-visible{outline:3px solid #f2b23c;outline-offset:2px}
+
+/* scenes */
+.scene{position:relative;height:230px;border-radius:14px;overflow:hidden;cursor:pointer;background:var(--sky);border:none;padding:0;width:100%;display:block}
+.scene.sea{background:linear-gradient(var(--sea) 0%,var(--sea2) 100%)}
+.scene svg.bd{position:absolute;inset:0;width:100%;height:100%}
+.scene .hint{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-family:var(--f-body);font-size:11px;color:rgba(255,244,220,.6);pointer-events:none}
+.mover{position:absolute;left:50%;bottom:22px;width:120px;height:120px;margin-left:-60px;transform-origin:50% 100%}
+.mover svg{width:120px;height:120px;display:block;overflow:visible}
+.mover .bob{animation:bob 2.6s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.fx{position:absolute;inset:0;pointer-events:none}
+
+/* moving parts inside the drawings */
+.part{transform-box:view-box}
+.flipL{transform-origin:66px 140px}.flipR{transform-origin:134px 140px}
+.wingL{transform-origin:70px 112px}.wingR{transform-origin:130px 112px}
+.crest{transform-origin:100px 76px;transition:transform .25s cubic-bezier(.2,1.6,.4,1)}
+.paddle .flipL{animation:padL .32s ease-in-out infinite}
+.paddle .flipR{animation:padR .32s ease-in-out infinite}
+@keyframes padL{0%,100%{transform:rotate(-22deg)}50%{transform:rotate(26deg)}}
+@keyframes padR{0%,100%{transform:rotate(22deg)}50%{transform:rotate(-26deg)}}
+.flap .wingL{animation:flapL .24s ease-in-out infinite}
+.flap .wingR{animation:flapR .24s ease-in-out infinite}
+@keyframes flapL{0%,100%{transform:rotate(10deg)}50%{transform:rotate(95deg)}}
+@keyframes flapR{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(-95deg)}}
+.spread .wingL{transform:rotate(70deg);transition:transform .25s}
+.spread .wingR{transform:rotate(-70deg);transition:transform .25s}
+.spread .crest{transform:scale(1.35)}
+
+/* whole-body paths */
+.swimLap{animation:swimLap 1.9s ease-in-out}
+@keyframes swimLap{
+  0%{transform:none}
+  12%{transform:translate(0,4px) scale(1.06,.94)}
+  30%{transform:translate(52px,-62px) rotate(16deg)}
+  50%{transform:translate(0,-96px) rotate(0deg)}
+  70%{transform:translate(-52px,-62px) rotate(-16deg)}
+  90%{transform:translate(0,2px) scale(1.05,.95)}
+  100%{transform:none}}
+.floatUp{animation:floatUp 1.5s ease-in-out}
+@keyframes floatUp{
+  0%{transform:none}
+  30%{transform:translateY(-46px)}
+  45%{transform:translateY(-38px)}
+  60%{transform:translateY(-46px)}
+  90%{transform:translateY(2px) scale(1.05,.95)}
+  100%{transform:none}}
+.roll{animation:roll 1.6s cubic-bezier(.4,0,.3,1)}
+@keyframes roll{
+  0%{transform:none}
+  30%{transform:translateY(-70px) rotate(0)}
+  70%{transform:translateY(-70px) rotate(360deg)}
+  92%{transform:translateY(2px) rotate(360deg) scale(1.06,.94)}
+  100%{transform:rotate(360deg)}}
+.hover{animation:hover 1.6s ease-in-out}
+@keyframes hover{
+  0%{transform:none}
+  10%{transform:scale(1.06,.9)}
+  30%{transform:translateY(-58px)}
+  48%{transform:translateY(-48px)}
+  66%{transform:translateY(-58px)}
+  90%{transform:translateY(2px) scale(1.07,.92)}
+  100%{transform:none}}
+.swoop{animation:swoop 2.3s ease-in-out}
+@keyframes swoop{
+  0%{transform:none}
+  8%{transform:scale(1.06,.9)}
+  22%{transform:translate(50px,-80px) rotate(14deg) scale(.9)}
+  40%{transform:translate(190px,-110px) rotate(18deg) scale(.7);opacity:1}
+  41%{transform:translate(190px,-110px) scale(.7);opacity:0}
+  42%{transform:translate(-190px,-120px) rotate(-18deg) scale(.7);opacity:0}
+  44%{opacity:1}
+  70%{transform:translate(-60px,-70px) rotate(-12deg) scale(.9)}
+  90%{transform:translate(0,2px) scale(1.07,.92)}
+  100%{transform:none}}
+.mane{animation:mane 1.4s ease-in-out}
+@keyframes mane{
+  0%{transform:none}
+  20%{transform:translateY(-16px)}
+  45%{transform:translateY(-12px)}
+  70%{transform:translateY(-16px)}
+  92%{transform:translateY(1px) scale(1.04,.96)}
+  100%{transform:none}}
+
+/* effects */
+.bubble{position:absolute;border:2px solid rgba(160,225,240,.8);border-radius:50%;animation:rise 1.4s ease-out forwards}
+@keyframes rise{from{transform:translateY(0) scale(.6);opacity:1}to{transform:translateY(-120px) scale(1.1);opacity:0}}
+.feather{position:absolute;width:12px;height:5px;background:#d9bd8a;border-radius:50% 50% 50% 50%/100% 100% 0 0;animation:drift 1.8s ease-in forwards}
+@keyframes drift{0%{transform:translate(0,0) rotate(0);opacity:1}50%{transform:translate(14px,40px) rotate(40deg)}100%{transform:translate(-8px,90px) rotate(-30deg);opacity:0}}
+.call{position:absolute;font-family:var(--f-game);font-weight:800;font-size:20px;color:var(--text);text-shadow:2px 2px 0 rgba(0,0,0,.4);animation:callpop 1.2s ease-out forwards}
+@keyframes callpop{0%{transform:scale(.3);opacity:0}25%{transform:scale(1.15);opacity:1}70%{transform:scale(1);opacity:1}100%{transform:translateY(-14px);opacity:0}}
+.splash{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(200,240,250,.85);animation:splash .6s ease-out forwards}
+@keyframes splash{to{transform:translate(var(--dx),var(--dy));opacity:0}}
+
+.notes{margin-top:34px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 18px;max-width:70ch}
+.notes b{font-family:var(--f-display)}
+.notes p{margin:4px 0;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <h1>Partner tap moves</h1>
+  <p class="lead">Right now, tapping a partner makes it hop. These give Pawi a swim and Haribon a flight instead. Tap any scene (or its Play button) to see it. Each one ends back in its spot, so the home screen layout stays the same.</p>
+
+  <h2>Pawi swims</h2>
+  <div class="row">
+    <div class="card">
+      <button class="scene sea" data-who="pawi" data-move="swimLap" aria-label="Play Swim lap"></button>
+      <span class="tag">Option A<span class="rec">Recommended</span></span>
+      <h3>Swim lap</h3>
+      <p>Paddles up in a big loop and glides back down, leaving a trail of bubbles. About 2 seconds.</p>
+      <button class="play">Play</button>
+    </div>
+    <div class="card">
+      <button class="scene sea" data-who="pawi" data-move="floatUp" aria-label="Play Bubble float"></button>
+      <span class="tag">Option B</span>
+      <h3>Bubble float</h3>
+      <p>Paddles in place, floats up, bobs, and sinks back down. Quick and gentle.</p>
+      <button class="play">Play</button>
+    </div>
+    <div class="card">
+      <button class="scene sea" data-who="pawi" data-move="roll" aria-label="Play Barrel roll"></button>
+      <span class="tag">Option C</span>
+      <h3>Barrel roll</h3>
+      <p>Swims up, does a full spin, and lands with a splash of bubbles. The silliest one.</p>
+      <button class="play">Play</button>
+    </div>
+  </div>
+
+  <h2>Haribon flies</h2>
+  <div class="row">
+    <div class="card">
+      <button class="scene" data-who="haribon" data-move="hover" aria-label="Play Flap and hover"></button>
+      <span class="tag">Option A<span class="rec">Recommended</span></span>
+      <h3>Flap and hover</h3>
+      <p>Flaps its big wings, lifts off the branch, hovers, and lands. A feather drifts down.</p>
+      <button class="play">Play</button>
+    </div>
+    <div class="card">
+      <button class="scene" data-who="haribon" data-move="swoop" aria-label="Play Big swoop"></button>
+      <span class="tag">Option B</span>
+      <h3>Big swoop</h3>
+      <p>Takes off, flies out one side, and comes back around from the other to land. The most “flying,” but the longest.</p>
+      <button class="play">Play</button>
+    </div>
+    <div class="card">
+      <button class="scene" data-who="haribon" data-move="mane" aria-label="Play Mane show"></button>
+      <span class="tag">Option C</span>
+      <h3>Mane show</h3>
+      <p>Puffs up its crest, spreads its wings wide, and calls “Kree!” like a real Philippine eagle.</p>
+      <button class="play">Play</button>
+    </div>
+  </div>
+
+  <div class="notes">
+    <p><b>Why A for both:</b> they stay inside the scene, last under 2 seconds, and still look like real swimming and flying. Tarsi keeps its hop, or could get a big tree leap to match.</p>
+    <p><b>Tapping again</b> while a move is playing restarts it, so kids who tap fast still see something happen.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var PAWI =
+    '<ellipse cx="72" cy="186" rx="17" ry="9" fill="#5aa874"/><ellipse cx="128" cy="186" rx="17" ry="9" fill="#5aa874"/>' +
+    '<g class="part flipL"><ellipse cx="42" cy="146" rx="30" ry="13" transform="rotate(-28 42 146)" fill="#5aa874"/></g>' +
+    '<g class="part flipR"><ellipse cx="158" cy="146" rx="30" ry="13" transform="rotate(28 158 146)" fill="#5aa874"/></g>' +
+    '<ellipse cx="100" cy="152" rx="62" ry="40" fill="#2f6e4a"/><ellipse cx="100" cy="150" rx="53" ry="32" fill="#4f9a66"/>' +
+    '<path d="M100 128 l16 9 -6 18 h-20 l-6 -18z" fill="#7cc48f"/>' +
+    '<path d="M60 142 l16 -4 6 18 -10 13 -14 -8z" fill="#7cc48f"/><path d="M140 142 l-16 -4 -6 18 10 13 14 -8z" fill="#7cc48f"/>' +
+    '<ellipse cx="100" cy="116" rx="22" ry="16" fill="#8fd0a0"/>' +
+    '<circle cx="100" cy="80" r="42" fill="#8fd0a0"/><circle cx="82" cy="50" r="6" fill="#6cb884"/><circle cx="112" cy="46" r="4.5" fill="#6cb884"/><circle cx="124" cy="56" r="3.5" fill="#6cb884"/>' +
+    '<circle cx="83" cy="82" r="15" fill="#f6ead0"/><circle cx="117" cy="82" r="15" fill="#f6ead0"/>' +
+    '<circle cx="84" cy="84" r="10" fill="#2b1d10"/><circle cx="116" cy="84" r="10" fill="#2b1d10"/>' +
+    '<circle cx="88" cy="79" r="4" fill="#fff"/><circle cx="120" cy="79" r="4" fill="#fff"/>' +
+    '<circle cx="66" cy="102" r="7" fill="#f2a7b5" opacity=".7"/><circle cx="134" cy="102" r="7" fill="#f2a7b5" opacity=".7"/>' +
+    '<path d="M89 104q11 9 22 0" stroke="#2f6e4a" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  var HARIBON =
+    '<g class="part crest"><path d="M58 76 L44 26 L76 54 L78 10 L98 46 L108 6 L118 46 L138 12 L132 54 L160 30 L146 78z" fill="#9a7448"/>' +
+    '<path d="M70 70 L64 36 L86 58 L94 26 L104 52 L120 28 L122 58 L142 46 L134 72z" fill="#d9bd8a"/></g>' +
+    '<g class="part wingL"><ellipse cx="54" cy="142" rx="22" ry="40" transform="rotate(18 54 142)" fill="#6b4a2e"/>' +
+    '<path d="M46 140q6 5 12 0M44 152q6 5 12 0M44 164q6 5 12 0" stroke="#4a3220" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>' +
+    '<g class="part wingR"><ellipse cx="146" cy="142" rx="22" ry="40" transform="rotate(-18 146 142)" fill="#6b4a2e"/>' +
+    '<path d="M142 140q6 5 12 0M144 152q6 5 12 0M144 164q6 5 12 0" stroke="#4a3220" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>' +
+    '<ellipse cx="100" cy="148" rx="42" ry="40" fill="#7a5434"/><ellipse cx="100" cy="158" rx="26" ry="27" fill="#f1e2c4"/>' +
+    '<path d="M84 184 l-7 9 M84 184 v10 M84 184 l7 9 M116 184 l-7 9 M116 184 v10 M116 184 l7 9" stroke="#f2b23c" stroke-width="4.5" stroke-linecap="round"/>' +
+    '<circle cx="100" cy="90" r="45" fill="#efe0bf"/>' +
+    '<circle cx="80" cy="86" r="15" fill="#fff8e6"/><circle cx="120" cy="86" r="15" fill="#fff8e6"/>' +
+    '<circle cx="81" cy="88" r="10" fill="#6f8fb0"/><circle cx="119" cy="88" r="10" fill="#6f8fb0"/>' +
+    '<circle cx="81" cy="89" r="5.5" fill="#1d1a24"/><circle cx="119" cy="89" r="5.5" fill="#1d1a24"/>' +
+    '<circle cx="84" cy="83" r="3" fill="#fff"/><circle cx="122" cy="83" r="3" fill="#fff"/>' +
+    '<path d="M86 101 Q100 92 114 101 L109 116 Q103 127 96 121 Q101 117 99 112 L90 110z" fill="#61779a"/>' +
+    '<circle cx="62" cy="108" r="7" fill="#f2a7b5" opacity=".6"/><circle cx="138" cy="108" r="7" fill="#f2a7b5" opacity=".6"/>';
+  var SEA_BD =
+    '<svg class="bd" viewBox="0 0 260 230" preserveAspectRatio="none" aria-hidden="true">' +
+    '<path d="M0 0h260v14q-20 8-43 0t-43 0-43 0-43 0-43 0-45 0z" fill="#1b1e4b"/>' +
+    '<path d="M20 230 q8-50 -4-90 M30 230 q-8-40 6-70 M232 230 q10-46 -2-84 M244 230 q-6-30 6-56" stroke="#2f7a55" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="130" cy="232" rx="150" ry="26" fill="#d8c08a"/>' +
+    '<circle cx="60" cy="60" r="3" fill="none" stroke="#5ec4d9" stroke-width="1.5"/><circle cx="200" cy="80" r="4" fill="none" stroke="#5ec4d9" stroke-width="1.5"/></svg>';
+  var SKY_BD =
+    '<svg class="bd" viewBox="0 0 260 230" preserveAspectRatio="none" aria-hidden="true">' +
+    '<circle cx="210" cy="44" r="16" fill="#f6e3a8"/>' +
+    '<g fill="#2a3070"><ellipse cx="44" cy="70" rx="34" ry="11"/><ellipse cx="64" cy="62" rx="20" ry="12"/></g>' +
+    '<path d="M0 190 L50 150 L92 178 L150 130 L200 172 L260 140 V230 H0z" fill="#26305e"/>' +
+    '<rect x="40" y="204" width="180" height="9" rx="4.5" fill="#6b4422"/></svg>';
+
+  document.querySelectorAll('.scene').forEach(function(sc){
+    var who = sc.dataset.who;
+    sc.innerHTML = (who === 'pawi' ? SEA_BD : SKY_BD) +
+      '<div class="mover"><div class="bob"><svg viewBox="0 0 200 200" aria-hidden="true">' + (who === 'pawi' ? PAWI : HARIBON) + '</svg></div></div>' +
+      '<div class="fx"></div><span class="hint">Tap ' + (who === 'pawi' ? 'Pawi' : 'Haribon') + '</span>';
+  });
+
+  var DUR = {swimLap:1900, floatUp:1500, roll:1600, hover:1600, swoop:2300, mane:1400};
+  var LIMB = {swimLap:'paddle', floatUp:'paddle', roll:'paddle', hover:'flap', swoop:'flap', mane:'spread'};
+
+  function spawn(fx, cls, x, y, extra){
+    var e = document.createElement('i');
+    e.className = cls;
+    e.style.left = x + 'px'; e.style.top = y + 'px';
+    if (extra) extra(e);
+    fx.appendChild(e);
+    setTimeout(function(){ e.remove(); }, 2000);
+  }
+
+  function play(sc){
+    var mover = sc.querySelector('.mover'), svg = mover.querySelector('svg'), fx = sc.querySelector('.fx');
+    var move = sc.dataset.move, limb = LIMB[move], w = sc.clientWidth, h = sc.clientHeight;
+    clearTimeout(sc._t); (sc._timers || []).forEach(clearTimeout); sc._timers = [];
+    mover.className = 'mover'; svg.classList.remove('paddle','flap','spread');
+    void mover.offsetWidth;
+    mover.classList.add(move); svg.classList.add(limb);
+    var cx = w / 2, cy = h - 90;
+    function later(ms, fn){ sc._timers.push(setTimeout(fn, ms)); }
+    if (sc.dataset.who === 'pawi'){
+      // A trail of bubbles that follows Pawi's path
+      for (var i = 0; i < 9; i++) later(i * 160, function(){
+        var r = mover.getBoundingClientRect(), s = sc.getBoundingClientRect();
+        var size = 6 + Math.random() * 8;
+        spawn(fx, 'bubble', r.left - s.left + r.width / 2 + (Math.random() * 40 - 20), r.top - s.top + 20, function(e){ e.style.width = e.style.height = size + 'px'; });
+      });
+      if (move === 'roll') later(1450, function(){
+        for (var k = 0; k < 8; k++) spawn(fx, 'splash', cx, h - 30, function(e){ e.style.setProperty('--dx', (Math.random() * 80 - 40) + 'px'); e.style.setProperty('--dy', (-20 - Math.random() * 30) + 'px'); });
+      });
+    } else {
+      if (move === 'mane') later(250, function(){ spawn(fx, 'call', cx + 34, cy - 70); });
+      else later(500, function(){
+        for (var j = 0; j < 2; j++) spawn(fx, 'feather', cx - 20 + j * 30, cy - 40 - j * 10, function(e){ e.style.animationDelay = (j * 0.25) + 's'; });
+      });
+    }
+    sc._t = setTimeout(function(){ mover.className = 'mover'; svg.classList.remove(limb); }, DUR[move]);
+  }
+
+  document.querySelectorAll('.card').forEach(function(card){
+    var sc = card.querySelector('.scene');
+    sc.addEventListener('click', function(){ play(sc); });
+    card.querySelector('.play').addEventListener('click', function(){ play(sc); });
+  });
+})();
+</script>

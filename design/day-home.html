@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daytime Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4ecdc; --card: #fffaf0; --ink: #3b2a14; --muted: #7a6a52; --line: #e2d4b8; --accent: #f08a3c;
+  --cream: #F6EAD0; --a-ink: #3B2A14; --a-muted: #CBC4E8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; }
+}
+:root[data-theme="dark"] { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Atkinson Hyperlegible", system-ui, sans-serif; line-height: 1.5; }
+main { max-width: 1150px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 34px; margin: 0 0 6px; line-height: 1.1; }
+h2 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 24px; margin: 40px 0 8px; }
+.lede { color: var(--muted); margin: 0 0 28px; max-width: 70ch; }
+.grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+.opt { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; width: 336px; display: flex; flex-direction: column; gap: 10px; }
+.head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.tag { font-family: Sniglet; font-weight: 800; font-size: 14px; border-radius: 6px; padding: 1px 9px; color: #fff4dc; background: var(--accent); }
+.tag.now { background: var(--muted); }
+.name { font-family: Sniglet; font-weight: 800; font-size: 21px; }
+p.why { margin: 0; color: var(--muted); font-size: 15px; }
+.disp { font-family: Sniglet, system-ui; font-weight: 800; line-height: 1.1; }
+
+.phone { width: 300px; height: 560px; border-radius: 26px; overflow: hidden; position: relative; border: 6px solid #0a0b22; }
+.screen { width: 375px; min-height: 700px; transform: scale(.8); transform-origin: 0 0; position: absolute; left: 0; top: 0; }
+.screen.night { background: #1B1E4B; }
+.screen.day { background: #1B1E4B; }
+.hero { position: relative; height: 330px; overflow: hidden; }
+.hero svg { position: absolute; inset: 0; width: 375px; height: 330px; display: block; }
+.chip { position: absolute; left: 14px; top: 16px; font-size: 12px; font-weight: 700; border-radius: 99px; padding: 3px 10px; }
+.night .chip { color: var(--a-muted); background: rgba(18,20,58,.6); border: 1px solid rgba(203,196,232,.25); }
+.day .chip { color: #3B2A14; background: rgba(255,250,235,.75); border: 1px solid rgba(59,42,20,.15); }
+.tr { position: absolute; right: 14px; top: 14px; display: flex; gap: 8px; align-items: center; }
+.note { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; }
+.night .note { background: rgba(18,20,58,.6); color: #F2B23C; border: 1px solid rgba(203,196,232,.25); }
+.day .note { background: rgba(255,250,235,.75); color: #F08A3C; border: 1px solid rgba(59,42,20,.15); }
+.pill { background: var(--cream); color: var(--a-ink); font-family: Sniglet; font-weight: 800; font-size: 14px; padding: 4px 10px; display: flex; align-items: center; gap: 5px; box-shadow: 3px 4px 0 rgba(0,0,0,.3); }
+.pill i { width: 11px; height: 11px; background: #3A9BC8; transform: rotate(45deg); border-radius: 2px; display: inline-block; }
+.bubble { position: absolute; left: 12px; top: 170px; width: 128px; background: var(--cream); color: var(--a-ink); font-size: 14px; padding: 7px 10px; line-height: 1.3; box-shadow: 3px 4px 0 rgba(0,0,0,.3); transform: rotate(-2deg); }
+.bubble::after { content: ""; position: absolute; right: -9px; bottom: 10px; border: 6px solid transparent; border-left: 10px solid var(--cream); }
+.tap { position: absolute; bottom: 8px; left: 0; right: 0; text-align: center; font-size: 12px; }
+.night .tap { color: rgba(255,244,220,.6); }
+.day .tap { color: rgba(59,42,20,.6); }
+.cards { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.paper { background: var(--cream); color: var(--a-ink); padding: 12px 14px; box-shadow: 3px 5px 0 rgba(0,0,0,.35); }
+.paper .disp { font-size: 18px; }
+.paper small { display: block; color: #7a6a52; font-size: 13px; }
+.row { display: flex; justify-content: space-between; font-size: 15px; padding: 3px 0; }
+.row span:first-child::before { content: ""; display: inline-block; width: 13px; height: 13px; border: 2px solid var(--a-ink); border-radius: 3px; margin-right: 8px; vertical-align: -2px; }
+.zzz { position: absolute; font-family: Sniglet; font-weight: 800; color: #5A6FA8; }
+
+.ideas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.idea { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; }
+.idea b { font-family: Sniglet; font-weight: 800; font-size: 17px; display: block; margin-bottom: 2px; }
+.idea p { margin: 0; color: var(--muted); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Daytime home, with banderitas</h1>
+  <p class="lede">From 6 am to 6 pm the home screen switches to a sunny scene, and the parols become <b>banderitas</b>, the triangle fiesta flags. After 6 pm it goes back to the night scene with parols. Everything else (cards, buttons, tab bar) stays the same.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <h2>How it would work</h2>
+  <div class="ideas">
+    <div class="idea"><b>Follows the clock</b><p>Day look from 6 am to 6 pm, night look the rest of the time. The greeting already switches between umaga, hapon and gabi.</p></div>
+    <div class="idea"><b>Your parol colors carry over</b><p>The banderitas use the colors of the parol style picked in the Shop, so those purchases still show by day.</p></div>
+    <div class="idea"><b>Night partners nap by day</b><p>Tarsi and other night animals doze on their branch in daylight. Tap to wake them, and they share why they sleep by day. Day animals like Haribon are wide awake.</p></div>
+    <div class="idea"><b>Same game underneath</b><p>Only the scene behind the cards changes. Text, buttons and the tab bar stay exactly where they are.</p></div>
+  </div>
+</main>
+
+<template id="cards">
+  <div class="cards">
+    <div class="paper"><span class="disp">Start a streak</span><small>Play today to keep it</small></div>
+    <div class="paper"><span class="disp">Tonight's mission</span>
+      <div class="row"><span>Find 2 creatures</span><span>0/2</span></div>
+      <div class="row"><span>Get 10 answers right</span><span>0/10</span></div>
+    </div>
+  </div>
+</template>
+
+<script>
+// Fiesta colors; in the app these would come from the chosen parol style.
+const FLAGS = ['#E5574A', '#F2B23C', '#3A9BC8', '#5BB174', '#F2A7B5', '#F08A3C'];
+
+// A point on the quadratic string from p0 through control c to p1.
+const q = (t, p0, c, p1) => [
+  (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * c[0] + t * t * p1[0],
+  (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * c[1] + t * t * p1[1],
+];
+
+function banderitas(p0, c, p1, n, size) {
+  let s = `<path d="M${p0} Q${c} ${p1}" fill="none" stroke="#6b4a2e" stroke-width="1.6"/>`;
+  for (let i = 0; i < n; i++) {
+    const t0 = (i + 0.08) / n, t1 = (i + 0.92) / n, tm = (i + 0.5) / n;
+    const a = q(t0, p0, c, p1), b = q(t1, p0, c, p1), m = q(tm, p0, c, p1);
+    const sway = Math.sin(i * 1.7) * 2.5;
+    const tip = [m[0] + sway, m[1] + size];
+    const col = FLAGS[i % FLAGS.length];
+    s += `<path d="M${a} L${b} L${tip}Z" fill="rgba(0,0,0,.22)" transform="translate(1.5 2.5)"/>`;
+    s += `<path d="M${a} L${b} L${tip}Z" fill="${col}"/>`;
+    // a little cut-out diamond, like papel de japon flags
+    const cx = m[0] + sway * 0.4, cy = m[1] + size * 0.38;
+    s += `<path d="M${cx},${cy - 3} L${cx + 3},${cy} L${cx},${cy + 3} L${cx - 3},${cy}Z" fill="rgba(255,250,235,.75)"/>`;
+  }
+  return s;
+}
+
+function parols() {
+  let s = `<path d="M0 52 Q160 100 375 40" fill="none" stroke="#3B2A14" stroke-width="1.4"/>`;
+  const star = 'M0 -13 L3.2 -4.3 L12.4 -4 L5.2 1.7 L7.6 10.5 L0 5.5 L-7.6 10.5 L-5.2 1.7 L-12.4 -4 L-3.2 -4.3Z';
+  for (const [x, y, col] of [[152, 78, '#E5574A'], [247, 70, '#F2B23C'], [338, 54, '#F08A3C']]) {
+    s += `<g transform="translate(${x} ${y})"><circle r="22" fill="${col}" opacity=".25"/>
+      <g stroke="#FFF4DC" stroke-width="1.6" stroke-linecap="round"><path d="M-4 9 L-6 26"/><path d="M0 6 L0 30"/><path d="M4 9 L6 26"/></g>
+      <path d="${star}" fill="${col}"/><path d="${star}" fill="#FFF4DC" transform="scale(.5)"/></g>`;
+  }
+  return s;
+}
+
+const leaf = (x, y, r, sc, col) =>
+  `<path d="M0 0 Q20 -40 6 -86 Q-14 -40 0 0Z" fill="${col}" transform="translate(${x} ${y}) rotate(${r}) scale(${sc})"/>`;
+
+function tarsi(asleep) {
+  const eyes = asleep
+    ? `<path d="M30 48 Q38.5 54 47 48" stroke="#3a2614" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+       <path d="M53 48 Q61.5 54 70 48" stroke="#3a2614" stroke-width="2.4" fill="none" stroke-linecap="round"/>`
+    : `<circle cx="38.5" cy="47" r="12.5" fill="#F0C85A" stroke="#5A3A22" stroke-width="1.2"/>
+       <circle cx="61.5" cy="47" r="12.5" fill="#F0C85A" stroke="#5A3A22" stroke-width="1.2"/>
+       <circle cx="38.5" cy="47.5" r="8" fill="#120D08"/><circle cx="61.5" cy="47.5" r="8" fill="#120D08"/>
+       <circle cx="35.6" cy="44.4" r="2.7" fill="#fff"/><circle cx="58.6" cy="44.4" r="2.7" fill="#fff"/>`;
+  return `<svg x="113" y="${asleep ? 134 : 127}" width="150" height="150" viewBox="0 0 100 100">
+    <g stroke="#5A3A22" stroke-width="1.6">
+      <path d="M72 84 C92 80 98 62 90 44" fill="none" stroke="#7E5532" stroke-width="4.5" stroke-linecap="round"/>
+      <ellipse cx="50" cy="76" rx="23" ry="18" fill="#C98E5A"/>
+      <ellipse cx="50" cy="81" rx="13" ry="11" fill="#E2B98C" stroke="none"/>
+      <ellipse cx="25" cy="26" rx="10" ry="13.5" fill="#C98E5A"/><ellipse cx="75" cy="26" rx="10" ry="13.5" fill="#C98E5A"/>
+    </g>
+    <ellipse cx="25" cy="28" rx="5" ry="8" fill="#E09A8A"/><ellipse cx="75" cy="28" rx="5" ry="8" fill="#E09A8A"/>
+    <circle cx="50" cy="49" r="28" fill="#C98E5A" stroke="#5A3A22" stroke-width="1.6"/>
+    ${eyes}
+    <ellipse cx="50" cy="59.5" rx="2.25" ry="1.5" fill="#5A3A22"/>
+    <circle cx="30" cy="58" r="4" fill="#FF8FA3" opacity=".45"/><circle cx="70" cy="58" r="4" fill="#FF8FA3" opacity=".45"/>
+    <g stroke="#5A3A22" stroke-width="1.6" fill="#C98E5A"><circle cx="37" cy="91" r="4.5"/><circle cx="63" cy="91" r="4.5"/></g>
+  </svg>`;
+}
+
+function haribon() {
+  return `<svg x="118" y="120" width="140" height="160" viewBox="-50 -60 100 115">
+    <path d="M-30 10 Q-50 30 -38 50 L-14 40Z" fill="#6B4226" stroke="#3E2714" stroke-width="1.2"/>
+    <path d="M30 10 Q50 30 38 50 L14 40Z" fill="#6B4226" stroke="#3E2714" stroke-width="1.2"/>
+    <ellipse cx="0" cy="26" rx="26" ry="28" fill="#8A5A3A" stroke="#3E2714" stroke-width="1.2"/>
+    <ellipse cx="0" cy="32" rx="15" ry="18" fill="#F1E2C4"/>
+    <path d="M-24 -10 L-36 -34 L-16 -22 L-14 -44 L-3 -24 L6 -44 L9 -22 L26 -34 L22 -10Z" fill="#E9D9B4" stroke="#5A3A22" stroke-width="1.2"/>
+    <ellipse cx="0" cy="-4" rx="24" ry="20" fill="#E9D9B4" stroke="#5A3A22" stroke-width="1.2"/>
+    <circle cx="-9" cy="-8" r="5.5" fill="#3E64A0"/><circle cx="9" cy="-8" r="5.5" fill="#3E64A0"/>
+    <circle cx="-10.5" cy="-9.5" r="1.8" fill="#fff"/><circle cx="7.5" cy="-9.5" r="1.8" fill="#fff"/>
+    <path d="M-7 0 Q0 -4 7 0 L2 13 Q0 15 -2 13Z" fill="#61779A" stroke="#3a4a66" stroke-width="1"/>
+    <g fill="#E8B83A"><circle cx="-8" cy="54" r="4"/><circle cx="8" cy="54" r="4"/></g>
+  </svg>`;
+}
+
+function scene(day, partner) {
+  const sky = day
+    ? `<defs><linearGradient id="dsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FCDEB"/><stop offset="1" stop-color="#E4F4E4"/></linearGradient></defs>
+       <rect width="375" height="330" fill="url(#dsky)"/>
+       <g transform="translate(262 128)">${Array.from({length: 10}, (_, i) => `<path d="M-4 -30 L0 -42 L4 -30Z" fill="#FFE19A" transform="rotate(${i * 36})"/>`).join('')}
+       <circle r="26" fill="#FFD36E"/></g>
+       <g fill="#fff"><ellipse cx="70" cy="96" rx="30" ry="11"/><ellipse cx="86" cy="88" rx="16" ry="11"/><ellipse cx="190" cy="140" rx="22" ry="8"/></g>
+       <g fill="#FFF6D0" opacity=".28"><path d="M70 0 L100 0 L170 300 L120 300Z"/><path d="M180 0 L200 0 L260 300 L220 300Z"/></g>`
+    : `<rect width="375" height="330" fill="#1B1E4B"/>
+       <g fill="#fff" opacity=".7"><circle cx="40" cy="30" r="1"/><circle cx="120" cy="60" r=".8"/><circle cx="210" cy="24" r="1"/><circle cx="300" cy="110" r=".8"/><circle cx="20" cy="110" r=".8"/><circle cx="180" cy="130" r=".7"/></g>
+       <circle cx="58" cy="150" r="40" fill="#F6EAD0" opacity=".15"/><circle cx="58" cy="150" r="21" fill="#F6EAD0"/>
+       <g fill="#FFF3B0"><circle cx="90" cy="230" r="2"/><circle cx="290" cy="200" r="2"/><circle cx="200" cy="250" r="1.6"/></g>`;
+  const hills = day
+    ? `<path d="M0 210 Q90 180 190 200 T375 190 V330 H0Z" fill="#8CCB8E"/><path d="M0 240 Q120 215 230 235 T375 225 V330 H0Z" fill="#4F9A66"/>`
+    : `<path d="M0 210 Q90 180 190 200 T375 190 V330 H0Z" fill="#2A3A7A"/><path d="M0 240 Q120 215 230 235 T375 225 V330 H0Z" fill="#1F5A4A"/>`;
+  const bark = day ? '#8A6440' : '#6B4A2E';
+  const lg = day ? ['#5FA87A', '#82C08A'] : ['#2A7F56', '#3A9563'];
+  const tree = partner === 'tarsi'
+    ? `<rect x="312" y="-10" width="28" height="300" fill="${bark}"/><path d="M326 60 Q350 40 372 44" stroke="${bark}" stroke-width="5" fill="none"/>`
+    : '';
+  const string = day ? banderitas([0, 52], [160, 100], [375, 40], 11, 26) : parols();
+  const who = partner === 'tarsi' ? tarsi(day) : haribon();
+  const zzz = partner === 'tarsi' && day
+    ? `<text x="146" y="150" font-family="Sniglet" font-weight="800" font-size="18" fill="#5A6FA8">z</text>
+       <text x="128" y="132" font-family="Sniglet" font-weight="800" font-size="23" fill="#5A6FA8">z</text>
+       <text x="104" y="110" font-family="Sniglet" font-weight="800" font-size="28" fill="#5A6FA8">Z</text>` : '';
+  return `<svg viewBox="0 0 375 330">${sky}${hills}${tree}${string}
+    <path d="M20 272 Q190 250 340 268" stroke="${bark}" stroke-width="9" fill="none" stroke-linecap="round"/>
+    ${who}${zzz}
+    <g fill="${lg[0]}">${leaf(18, 330, -35, 1, lg[0])}${leaf(40, 330, -12, 1, lg[0])}</g>
+    <g>${leaf(360, 330, 30, 1, lg[1])}${leaf(332, 330, 8, .9, lg[1])}${leaf(66, 330, 18, .8, lg[1])}</g></svg>`;
+}
+
+const phones = [
+  { tag: 'Now', now: true, name: 'Night (current)', day: false, partner: 'tarsi',
+    say: 'Magandang gabi, Ana!', why: 'Unchanged after 6 pm: the moon, fireflies and parols.' },
+  { tag: 'New', name: 'Day with Haribon', day: true, partner: 'haribon',
+    say: 'Magandang hapon, Ana!', why: 'A sunny sky, white clouds and a string of banderitas in fiesta colors. Haribon, a day bird, is wide awake.' },
+  { tag: 'New', name: 'Day with Tarsi', day: true, partner: 'tarsi',
+    say: "Zzz… tarsiers sleep all day!", why: 'Tarsi naps on the branch. Tap and it wakes for a moment to explain that tarsiers sleep by day and hunt at night.' },
+];
+
+const cards = document.getElementById('cards').innerHTML;
+document.getElementById('grid').innerHTML = phones.map(p => `
+  <section class="opt" aria-label="${p.name}">
+    <div class="head"><span class="tag ${p.now ? 'now' : ''}">${p.tag}</span><span class="name">${p.name}</span></div>
+    <div class="phone"><div class="screen ${p.day ? 'day' : 'night'}">
+      <div class="hero">
+        ${scene(p.day, p.partner)}
+        <span class="chip">Night Ranger · Lv 1</span>
+        <div class="tr"><span class="note">♪</span><span class="pill"><i></i>0</span></div>
+        <div class="bubble">${p.say}</div>
+        <div class="tap">Tap ${p.partner === 'tarsi' ? 'Tarsi' : 'Haribon'}</div>
+      </div>
+      ${cards}
+    </div></div>
+    <p class="why">${p.why}</p>
+  </section>`).join('');
+</script>
+</body>
+</html>

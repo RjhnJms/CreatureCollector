@@ -1,0 +1,181 @@
+<meta charset="utf-8">
+<title>Creature Collector Leave Stage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Sniglet:wght@400;800&display=swap">
+<style>
+/* Layout: two phones, each a stage in progress with a different "leave this stage?" confirmation. Buttons work. */
+:root{
+  --bg:#eef0f6; --fg:#171a2b; --muted:#585d78; --line:#d4d7e4; --surface:#fbfbfe; --accent:#c4552c;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --sky:#1b1e4b; --track:#2c3170; --cream:#f6ead0; --ink:#3b2a14; --ink2:#7a6a52; --orange:#f08a3c; --red:#e5574a; --gold:#f2b23c; --text:#fff4dc; --soft:#cbc4e8; --heart:#ff9c7a;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.5;padding:0 20px;margin:0}
+.wrap{max-width:900px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:64ch;margin:0 0 30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:36px;justify-items:center}
+.col{width:270px;max-width:100%;display:flex;flex-direction:column;gap:8px}
+.col h2{font-family:var(--f-display);font-weight:800;font-size:20px;margin:4px 0 0}
+.col p{margin:0;color:var(--muted);font-size:15px}
+.tag{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.rec{display:inline-block;background:var(--accent);color:var(--surface);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:3px}
+.ctl{display:flex;gap:8px;flex-wrap:wrap}
+.ctl button{font:inherit;font-weight:700;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:5px 12px;border-radius:99px;cursor:pointer}
+.ctl button:hover{border-color:var(--accent)}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+.phone{width:270px;height:560px;border-radius:38px;border:8px solid #07070c;overflow:hidden;position:relative;background:var(--sky);color:var(--text);font-family:"Sniglet",sans-serif}
+.notch{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:74px;height:18px;border-radius:10px;background:#07070c;z-index:30}
+/* a stage in progress, behind */
+.stage{position:absolute;inset:0;padding:32px 14px 14px}
+.bar{display:flex;align-items:center;gap:8px;font-size:12px}
+.x{width:28px;height:28px;border-radius:50%;border:none;background:transparent;color:var(--text);font-size:20px;cursor:pointer;line-height:1;position:relative;z-index:5}
+.x:hover{background:rgba(255,255,255,.08)}
+.prog{flex:1}
+.prog small{display:block;color:var(--soft);font-family:var(--f-body);font-size:10px}
+.prog i{display:block;height:7px;border-radius:6px;background:var(--track);overflow:hidden}
+.prog i b{display:block;height:100%;width:44%;background:var(--orange)}
+.hearts{color:var(--heart);letter-spacing:1px}
+.q{margin:22px 4px 14px;font-size:21px;font-weight:800;line-height:1.15}
+.tagbtn{display:block;width:100%;text-align:left;background:var(--cream);color:var(--ink);border:none;padding:11px 14px;margin-bottom:10px;font-family:var(--f-body);font-weight:700;font-size:15px;box-shadow:3px 4px 0 rgba(0,0,0,.35);clip-path:polygon(0 5%,100% 0,99% 100%,1% 95%)}
+.mapview{position:absolute;inset:0;z-index:26;background:var(--sky);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;opacity:0;pointer-events:none;transition:opacity .4s}
+.left .mapview{opacity:1;pointer-events:auto}
+.mapview b{font-size:20px;font-weight:800}
+.mapview small{font-family:var(--f-body);color:var(--soft);font-size:12px;padding:0 24px}
+
+.dim{position:absolute;inset:0;background:rgba(10,11,34,.72);z-index:10;opacity:0;pointer-events:none;transition:opacity .25s}
+.open .dim{opacity:1;pointer-events:auto}
+.paper{background:var(--cream);color:var(--ink);box-shadow:3px 5px 0 rgba(0,0,0,.4)}
+.btn{font-family:"Sniglet",sans-serif;font-weight:800;font-size:16px;border:none;cursor:pointer;padding:11px 14px;transition:transform .12s;clip-path:polygon(0 6%,100% 0,98% 100%,2% 94%);width:100%}
+.btn:active{transform:scale(.94)}
+.btn.go{background:var(--orange);color:var(--cream);box-shadow:3px 4px 0 rgba(0,0,0,.35)}
+.btn.out{background:transparent;color:var(--ink2);font-size:14px;clip-path:none;text-decoration:underline;text-underline-offset:3px}
+.dlg{position:absolute;z-index:20;opacity:0;pointer-events:none}
+.open .dlg{pointer-events:auto;animation:dlgin .5s cubic-bezier(.2,1.5,.4,1) forwards}
+@keyframes dlgin{from{opacity:0;transform:translateY(30px) scale(.8) rotate(-4deg)}to{opacity:1;transform:rotate(-1.5deg)}}
+
+/* A: peekaboo, matching the app exit */
+.a .dlg{left:16px;right:16px;top:150px;padding:16px 16px 10px;text-align:center;overflow:visible}
+.a .peek{position:absolute;left:50%;top:-56px;width:96px;margin-left:-48px;height:58px;overflow:hidden;z-index:-1}
+.a .peek svg{animation:peekab 3.2s ease-in-out infinite;transform-box:fill-box}
+@keyframes peekab{0%,15%{transform:translateY(0)}25%,45%{transform:translateY(60px)}55%,100%{transform:translateY(0)}}
+.ducking .peek svg{animation:duckdown .45s ease-in forwards}
+@keyframes duckdown{to{transform:translateY(70px)}}
+.a h3{margin:0 0 4px;font-size:21px;font-weight:800}
+.a .lose{font-family:var(--f-body);font-size:13px;color:var(--ink2);margin:0 0 10px}
+.chips{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{background:#efe0bd;color:var(--ink);font-family:var(--f-body);font-size:12px;font-weight:700;padding:3px 8px;border-radius:4px;white-space:nowrap}
+
+/* B: pause board */
+.b .dlg{left:14px;right:14px;top:110px;padding:14px 16px 12px;text-align:center}
+.b .dlg::before,.b .dlg::after{content:"";position:absolute;width:52px;height:16px;background:rgba(242,178,60,.75);top:-7px}
+.b .dlg::before{left:-10px;transform:rotate(-22deg)}.b .dlg::after{right:-10px;transform:rotate(20deg)}
+.b h3{margin:2px 0 2px;font-size:24px;font-weight:800}
+.b .sub{font-family:var(--f-body);font-size:13px;color:var(--ink2);margin:0 0 12px}
+.b .opt{display:flex;align-items:center;justify-content:space-between;background:#efe0bd;padding:8px 10px;margin-bottom:8px;font-family:var(--f-body);font-size:14px;font-weight:700}
+.toggle{width:40px;height:22px;border-radius:99px;background:#cdbf9f;position:relative;border:none;cursor:pointer}
+.toggle::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s}
+.toggle.on{background:var(--leaf,#2a7f56)}
+.toggle.on::after{left:21px}
+.b .warn{font-family:var(--f-body);font-size:12px;color:var(--ink2);margin:6px 0 0}
+.pausebadge{position:absolute;left:50%;top:-34px;transform:translateX(-50%);width:54px;height:54px;border-radius:50%;background:var(--orange);display:grid;place-items:center;box-shadow:3px 4px 0 rgba(0,0,0,.35)}
+.pausebadge i{display:block;width:7px;height:20px;background:var(--cream);border-radius:2px;margin:0 3px}
+.pausebadge span{display:flex}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <h1>"Leave this stage?"</h1>
+  <p class="lead">This appears when a kid taps <b>✕</b> or presses back in the middle of a stage. It shows what they'd lose, because a stage only saves when it's finished. <b>Keep going</b> is the big button. Try tapping <b>✕</b> on each phone, then try both buttons.</p>
+  <div class="grid">
+    <div class="col">
+      <div class="phone a open" id="pa"><div class="notch"></div>
+        <div class="stage"></div>
+        <div class="dim"></div>
+        <div class="dlg paper"><div class="peek"></div>
+          <h3>Leave this stage?</h3>
+          <p class="lose">If you leave now, you’ll lose what you found so far:</p>
+          <div class="chips"><span class="chip">1 creature caught</span><span class="chip">3 answers right</span><span class="chip">+55 XP</span></div>
+          <button class="btn go keep">Keep going</button>
+          <button class="btn out leave">Leave stage</button>
+        </div>
+        <div class="mapview"><b>Back on the map</b><small>The stage is still there. Come back anytime to catch them all!</small></div>
+      </div>
+      <div class="ctl"><button data-p="pa" class="reset">Show again</button></div>
+      <span class="tag">Option A<span class="rec">Recommended</span></span>
+      <h2>Peekaboo, for stages</h2>
+      <p>Matches the app exit you chose: Tarsi peeks over the card. It lists exactly what you'd lose, as little chips.</p>
+    </div>
+
+    <div class="col">
+      <div class="phone b open" id="pb"><div class="notch"></div>
+        <div class="stage"></div>
+        <div class="dim"></div>
+        <div class="dlg paper"><div class="pausebadge"><span><i></i><i></i></span></div>
+          <h3>Paused</h3>
+          <p class="sub">Take a break! Tarsi will wait right here.</p>
+          <div class="opt"><span>Read aloud</span><button class="toggle on" aria-label="Read questions aloud" aria-pressed="true"></button></div>
+          <button class="btn go keep">Resume</button>
+          <button class="btn out leave">Leave stage</button>
+          <p class="warn">Leaving loses 1 creature and 3 answers from this stage.</p>
+        </div>
+        <div class="mapview"><b>Back on the map</b><small>The stage is still there. Come back anytime to catch them all!</small></div>
+      </div>
+      <div class="ctl"><button data-p="pb" class="reset">Show again</button></div>
+      <span class="tag">Option B</span>
+      <h2>Pause board</h2>
+      <p>Works like a game pause menu: Resume, a quick switch, and Leave. The read-aloud switch would be new: it would read every question out loud automatically.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var TARSI =
+    '<path d="M146 168 C190 160 200 120 182 88" stroke="#8a5a30" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="100" cy="152" rx="46" ry="36" fill="#b8763e"/><ellipse cx="100" cy="162" rx="25" ry="20" fill="#e8c094"/>' +
+    '<ellipse cx="50" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="50" cy="56" rx="10" ry="16" fill="#f2a7b5"/>' +
+    '<ellipse cx="150" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="150" cy="56" rx="10" ry="16" fill="#f2a7b5"/>' +
+    '<circle cx="100" cy="98" r="56" fill="#e0a96d"/>' +
+    '<circle cx="77" cy="94" r="25" fill="#f6ead0"/><circle cx="123" cy="94" r="25" fill="#f6ead0"/>' +
+    '<circle cx="77" cy="95" r="18" fill="#f2b23c"/><circle cx="123" cy="95" r="18" fill="#f2b23c"/>' +
+    '<circle cx="78" cy="96" r="11" fill="#2b1d10"/><circle cx="122" cy="96" r="11" fill="#2b1d10"/>' +
+    '<circle cx="83" cy="90" r="4.5" fill="#fff"/><circle cx="127" cy="90" r="4.5" fill="#fff"/>' +
+    '<circle cx="56" cy="120" r="8" fill="#f2a7b5" opacity=".7"/><circle cx="144" cy="120" r="8" fill="#f2a7b5" opacity=".7"/>' +
+    '<path d="M94 119h12l-6 7z" fill="#7a4b26"/><path d="M90 130q10 8 20 0" stroke="#7a4b26" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    '<circle cx="73" cy="184" r="9" fill="#e0a96d"/><circle cx="127" cy="184" r="9" fill="#e0a96d"/>';
+  document.querySelector('#pa .peek').innerHTML = '<svg viewBox="0 0 200 200" width="96" height="96" aria-hidden="true">' + TARSI + '</svg>';
+
+  var STAGE =
+    '<div class="bar"><button class="x" aria-label="Leave stage">✕</button><div class="prog"><small>Stage 2: Lights in the dark</small><i><b></b></i></div><span class="hearts">♥♥♡</span></div>' +
+    '<div class="q">What do fireflies use their light for?</div>' +
+    '<button class="tagbtn">To find each other</button><button class="tagbtn">To cook food</button><button class="tagbtn">To keep warm</button>';
+  document.querySelectorAll('.stage').forEach(function(st){ st.innerHTML = STAGE; });
+
+  function show(ph){ ph.classList.remove('left','ducking','open'); void ph.offsetWidth; ph.classList.add('open'); }
+  document.querySelectorAll('.phone').forEach(function(ph){
+    ph.querySelector('.x').addEventListener('click', function(){ show(ph); });
+    ph.querySelector('.keep').addEventListener('click', function(){ ph.classList.remove('open'); });
+    ph.querySelector('.leave').addEventListener('click', function(){
+      if (ph.classList.contains('a')){
+        ph.classList.add('ducking');
+        setTimeout(function(){ ph.classList.remove('open'); ph.classList.add('left'); }, 450);
+      } else {
+        ph.classList.remove('open'); ph.classList.add('left');
+      }
+    });
+    ph.querySelectorAll('.toggle').forEach(function(t){
+      t.addEventListener('click', function(){ var on = t.classList.toggle('on'); t.setAttribute('aria-pressed', on); });
+    });
+    ph.querySelector('.mapview').addEventListener('click', function(){ ph.classList.remove('left'); });
+  });
+  document.querySelectorAll('.reset').forEach(function(b){
+    b.addEventListener('click', function(){ show(document.getElementById(b.dataset.p)); });
+  });
+})();
+</script>

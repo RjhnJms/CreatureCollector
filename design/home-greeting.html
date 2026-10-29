@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home Greeting Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4ecdc; --card: #fffaf0; --ink: #3b2a14; --muted: #7a6a52; --line: #e2d4b8; --accent: #f08a3c;
+  /* app colors, same in both themes */
+  --sky: #1B1E4B; --deep: #12143A; --cream: #F6EAD0; --a-ink: #3B2A14; --a-text: #FFF4DC; --a-muted: #CBC4E8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; }
+}
+:root[data-theme="dark"] { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Atkinson Hyperlegible", system-ui, sans-serif; line-height: 1.5; }
+main { max-width: 1400px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 34px; margin: 0 0 6px; line-height: 1.1; }
+.lede { color: var(--muted); margin: 0 0 32px; max-width: 64ch; }
+.grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+.opt { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; width: 336px; display: flex; flex-direction: column; gap: 12px; }
+.opt.rec { border: 2px solid var(--accent); }
+.head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.letter { font-family: Sniglet, system-ui; font-weight: 800; font-size: 15px; background: var(--accent); color: #fff4dc; border-radius: 6px; padding: 1px 9px; }
+.letter.now { background: var(--muted); }
+.name { font-family: Sniglet, system-ui; font-weight: 800; font-size: 21px; }
+.tag { font-size: 12px; font-weight: 700; color: var(--accent); }
+p.why { margin: 0; color: var(--muted); font-size: 15px; }
+.prosc { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); }
+
+/* phone at 375pt, shown at 80% */
+.phone { width: 300px; height: 520px; border-radius: 26px; overflow: hidden; background: var(--sky); position: relative; border: 6px solid #0a0b22; }
+.screen { width: 375px; transform: scale(.8); transform-origin: 0 0; position: absolute; left: 0; top: 0; color: var(--a-text); }
+.hero { position: relative; height: 330px; overflow: hidden; }
+.hero svg { position: absolute; inset: 0; width: 375px; height: 330px; display: block; }
+.disp { font-family: Sniglet, system-ui; font-weight: 800; line-height: 1.1; }
+.pill { position: absolute; right: 14px; top: 14px; background: var(--cream); color: var(--a-ink); font-family: Sniglet; font-weight: 800; font-size: 14px; padding: 4px 10px; display: flex; align-items: center; gap: 4px; box-shadow: 3px 4px 0 rgba(0,0,0,.35); }
+.pill i { width: 12px; height: 12px; background: #3A9BC8; transform: rotate(45deg); border-radius: 2px; display: inline-block; margin-right: 2px; }
+.cards { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.paper { background: var(--cream); color: var(--a-ink); padding: 12px 14px; box-shadow: 3px 5px 0 rgba(0,0,0,.35); }
+.paper .disp { font-size: 18px; }
+.paper small { display: block; color: #7a6a52; font-size: 13px; }
+.dots { display: flex; gap: 5px; float: right; margin-top: -2px; }
+.dots b { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--a-ink); }
+.dots b.half { background: linear-gradient(90deg, #F2B23C 50%, transparent 50%); }
+.row { display: flex; justify-content: space-between; font-size: 15px; padding: 3px 0; }
+.row span:first-child::before { content: ""; display: inline-block; width: 13px; height: 13px; border: 2px solid var(--a-ink); border-radius: 3px; margin-right: 8px; vertical-align: -2px; }
+.bubble { position: absolute; background: var(--cream); color: var(--a-ink); font-size: 14px; padding: 7px 10px; line-height: 1.3; box-shadow: 3px 4px 0 rgba(0,0,0,.35); transform: rotate(-2deg); }
+.bubble::after { content: ""; position: absolute; right: -9px; bottom: 10px; border: 6px solid transparent; border-left: 10px solid var(--cream); }
+.chip { font-size: 12px; font-weight: 700; color: var(--a-muted); background: rgba(18,20,58,.6); border: 1px solid rgba(203,196,232,.25); border-radius: 99px; padding: 3px 10px; }
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+</style>
+</head>
+<body>
+
+<svg class="defs" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2C3170"/><stop offset="1" stop-color="#1B1E4B"/>
+    </linearGradient>
+    <radialGradient id="glow"><stop offset="0" stop-color="#F2B23C" stop-opacity=".5"/><stop offset="1" stop-color="#F2B23C" stop-opacity="0"/></radialGradient>
+    <radialGradient id="moonGlow"><stop offset="0" stop-color="#F6EAD0" stop-opacity=".4"/><stop offset="1" stop-color="#F6EAD0" stop-opacity="0"/></radialGradient>
+    <path id="star" d="M0 -13 L3.2 -4.3 L12.4 -4 L5.2 1.7 L7.6 10.5 L0 5.5 L-7.6 10.5 L-5.2 1.7 L-12.4 -4 L-3.2 -4.3Z"/>
+    <g id="parol">
+      <circle r="22" fill="url(#glow)"/>
+      <g stroke="#FFF4DC" stroke-width="1.6" stroke-linecap="round"><path d="M-4 9 L-6 26"/><path d="M0 6 L0 30"/><path d="M4 9 L6 26"/></g>
+      <use href="#star" fill="#F08A3C" stroke="#B85A1E" stroke-width="1"/>
+      <use href="#star" fill="#FFF4DC" transform="scale(.5)"/>
+    </g>
+    <g id="leaf"><path d="M0 0 Q20 -40 6 -86 Q-14 -40 0 0Z"/></g>
+
+    <g id="tarsiHeadArt">
+      <g stroke="#5A3A22" stroke-width="1.6">
+        <ellipse cx="25" cy="26" rx="10" ry="13.5" fill="#C98E5A"/><ellipse cx="75" cy="26" rx="10" ry="13.5" fill="#C98E5A"/>
+      </g>
+      <ellipse cx="25" cy="28" rx="5" ry="8" fill="#E09A8A"/><ellipse cx="75" cy="28" rx="5" ry="8" fill="#E09A8A"/>
+      <circle cx="50" cy="49" r="28" fill="#C98E5A" stroke="#5A3A22" stroke-width="1.6"/>
+      <circle cx="38.5" cy="47" r="12.5" fill="#F0C85A" stroke="#5A3A22" stroke-width="1.2"/>
+      <circle cx="61.5" cy="47" r="12.5" fill="#F0C85A" stroke="#5A3A22" stroke-width="1.2"/>
+      <circle cx="38.5" cy="47.5" r="8" fill="#120D08"/><circle cx="61.5" cy="47.5" r="8" fill="#120D08"/>
+      <circle cx="35.6" cy="44.4" r="2.7" fill="#fff"/><circle cx="58.6" cy="44.4" r="2.7" fill="#fff"/>
+      <ellipse cx="50" cy="59.5" rx="2.25" ry="1.5" fill="#5A3A22"/>
+      <path d="M46 63 Q50 66 54 63" fill="none" stroke="#5A3A22" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="30" cy="58" r="4" fill="#FF8FA3" opacity=".45"/><circle cx="70" cy="58" r="4" fill="#FF8FA3" opacity=".45"/>
+    </g>
+    <symbol id="tarsi" viewBox="0 0 100 100">
+      <g stroke="#5A3A22" stroke-width="1.6">
+        <path d="M72 84 C92 80 98 62 90 44" fill="none" stroke="#7E5532" stroke-width="4.5" stroke-linecap="round"/>
+        <ellipse cx="50" cy="76" rx="23" ry="18" fill="#C98E5A"/>
+        <ellipse cx="50" cy="81" rx="13" ry="11" fill="#E2B98C" stroke="none"/>
+      </g>
+      <use href="#tarsiHeadArt"/>
+      <g stroke="#5A3A22" stroke-width="1.6" fill="#C98E5A"><circle cx="37" cy="91" r="4.5"/><circle cx="63" cy="91" r="4.5"/></g>
+    </symbol>
+
+    <!-- The home scene, 375 x 330, as it looks in the app -->
+    <symbol id="scene" viewBox="0 0 375 330">
+      <rect width="375" height="330" fill="url(#sky)"/>
+      <g fill="#fff" opacity=".7">
+        <circle cx="40" cy="30" r="1"/><circle cx="120" cy="60" r=".8"/><circle cx="210" cy="24" r="1"/>
+        <circle cx="300" cy="110" r=".8"/><circle cx="20" cy="110" r=".8"/><circle cx="180" cy="120" r=".7"/><circle cx="250" cy="150" r=".8"/>
+      </g>
+      <circle cx="58" cy="150" r="40" fill="url(#moonGlow)"/>
+      <circle cx="58" cy="150" r="21" fill="#F6EAD0"/>
+      <path d="M0 210 Q90 180 190 200 T375 190 V330 H0Z" fill="#2A3A7A"/>
+      <path d="M0 240 Q120 215 230 235 T375 225 V330 H0Z" fill="#244A4E"/>
+      <rect x="312" y="-10" width="28" height="300" fill="#6B4A2E"/>
+      <path d="M326 60 Q350 40 372 44" stroke="#6B4A2E" stroke-width="5" fill="none"/>
+      <path d="M0 52 Q160 100 375 40" fill="none" stroke="#3B2A14" stroke-width="1.4"/>
+      <use href="#parol" x="152" y="78"/>
+      <use href="#parol" x="247" y="70"/>
+      <use href="#parol" x="338" y="54"/>
+      <path d="M20 272 Q190 250 340 268" stroke="#7A5232" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <use href="#tarsi" x="113" y="127" width="150" height="150"/>
+      <g fill="#2A7F56"><use href="#leaf" transform="translate(18 330) rotate(-35)"/><use href="#leaf" transform="translate(40 330) rotate(-12)"/><use href="#leaf" transform="translate(66 330) rotate(18) scale(.8)"/></g>
+      <g fill="#3A9563"><use href="#leaf" transform="translate(360 330) rotate(30)"/><use href="#leaf" transform="translate(332 330) rotate(8) scale(.9)"/><use href="#leaf" transform="translate(305 330) rotate(-20) scale(.7)"/></g>
+      <text x="187" y="318" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="12" fill="#CBC4E8">Tap Tarsi</text>
+    </symbol>
+  </defs>
+</svg>
+
+<template id="cards">
+  <div class="cards">
+    <div class="paper"><div class="dots"><b></b><b class="half"></b><b></b><b></b><b></b><b></b><b></b></div><span class="disp">Start a streak</span><small>Play today to keep it</small></div>
+    <div class="paper"><span class="disp">Tonight's mission</span>
+      <div class="row"><span>Find 2 creatures</span><span>0/2</span></div>
+      <div class="row"><span>Get 10 answers right</span><span>0/10</span></div>
+    </div>
+  </div>
+</template>
+
+<main>
+  <h1>Home greeting options</h1>
+  <p class="lede">The big two-line greeting covers the top of the night scene, including the parols. Here's how it looks now, plus four cleaner layouts. Each phone shows the top of the home screen at real size × 0.8.</p>
+  <div class="grid">
+
+    <section class="opt" aria-label="Current layout">
+      <div class="head"><span class="letter now">Now</span><span class="name">Current</span></div>
+      <div class="phone"><div class="screen">
+        <div class="hero">
+          <svg viewBox="0 0 375 330"><use href="#scene"/></svg>
+          <div style="position:absolute;left:16px;top:14px;right:100px">
+            <div class="disp" style="font-size:25px;text-shadow:2px 2px 0 rgba(0,0,0,.53)">Magandang gabi,<br>Ana!</div>
+            <div style="font-size:13px;color:var(--a-muted);margin-top:2px">Night Ranger · Level 1</div>
+          </div>
+          <div class="pill"><i></i>0</div>
+        </div>
+        <div data-cards></div>
+      </div></div>
+      <p class="why">Two big lines plus the rank line fill the top third of the scene and sit right on the parol string.</p>
+    </section>
+
+    <section class="opt" aria-label="Option A: Slim line">
+      <div class="head"><span class="letter">A</span><span class="name">Slim line</span></div>
+      <div class="phone"><div class="screen">
+        <div class="hero">
+          <svg viewBox="0 0 375 330"><use href="#scene"/></svg>
+          <div style="position:absolute;left:16px;top:14px;right:90px">
+            <div class="disp" style="font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:1px 2px 0 rgba(0,0,0,.5)">Magandang gabi, Ana!</div>
+            <div style="font-size:12px;color:var(--a-muted)">Night Ranger · Level 1</div>
+          </div>
+          <div class="pill"><i></i>0</div>
+        </div>
+        <div data-cards></div>
+      </div></div>
+      <p class="why">Same place, but one smaller line. The smallest change: about half the height, and the parols show again.</p>
+    </section>
+
+    <section class="opt" aria-label="Option B: Top bar">
+      <div class="head"><span class="letter">B</span><span class="name">Top bar</span></div>
+      <div class="phone"><div class="screen">
+        <div style="height:58px;background:var(--deep);display:flex;align-items:center;justify-content:space-between;padding:0 14px 0 16px;border-bottom:2px solid #2C3170;position:relative">
+          <div>
+            <div class="disp" style="font-size:18px">Magandang gabi, Ana!</div>
+            <div style="font-size:12px;color:var(--a-muted)">Night Ranger · Level 1</div>
+          </div>
+          <div class="pill" style="position:static"><i></i>0</div>
+        </div>
+        <div class="hero" style="height:290px">
+          <svg viewBox="0 0 375 330" style="top:-30px"><use href="#scene"/></svg>
+        </div>
+        <div data-cards></div>
+      </div></div>
+      <p class="why">The greeting moves into its own bar above the scene, so nothing covers the art. Tidy and predictable, like a normal app header.</p>
+    </section>
+
+    <section class="opt" aria-label="Option C: Paper tag">
+      <div class="head"><span class="letter">C</span><span class="name">Paper tag</span></div>
+      <div class="phone"><div class="screen">
+        <div class="hero">
+          <svg viewBox="0 0 375 330"><use href="#scene"/></svg>
+          <div class="paper" style="position:absolute;left:14px;top:14px;padding:6px 12px;transform:rotate(-2deg)">
+            <div class="disp" style="font-size:15px">Magandang gabi, Ana!</div>
+          </div>
+          <div style="position:absolute;right:14px;top:14px;display:flex;gap:8px;align-items:center">
+            <span class="chip">Lv 1</span>
+            <div class="pill" style="position:static"><i></i>0</div>
+          </div>
+        </div>
+        <div data-cards></div>
+      </div></div>
+      <p class="why">A small cream tag, like the labels stuck on the scene elsewhere. Rank shrinks to a "Lv 1" chip next to the gems.</p>
+    </section>
+
+    <section class="opt rec" aria-label="Option D: Tarsi says it (recommended)">
+      <div class="head"><span class="letter">D</span><span class="name">Tarsi says it</span><span class="tag">Recommended</span></div>
+      <div class="phone"><div class="screen">
+        <div class="hero">
+          <svg viewBox="0 0 375 330"><use href="#scene"/></svg>
+          <div style="position:absolute;left:14px;top:16px"><span class="chip">Night Ranger · Lv 1</span></div>
+          <div class="pill"><i></i>0</div>
+          <div class="bubble" style="left:12px;top:182px;width:116px">Magandang gabi, Ana!</div>
+        </div>
+        <div data-cards></div>
+      </div></div>
+      <p class="why">The cleanest. Tarsi already says hello when the screen opens, so the greeting becomes its first line in the speech bubble. The top only keeps two small chips, and the whole scene shows.</p>
+    </section>
+
+  </div>
+</main>
+<script>
+const cards = document.getElementById('cards').innerHTML;
+document.querySelectorAll('[data-cards]').forEach(el => { el.outerHTML = cards; });
+</script>
+</body>
+</html>

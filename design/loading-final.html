@@ -1,0 +1,176 @@
+<meta charset="utf-8">
+<title>Creature Collector Loading Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Sniglet:wght@400;800&display=swap">
+<style>
+/* Layout: five phones, each a different loading animation with the same parol credits (option B) at the bottom. */
+:root{
+  --bg:#eef0f6; --fg:#171a2b; --muted:#585d78; --line:#d4d7e4; --surface:#fbfbfe; --accent:#c4552c;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --sky:#1b1e4b; --cream:#f6ead0; --ink:#3b2a14; --gold:#f2b23c; --text:#fff4dc; --soft:#cbc4e8;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.5;padding:0 20px;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:64ch;margin:0 0 30px}
+.grid{display:grid;grid-template-columns:1fr;justify-items:center}
+.col{width:250px;max-width:100%;display:flex;flex-direction:column;gap:8px}
+.col h2{font-family:var(--f-display);font-weight:800;font-size:20px;margin:4px 0 0}
+.col p{margin:0;color:var(--muted);font-size:15px}
+.tag{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.rec{display:inline-block;background:var(--accent);color:var(--surface);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:3px}
+
+.phone{width:250px;height:520px;border-radius:36px;border:8px solid #07070c;overflow:hidden;position:relative;background:var(--sky);color:var(--text);font-family:"Sniglet",sans-serif}
+.notch{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:70px;height:17px;border-radius:10px;background:#07070c;z-index:9}
+.stars{position:absolute;inset:0;background-image:radial-gradient(1.3px 1.3px at 20px 30px,#fff4dc 50%,transparent 51%),radial-gradient(1px 1px at 90px 80px,#fff4dc 50%,transparent 51%),radial-gradient(1.3px 1.3px at 170px 20px,#fff4dc 50%,transparent 51%),radial-gradient(1px 1px at 220px 120px,#fff4dc 50%,transparent 51%);background-size:250px 170px;opacity:.75}
+.title{position:absolute;left:0;right:0;top:50px;text-align:center;font-weight:800;font-size:26px;line-height:1;text-shadow:2px 3px 0 rgba(0,0,0,.4);z-index:3}
+.title small{display:block;font-size:13px;font-weight:400;color:var(--soft);margin-top:6px;text-shadow:none;font-family:var(--f-body)}
+.scene{position:absolute;left:0;right:0;top:120px;height:230px}
+.scene svg{display:block}
+.status{position:absolute;left:0;right:0;top:342px;text-align:center;font-size:15px;z-index:3}
+.status b{color:var(--gold);font-weight:800}
+
+/* credits, option B */
+.by{position:absolute;left:0;right:0;bottom:112px;text-align:center;font-family:var(--f-body);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);z-index:3}
+.names{position:absolute;left:0;right:0;bottom:20px;display:flex;justify-content:center;gap:12px;z-index:3}
+.nm{display:flex;flex-direction:column;align-items:center;width:108px}
+.nm .label{margin-top:-2px;padding:5px 6px;text-align:center;font-size:12px;line-height:1.2;background:var(--cream);color:var(--ink);box-shadow:3px 4px 0 rgba(0,0,0,.35);transform:rotate(-2deg)}
+.nm:nth-child(2) .label{transform:rotate(2deg)}
+.sway{animation:sway 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 0}
+.sway.b{animation-delay:-1.4s}
+@keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.lid{opacity:0;animation:blink 4.4s infinite}
+@keyframes blink{0%,93%,100%{opacity:0}95%,97%{opacity:1}}
+.hop{animation:hop 1.2s cubic-bezier(.45,0,.55,1) infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes hop{0%,100%{transform:translateY(0) scale(1.06,.94)}15%{transform:translateY(0) scale(1)}50%{transform:translateY(-26px) scale(.96,1.05)}85%{transform:translateY(0)}}
+.bob{animation:bob 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-3px) rotate(1.5deg)}}
+
+/* Intro: the credits pop out first, then the game fades in. */
+.intro .by{animation:fadein .35s .1s both}
+.intro .nm{animation:dropin .75s cubic-bezier(.2,1.6,.4,1) both}
+.intro .nm:nth-child(1){animation-delay:.25s}
+.intro .nm:nth-child(2){animation-delay:.5s}
+.intro .nm .label{animation:tagpop .5s cubic-bezier(.2,1.8,.4,1) both}
+.intro .nm:nth-child(1) .label{animation-delay:.65s}
+.intro .nm:nth-child(2) .label{animation-delay:.9s}
+.intro .title,.intro .scene,.intro .status{animation:fadein .7s 1.5s both}
+@keyframes dropin{from{opacity:0;transform:translateY(-70px) scale(.4) rotate(-12deg)}to{opacity:1;transform:none}}
+@keyframes tagpop{from{opacity:0;transform:scale(.2) rotate(-14deg)}to{opacity:1}}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.replay{align-self:center;font:inherit;font-weight:700;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:6px 16px;border-radius:99px;cursor:pointer;margin-top:4px}
+.replay:hover{border-color:var(--accent)}
+.replay:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+
+<div class="wrap">
+  <h1>Your loading screen</h1>
+  <p class="lead">Option 2 with the percentage removed. The credits pop out first: each developer's parol drops in and their name tag pops on. Then the title, Tarsi, and the loading parols fade in, and the parols light up one by one. Press <b>Replay</b> to watch it again. This is a preview only; nothing is changed in the app yet.</p>
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function star(cx, cy, R, r){
+    var pts = [];
+    for (var i = 0; i < 10; i++){
+      var rad = i % 2 ? r : R, a = -Math.PI/2 + i*Math.PI/5;
+      pts.push((cx + Math.cos(a)*rad).toFixed(1) + ',' + (cy + Math.sin(a)*rad).toFixed(1));
+    }
+    return pts.join(' ');
+  }
+  function parol(x, y, s, color, extra){
+    return '<g ' + (extra || '') + '><line x1="' + x + '" y1="' + (y - s*1.1) + '" x2="' + x + '" y2="' + (y - s*.9) + '" stroke="#3a2a1c" stroke-width="1.4"/>' +
+      '<circle class="glow" cx="' + x + '" cy="' + y + '" r="' + (s*1.4) + '" fill="' + color + '" opacity=".45" style="filter:blur(6px)"/>' +
+      '<path d="M' + (x - s*.35) + ' ' + (y + s*.6) + 'l-' + (s*.15) + ' ' + (s*1.1) + 'M' + x + ' ' + (y + s*.7) + 'l0 ' + (s*1.3) + 'M' + (x + s*.35) + ' ' + (y + s*.6) + 'l' + (s*.15) + ' ' + (s*1.1) + '" stroke="#f6ead0" stroke-width="' + (s*.12) + '" stroke-linecap="round"/>' +
+      '<polygon class="body" points="' + star(x, y, s, s*.45) + '" fill="' + color + '"/><circle cx="' + x + '" cy="' + y + '" r="' + (s*.32) + '" fill="#f6ead0"/></g>';
+  }
+  var TARSI =
+    '<path d="M146 168 C190 160 200 120 182 88" stroke="#8a5a30" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="100" cy="152" rx="46" ry="36" fill="#b8763e"/><ellipse cx="100" cy="162" rx="25" ry="20" fill="#e8c094"/>' +
+    '<ellipse cx="50" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="50" cy="56" rx="10" ry="16" fill="#f2a7b5"/>' +
+    '<ellipse cx="150" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="150" cy="56" rx="10" ry="16" fill="#f2a7b5"/>' +
+    '<circle cx="100" cy="98" r="56" fill="#e0a96d"/>' +
+    '<circle cx="77" cy="94" r="25" fill="#f6ead0"/><circle cx="123" cy="94" r="25" fill="#f6ead0"/>' +
+    '<circle cx="77" cy="95" r="18" fill="#f2b23c"/><circle cx="123" cy="95" r="18" fill="#f2b23c"/>' +
+    '<g class="pupils"><circle cx="78" cy="96" r="11" fill="#2b1d10"/><circle cx="122" cy="96" r="11" fill="#2b1d10"/>' +
+    '<circle cx="83" cy="90" r="4.5" fill="#fff"/><circle cx="127" cy="90" r="4.5" fill="#fff"/></g>' +
+    '<g class="lid"><circle cx="77" cy="94" r="26" fill="#e0a96d"/><circle cx="123" cy="94" r="26" fill="#e0a96d"/><path d="M60 96q17 12 34 0M106 96q17 12 34 0" stroke="#3b2a14" stroke-width="3" fill="none" stroke-linecap="round"/></g>' +
+    '<circle cx="56" cy="120" r="8" fill="#f2a7b5" opacity=".7"/><circle cx="144" cy="120" r="8" fill="#f2a7b5" opacity=".7"/>' +
+    '<path d="M94 119h12l-6 7z" fill="#7a4b26"/><path d="M90 130q10 8 20 0" stroke="#7a4b26" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    '<circle cx="73" cy="184" r="9" fill="#e0a96d"/><circle cx="127" cy="184" r="9" fill="#e0a96d"/>';
+  var BRANCH = '<path d="M-10 214Q125 196 260 218" stroke="#7a4e2a" stroke-width="10" fill="none" stroke-linecap="round"/>';
+
+  function credits(){
+    function pz(c){ return '<svg width="40" height="50" viewBox="0 0 40 50" class="sway' + (c === '#f2b23c' ? ' b' : '') + '"><line x1="20" y1="0" x2="20" y2="8" stroke="#3a2a1c" stroke-width="1.4"/><circle cx="20" cy="22" r="16" fill="' + c + '" opacity=".45" style="filter:blur(5px)"/><polygon points="' + star(20, 22, 13, 6) + '" fill="' + c + '"/><circle cx="20" cy="22" r="4.4" fill="#f6ead0"/><path d="M16 31l-2 12M20 32v15M24 31l2 12" stroke="#f6ead0" stroke-width="1.6" stroke-linecap="round"/></svg>'; }
+    return '<div class="by">Developed by</div><div class="names">' +
+      '<div class="nm">' + pz('#e5574a') + '<div class="label">Rejohn James Ballenas</div></div>' +
+      '<div class="nm">' + pz('#f2b23c') + '<div class="label">Jay Rhanz Mabaquiao</div></div></div>';
+  }
+
+  var cards = [
+    {id:'l2', tag:'Final design', name:'Parols light up', rec:false,
+     text:'Five parols light up one by one as the app loads. Tarsi looks up at each new one. Below, a parol for each developer sways gently with their name.',
+     scene:'<path d="M-10 30Q125 72 260 26" stroke="#3a2a1c" stroke-width="1.4" fill="none"/>' +
+       [0,1,2,3,4].map(function(i){
+         // Hang each parol from the string: the curve is a quadratic from (-10,30) via (125,72) to (260,26).
+         var t = (0.15 + i * 0.175), x = (1-t)*(1-t)*-10 + 2*(1-t)*t*125 + t*t*260, y = (1-t)*(1-t)*30 + 2*(1-t)*t*72 + t*t*26;
+         return '<g id="l2p' + i + '">' + parol(x, y + 13*1.1, 13, ['#e5574a','#f2b23c','#f08a3c','#f2a7b5','#f2b23c'][i]) + '</g>'; }).join('') +
+       BRANCH + '<g transform="translate(80 108) scale(.46)"><g class="bob" id="l2t">' + TARSI + '</g></g>',
+     status:'Loading<span id="l2d">...</span>'}
+  ];
+
+  var grid = document.getElementById('grid');
+  grid.innerHTML = cards.map(function(c){
+    return '<div class="col"><div class="phone intro" id="phone"><div class="notch"></div><div class="stars"></div>' +
+      '<div class="title">Creature Collector<small>A Night Ranger adventure</small></div>' +
+      '<div class="scene"><svg viewBox="0 0 250 230" width="250" height="230">' + (c.defs ? '<defs>' + c.defs + '</defs>' : '') + c.scene + '</svg></div>' +
+      '<div class="status">' + c.status + '</div>' + credits() + '</div>' +
+      '<button class="replay" id="replay">Replay</button>' +
+      '<span class="tag">' + c.tag + (c.rec ? '<span class="rec">Recommended</span>' : '') + '</span>' +
+      '<h2>' + c.name + '</h2><p>' + c.text + '</p></div>';
+  }).join('');
+
+  var CYCLE = 5200;
+  var start = performance.now();
+  function lerp(a, b, t){ return a + (b - a) * t; }
+  function ease(t){ return t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2; }
+  function frame(now){
+    var el = now - start;
+    // The parols wait until the credits have popped out and the game faded in.
+    var INTRO = 1900;
+    var p = el < INTRO ? 0 : ((el - INTRO) % CYCLE) / CYCLE;
+    var shown = Math.min(1, p * 1.15);       // reach 100% a little before the loop restarts
+
+    // 2: parols light one by one with the progress.
+    var litCount = Math.floor(shown * 5 + 0.0001);
+    for (var i2 = 0; i2 < 5; i2++){
+      var on = i2 < litCount;
+      var g2 = document.getElementById('l2p' + i2);
+      g2.querySelector('.glow').setAttribute('opacity', on ? '.8' : '0');
+      g2.querySelector('.body').setAttribute('fill-opacity', on ? '1' : '.25');
+    }
+    // Tarsi looks toward the next parol to light up.
+    var look = Math.min(4, litCount);
+    var dx = (look - 2) * 2.4;
+    document.querySelector('#l2t .pupils').setAttribute('transform', 'translate(' + dx.toFixed(1) + ' -5)');
+    document.getElementById('l2d').textContent = '.'.repeat(1 + Math.floor(el / 400) % 3);
+
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  document.getElementById('replay').addEventListener('click', function(){
+    var ph = document.getElementById('phone');
+    ph.classList.remove('intro'); void ph.offsetWidth; ph.classList.add('intro');
+    start = performance.now();
+  });
+})();
+</script>

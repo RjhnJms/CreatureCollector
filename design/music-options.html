@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Music Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #f4ecdc; --card: #fffaf0; --ink: #3b2a14; --muted: #7a6a52; --line: #e2d4b8; --accent: #f08a3c; --chip: #f1e4c8; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #12143a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; --chip: #2c3170; }
+}
+:root[data-theme="dark"] { --bg: #12143a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; --chip: #2c3170; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Atkinson Hyperlegible", system-ui, sans-serif; line-height: 1.5; }
+main { max-width: 860px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 34px; margin: 0 0 6px; line-height: 1.1; }
+.lede { color: var(--muted); margin: 0 0 8px; }
+.note { color: var(--muted); font-size: 14px; margin: 0 0 28px; }
+.list { display: flex; flex-direction: column; gap: 14px; }
+.track { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; align-items: start; }
+.track > :not(.letter) { grid-column: 2; }
+.letter { grid-column: 1; grid-row: 1 / span 5; font-family: Sniglet, system-ui; font-weight: 800; font-size: 18px; background: var(--accent); color: #fff4dc; border-radius: 8px; width: 36px; height: 36px; display: grid; place-items: center; }
+.name { font-family: Sniglet, system-ui; font-weight: 800; font-size: 21px; line-height: 1.2; }
+.by { color: var(--muted); font-size: 14px; }
+.why { margin: 2px 0 0; font-size: 15px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tags span { font-size: 12px; background: var(--chip); border-radius: 99px; padding: 1px 9px; color: var(--muted); }
+audio { grid-column: 2; width: 100%; margin-top: 8px; }
+a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Background music options</h1>
+  <p class="lede">Six calm tracks from OpenGameArt, all released as <b>CC0</b>: free to use with no credit needed. Press play to listen. They stream from OpenGameArt, so you need internet.</p>
+  <p class="note">The descriptions come from each track's tags and its author's notes; I can't listen to audio myself, so trust your ears over my blurbs. In the app the music would play quietly under everything, get quieter during questions, and have a mute button.</p>
+
+  <div class="list">
+    <section class="track">
+      <div class="letter">1</div>
+      <div class="name">A New Town</div>
+      <div class="by">by cynicmusic · <a href="https://opengameart.org/content/a-new-town-rpg-theme">OpenGameArt page</a></div>
+      <p class="why">Harp-led and tagged magical, enchanting and uplifting. Feels like arriving somewhere new, a good fit for exploring habitats.</p>
+      <div class="tags"><span>harp</span><span>magical</span><span>enchanting</span><span>uplifting</span><span>discovery</span></div>
+      <audio controls preload="none" src="https://opengameart.org/sites/default/files/025_A_New_Town.mp3"></audio>
+    </section>
+
+    <section class="track">
+      <div class="letter">2</div>
+      <div class="name">Up in the Sky</div>
+      <div class="by">by Memoraphile (posted by You're Perfect Studio) · <a href="https://opengameart.org/content/up-in-the-sky">OpenGameArt page</a></div>
+      <p class="why">Dreamy background music made to loop. Tagged ambient and BGM, so it should sit quietly under the game.</p>
+      <div class="tags"><span>dreamy</span><span>loopable</span><span>ambient</span><span>bgm</span></div>
+      <audio controls preload="none" src="https://opengameart.org/sites/default/files/Memoraphile%20-%20Up%20in%20the%20Sky_0.ogg"></audio>
+    </section>
+
+    <section class="track">
+      <div class="letter">3</div>
+      <div class="name">Slow Stride</div>
+      <div class="by">by isaiah658 · <a href="https://opengameart.org/content/slow-stride">OpenGameArt page</a></div>
+      <p class="why">A slow, smooth, chill loop. Relaxed without being sleepy.</p>
+      <div class="tags"><span>slow</span><span>chill</span><span>relaxing</span><span>smooth</span><span>loop</span></div>
+      <audio controls preload="none" src="https://opengameart.org/sites/default/files/Slow%20Stride%20Loop_0.ogg"></audio>
+    </section>
+
+    <section class="track">
+      <div class="letter">4</div>
+      <div class="name">Lonely Night</div>
+      <div class="by">by Centurion_of_war · <a href="https://opengameart.org/node/162656">OpenGameArt page</a></div>
+      <p class="why">A small, calm night tune made to loop. Tagged mystery and adventure, which suits searching the dark with a flashlight.</p>
+      <div class="tags"><span>night</span><span>loopable</span><span>calm</span><span>mystery</span><span>adventure</span></div>
+      <audio controls preload="none" src="https://opengameart.org/sites/default/files/night_tune3_0.ogg"></audio>
+    </section>
+
+    <section class="track">
+      <div class="letter">5</div>
+      <div class="name">Icy Realm (Seven and Eight)</div>
+      <div class="by">by cynicmusic · <a href="https://opengameart.org/content/icy-realm-seven-and-eight">OpenGameArt page</a></div>
+      <p class="why">Peaceful and enchanting, tagged magic and discovery. Despite the icy name, the mood tags match a quiet night.</p>
+      <div class="tags"><span>peaceful</span><span>ambient</span><span>enchanting</span><span>magic</span><span>discovery</span></div>
+      <audio controls preload="none" src="https://opengameart.org/sites/default/files/019_seven_and_eight_7-8_combined_0.mp3"></audio>
+    </section>
+
+    <section class="track">
+      <div class="letter">6</div>
+      <div class="name">Heavenly Loop</div>
+      <div class="by">by isaiah658 · <a href="https://opengameart.org/content/heavenly-loop">OpenGameArt page</a></div>
+      <p class="why">A short, seamless, dreamy loop with a choir sound. The author says it holds up to repeating for a minute or two, so it might wear thin over a long session.</p>
+      <div class="tags"><span>dreamy</span><span>choir</span><span>ambient</span><span>seamless loop</span></div>
+      <audio controls preload="none" src="https://opengameart.org/sites/default/files/Heavenly%20Loop_0.ogg"></audio>
+    </section>
+  </div>
+</main>
+<script>
+// Only one track plays at a time.
+document.addEventListener('play', e => {
+  document.querySelectorAll('audio').forEach(a => { if (a !== e.target) a.pause(); });
+}, true);
+</script>
+</body>
+</html>

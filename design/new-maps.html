@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Maps Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #f4ecdc; --card: #fffaf0; --ink: #3b2a14; --muted: #7a6a52; --line: #e2d4b8; --accent: #f08a3c; --row: #f7efdd; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; --row: #22265a; }
+}
+:root[data-theme="dark"] { --bg: #0c0e2a; --card: #1b1e4b; --ink: #fff4dc; --muted: #cbc4e8; --line: #2c3170; --row: #22265a; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Atkinson Hyperlegible", system-ui, sans-serif; line-height: 1.5; }
+main { max-width: 1100px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 34px; margin: 0 0 6px; line-height: 1.1; }
+h2 { font-family: Sniglet, system-ui; font-weight: 800; font-size: 24px; margin: 0; }
+.lede { color: var(--muted); margin: 0 0 28px; max-width: 72ch; }
+.map { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 22px; }
+.map .head { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; margin-bottom: 4px; }
+.badge { font-size: 12px; font-weight: 700; border-radius: 99px; padding: 2px 10px; }
+.b-day { background: #FFE19A; color: #3b2a14; } .b-night { background: #2C3170; color: #FFF4DC; } .b-mix { background: #E2D2F0; color: #3b2a14; }
+.blurb { color: var(--muted); margin: 0 0 14px; }
+.scenes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.scene { border-radius: 10px; overflow: hidden; }
+.scene svg { display: block; width: 100%; height: auto; }
+.scene .cap { font-family: Sniglet; font-weight: 800; font-size: 13px; padding: 6px 2px 0; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); font-size: 15px; vertical-align: top; }
+th { font-family: Sniglet; font-weight: 800; font-size: 13px; background: var(--row); }
+td.t { white-space: nowrap; }
+.sum { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.sum b { font-family: Sniglet; font-weight: 800; }
+.sum ul { margin: 6px 0 0; padding-left: 20px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>New maps plan</h1>
+  <p class="lede">Three new maps join the Rainforest and Ocean: the two "coming soon" ones (Mangrove and Cave) and a new <b>daytime</b> map, the Rice Terraces. Each has its own paper scene, 6 creatures with real day/night habits, 3 stages plus a review, and 10 questions per creature, like the maps you have now. All animals are found in the Philippines.</p>
+
+  <section class="map">
+    <div class="head"><h2>Rice Terraces</h2><span class="badge b-day">☀️ Daytime map</span></div>
+    <p class="blurb">Mountain steps of green rice, mossy forest edges, and bright birds and butterflies. Mostly day animals, so most searches use the magnifying glass.</p>
+    <div class="scenes">
+      <div class="scene">
+        <svg viewBox="0 0 320 180" role="img" aria-label="Rice terraces by day">
+          <rect width="320" height="180" fill="#9DD3EC"/>
+          <circle cx="262" cy="36" r="18" fill="#FFD36E"/>
+          <g fill="#fff"><ellipse cx="80" cy="34" rx="26" ry="9"/><ellipse cx="94" cy="28" rx="14" ry="9"/></g>
+          <path d="M0 80 Q80 50 160 70 T320 60 V180 H0Z" fill="#7FB98A"/>
+          <path d="M0 100 Q90 84 170 98 T320 92 V180 H0Z" fill="#9BCB6E"/><path d="M0 100 Q90 84 170 98 T320 92" stroke="#5E9A4E" stroke-width="2.5" fill="none"/>
+          <path d="M0 122 Q90 106 170 120 T320 114 V180 H0Z" fill="#8BC260"/><path d="M0 122 Q90 106 170 120 T320 114" stroke="#5E9A4E" stroke-width="2.5" fill="none"/>
+          <path d="M0 144 Q90 128 170 142 T320 136 V180 H0Z" fill="#79B653"/><path d="M0 144 Q90 128 170 142 T320 136" stroke="#5E9A4E" stroke-width="2.5" fill="none"/>
+          <g stroke="#4F9A3E" stroke-width="1.6" stroke-linecap="round"><path d="M40 160 l-3 -9 M46 158 l0 -10 M52 160 l3 -9"/><path d="M230 152 l-3 -9 M236 150 l0 -10 M242 152 l3 -9"/></g>
+          <g transform="translate(150 60)"><path d="M0 0 Q-14 -12 -20 2 Q-12 8 0 0Z" fill="#2E5A8A"/><path d="M0 0 Q14 -12 20 2 Q12 8 0 0Z" fill="#2E5A8A"/><path d="M-4 2 Q-10 10 -14 6Z M4 2 Q10 10 14 6Z" fill="#5BB174"/></g>
+        </svg>
+        <div class="cap">Day: terraced rice steps under the sun</div>
+      </div>
+      <div class="scene">
+        <svg viewBox="0 0 320 180" role="img" aria-label="Rice terraces at night">
+          <rect width="320" height="180" fill="#1B1E4B"/>
+          <g fill="#fff" opacity=".7"><circle cx="40" cy="20" r="1"/><circle cx="120" cy="40" r="1"/><circle cx="210" cy="16" r="1"/><circle cx="290" cy="60" r="1"/></g>
+          <circle cx="262" cy="36" r="13" fill="#FFF1C2"/>
+          <path d="M0 80 Q80 50 160 70 T320 60 V180 H0Z" fill="#2A3A7A"/>
+          <path d="M0 100 Q90 84 170 98 T320 92 V180 H0Z" fill="#2D5A4E"/><path d="M0 122 Q90 106 170 120 T320 114 V180 H0Z" fill="#285046"/><path d="M0 144 Q90 128 170 142 T320 136 V180 H0Z" fill="#22463E"/>
+          <g fill="#FFF3B0"><circle cx="70" cy="110" r="2"/><circle cx="200" cy="130" r="2"/></g>
+        </svg>
+        <div class="cap">Night: for the few night creatures here</div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Creature</th><th>Filipino name</th><th>Active</th><th>Fun fact kids learn</th></tr></thead>
+      <tbody>
+        <tr><td>Magellan birdwing butterfly</td><td>Paru-paro</td><td class="t">☀️ Day</td><td>One of the biggest butterflies; its back wings shimmer blue-green in the light</td></tr>
+        <tr><td>Luzon bleeding-heart pigeon</td><td>—</td><td class="t">☀️ Day</td><td>A shy ground pigeon with a red patch on its chest that looks like a wound</td></tr>
+        <tr><td>Philippine sailfin lizard</td><td>—</td><td class="t">☀️ Day</td><td>Has a sail on its tail and can run across water</td></tr>
+        <tr><td>Carabao</td><td>Kalabaw</td><td class="t">☀️ Day</td><td>The farmer's helper, which cools off in mud</td></tr>
+        <tr><td>Rice plant</td><td>Palay</td><td class="t">🌗 Day &amp; night</td><td>A plant: grows in flooded fields and feeds millions</td></tr>
+        <tr><td>Luzon cloud rat</td><td>—</td><td class="t">🌙 Night</td><td>A big, fluffy rat with a long tail that lives in the trees</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="map">
+    <div class="head"><h2>Mangrove</h2><span class="badge b-mix">🌗 Day &amp; night map</span></div>
+    <p class="blurb">Where the forest meets the sea: tangled roots in muddy water. A real mix of day and night animals.</p>
+    <div class="scenes">
+      <div class="scene">
+        <svg viewBox="0 0 320 180" role="img" aria-label="Mangrove by day">
+          <rect width="320" height="180" fill="#A9D8EA"/><circle cx="60" cy="34" r="16" fill="#FFD36E"/>
+          <rect y="112" width="320" height="68" fill="#5BA9A0"/><path d="M0 112 Q40 106 80 112 T160 112 T240 112 T320 112" stroke="#8CCFC6" stroke-width="3" fill="none"/>
+          <g stroke="#6B4A2E" stroke-width="4" fill="none" stroke-linecap="round">
+            <path d="M90 60 L90 104 M90 100 Q70 112 66 132 M90 100 Q90 116 92 136 M90 100 Q110 112 116 132"/>
+            <path d="M230 54 L230 100 M230 96 Q210 108 204 130 M230 96 Q232 112 234 134 M230 96 Q250 108 258 128"/>
+          </g>
+          <g fill="#4F9A66"><ellipse cx="90" cy="56" rx="40" ry="22"/><ellipse cx="230" cy="50" rx="44" ry="24"/></g>
+          <g fill="#3A9563"><ellipse cx="70" cy="62" rx="20" ry="12"/><ellipse cx="252" cy="58" rx="22" ry="12"/></g>
+          <path d="M150 150 q8 -8 16 0" stroke="#3F2C1C" stroke-width="2" fill="none"/>
+        </svg>
+        <div class="cap">Day: sunlit roots over shallow water</div>
+      </div>
+      <div class="scene">
+        <svg viewBox="0 0 320 180" role="img" aria-label="Mangrove at night">
+          <rect width="320" height="180" fill="#1B1E4B"/><circle cx="60" cy="34" r="12" fill="#FFF1C2"/>
+          <rect y="112" width="320" height="68" fill="#17405A"/>
+          <g stroke="#3E2A1A" stroke-width="4" fill="none" stroke-linecap="round">
+            <path d="M90 60 L90 104 M90 100 Q70 112 66 132 M90 100 Q90 116 92 136 M90 100 Q110 112 116 132"/>
+            <path d="M230 54 L230 100 M230 96 Q210 108 204 130 M230 96 Q232 112 234 134 M230 96 Q250 108 258 128"/>
+          </g>
+          <g fill="#1C4A38"><ellipse cx="90" cy="56" rx="40" ry="22"/><ellipse cx="230" cy="50" rx="44" ry="24"/></g>
+          <g fill="#FFF3B0"><circle cx="76" cy="52" r="2"/><circle cx="100" cy="64" r="2"/><circle cx="220" cy="44" r="2"/><circle cx="244" cy="58" r="2"/><circle cx="236" cy="40" r="2"/></g>
+        </svg>
+        <div class="cap">Night: fireflies light up the mangrove trees</div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Creature</th><th>Filipino name</th><th>Active</th><th>Fun fact kids learn</th></tr></thead>
+      <tbody>
+        <tr><td>Mudskipper</td><td>Talimusak</td><td class="t">☀️ Day</td><td>A fish that walks and breathes on the mud</td></tr>
+        <tr><td>Fiddler crab</td><td>—</td><td class="t">☀️ Day</td><td>Males wave one giant claw</td></tr>
+        <tr><td>Collared kingfisher</td><td>Salaksak</td><td class="t">☀️ Day</td><td>Dives for crabs and fish, with bright blue wings</td></tr>
+        <tr><td>Mangrove tree</td><td>Bakawan</td><td class="t">🌗 Day &amp; night</td><td>A plant: stilt roots that hold the shore and shelter baby fish</td></tr>
+        <tr><td>Water monitor lizard</td><td>Bayawak</td><td class="t">☀️ Day</td><td>A big swimming lizard</td></tr>
+        <tr><td>Mangrove cat snake</td><td>—</td><td class="t">🌙 Night</td><td>A black-and-yellow snake that hunts at night (best seen from a distance!)</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="map">
+    <div class="head"><h2>Cave</h2><span class="badge b-night">🌙 Dark map</span></div>
+    <p class="blurb">Bats, swiftlets, and secret rivers. Always dark inside, so every search uses the flashlight.</p>
+    <div class="scenes">
+      <div class="scene">
+        <svg viewBox="0 0 320 180" role="img" aria-label="Inside a cave">
+          <rect width="320" height="180" fill="#231E33"/>
+          <path d="M0 0 H320 V30 L300 52 L286 30 L262 60 L244 28 L220 46 L196 24 L170 56 L150 26 L126 44 L104 22 L80 50 L60 26 L36 48 L18 24 L0 40Z" fill="#3B3352"/>
+          <path d="M0 180 V150 L30 132 L52 146 L80 126 L110 144 L140 130 L176 148 L204 128 L236 146 L270 130 L300 148 L320 138 V180Z" fill="#3B3352"/>
+          <path d="M120 160 Q160 150 200 160" stroke="#3E6E8E" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <g fill="#5E5578"><path d="M150 26 l-4 20 l-4 -20Z"/><path d="M220 46 l-3 16 l-3 -16Z"/></g>
+          <g fill="#1A1626"><path d="M100 70 q-10 -8 -18 0 q4 -2 9 4 q5 -6 9 -4Z"/><path d="M200 80 q-10 -8 -18 0 q4 -2 9 4 q5 -6 9 -4Z"/></g>
+          <ellipse cx="240" cy="110" rx="46" ry="34" fill="#FFF4DC" opacity=".14"/>
+        </svg>
+        <div class="cap">Always dark: flashlight searches</div>
+      </div>
+      <div class="scene">
+        <svg viewBox="0 0 320 180" role="img" aria-label="Cave entrance at dusk">
+          <rect width="320" height="180" fill="#3B2A6B"/>
+          <path d="M0 0 H320 V180 H0Z M90 180 Q90 60 160 50 Q230 60 230 180Z" fill="#2E2840" fill-rule="evenodd"/>
+          <rect x="90" y="120" width="140" height="60" fill="#C0607A" opacity=".35"/>
+          <g fill="#1A1626"><path d="M150 80 q-8 -6 -14 0 q3 -2 7 3 q4 -5 7 -3Z"/><path d="M178 70 q-8 -6 -14 0 q3 -2 7 3 q4 -5 7 -3Z"/><path d="M166 96 q-8 -6 -14 0 q3 -2 7 3 q4 -5 7 -3Z"/></g>
+        </svg>
+        <div class="cap">The cave mouth at dusk, when bats fly out</div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Creature</th><th>Filipino name</th><th>Active</th><th>Fun fact kids learn</th></tr></thead>
+      <tbody>
+        <tr><td>Geoffroy's rousette (fruit bat)</td><td>Paniki</td><td class="t">🌙 Night</td><td>Uses clicking sounds to find its way, and spreads seeds</td></tr>
+        <tr><td>Edible-nest swiftlet</td><td>Balinsasayaw</td><td class="t">☀️ Day</td><td>Builds nests from its own spit, high on cave walls</td></tr>
+        <tr><td>Cave cricket</td><td>—</td><td class="t">🌙 Night</td><td>Super-long feelers to "see" in the dark</td></tr>
+        <tr><td>Cave crab</td><td>—</td><td class="t">🌙 Night</td><td>Lives by underground rivers</td></tr>
+        <tr><td>Stalactite</td><td>—</td><td class="t">Not living</td><td>Rock "icicles" that grow from dripping water over hundreds of years</td></tr>
+        <tr><td>Whip spider</td><td>—</td><td class="t">🌙 Night</td><td>Looks scary but has no venom; feels around with long whip legs</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <div class="sum">
+    <b>What building all three involves</b>
+    <ul>
+      <li>3 new paper scenes, each with day and night versions (Cave is dark inside either way)</li>
+      <li>18 new creatures drawn in the cute paper-craft style</li>
+      <li>12 new stages (3 + a review per map), with map cards and trails</li>
+      <li>180 new questions (10 per creature)</li>
+      <li>Map order: Rainforest → Ocean → Rice Terraces → Mangrove → Cave, each unlocked by finishing the one before</li>
+    </ul>
+    <p style="margin:10px 0 0;color:var(--muted)">That's about as much as the whole current game, so I'd build one map at a time and show you each before moving on. The facts come from general knowledge, so it's worth a quick check with your teacher. Where I wasn't sure of a Filipino name I put "—" instead of guessing; you or your teacher can fill those in.</p>
+  </div>
+</main>
+</body>
+</html>

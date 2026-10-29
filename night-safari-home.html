@@ -1,0 +1,298 @@
+<title>Night Safari Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: two phones side by side (home, habitat map) with a short design-system strip below. The app itself is single-theme night; the page around it follows the viewer's theme. */
+:root{
+  --bg:#eef0f6; --fg:#171a2b; --muted:#5a5f78; --line:#d4d7e4; --surface:#fbfbfe; --accent:#3d4aa8;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  /* app tokens (fixed: the app is always night) */
+  --n-sky:#0e1430; --n-deep:#090d22; --n-panel:#182050; --n-panel2:#232c63; --n-line:#313b7a;
+  --n-moon:#f2d16b; --n-moon-d:#c9a94a; --n-text:#ecebff; --n-muted:#aaa6d8; --n-leaf:#1b4f35; --n-leaf2:#27704a; --n-coral:#ff8a7a; --n-fur:#c99160;
+  --a-display:"Baloo 2","Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#a9b2ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#a9b2ff;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.55;padding:0 20px}
+.wrap{max-width:900px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:62ch;margin:0 0 36px}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px;justify-items:center}
+.col{display:flex;flex-direction:column;gap:14px;width:340px;max-width:100%}
+.col h2{font-family:var(--f-display);font-weight:800;font-size:22px;margin:0}
+.col ul{margin:0;padding-left:20px;color:var(--muted);font-size:15px}
+.col li{margin-bottom:4px}
+.col li b{color:var(--fg)}
+
+/* phone shell */
+.phone{width:340px;max-width:100%;height:720px;border-radius:46px;border:10px solid #07070c;position:relative;overflow:hidden;color:var(--n-text);font-family:var(--f-body);
+  background-color:var(--n-sky);
+  background-image:radial-gradient(1.5px 1.5px at 24px 40px,#ecebff 50%,transparent 51%),radial-gradient(1px 1px at 96px 90px,#ecebff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 170px 26px,#ecebff 50%,transparent 51%),radial-gradient(1px 1px at 60px 150px,#aaa6d8 50%,transparent 51%);
+  background-size:200px 170px}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:92px;height:22px;border-radius:12px;background:#07070c;z-index:20}
+.scroll{position:absolute;inset:0;padding:40px 16px 84px;display:flex;flex-direction:column;gap:14px}
+.btn-reset{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--n-moon);outline-offset:3px}
+
+/* home: header */
+.hdr{display:flex;align-items:center;gap:10px}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--n-panel2);border:2px solid var(--n-moon);display:grid;place-items:center;font-family:var(--a-display);font-weight:800;font-size:18px;color:var(--n-moon);flex:none}
+.hi{flex:1;min-width:0;line-height:1.15}
+.hi b{font-family:var(--a-display);font-weight:800;font-size:19px;display:block}
+.hi span{font-size:13px;color:var(--n-muted)}
+.gems{display:flex;align-items:center;gap:5px;background:var(--n-panel);border:1px solid var(--n-line);border-radius:999px;padding:4px 10px 4px 8px;font-weight:700;font-size:14px}
+
+/* moon-phase streak */
+.streak{display:flex;align-items:center;justify-content:space-between;background:var(--n-panel);border:1px solid var(--n-line);border-radius:16px;padding:9px 12px}
+.streak .lbl{font-size:13px;color:var(--n-muted);line-height:1.2}
+.streak .lbl b{display:block;font-family:var(--a-display);font-size:16px;color:var(--n-text)}
+.phases{display:flex;gap:6px}
+.ph{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--n-muted)}
+.ph i{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--n-line);display:block}
+.ph.full i{background:var(--n-moon);border-color:var(--n-moon)}
+.ph.today i{background:var(--n-moon);border-color:var(--n-moon);box-shadow:inset -7px 0 0 var(--n-panel)}
+
+/* partner hero */
+.hero{position:relative;height:200px;border-radius:22px;overflow:hidden;background:var(--n-deep);border:1px solid var(--n-line)}
+.hero .beam{position:absolute;inset:0;background:radial-gradient(circle at 62% 46%,rgba(242,209,107,.22) 0,rgba(242,209,107,.08) 70px,transparent 115px)}
+.hero svg.scene{position:absolute;inset:0;width:100%;height:100%}
+.hero .tag{position:absolute;left:14px;top:12px;line-height:1.15}
+.hero .tag b{font-family:var(--a-display);font-weight:800;font-size:22px;display:block}
+.hero .tag span{font-size:12px;color:var(--n-muted)}
+.hero .evo{position:absolute;left:14px;bottom:14px;width:130px}
+.hero .evo span{font-size:12px;color:var(--n-muted)}
+.meter{height:8px;border-radius:999px;background:var(--n-panel2);overflow:hidden;margin-top:4px}
+.meter i{display:block;height:100%;width:60%;background:var(--n-moon);border-radius:999px}
+.fly{position:absolute;width:5px;height:5px;border-radius:50%;background:#fff3b0;box-shadow:0 0 8px 2px rgba(242,209,107,.7);animation:float 5s ease-in-out infinite}
+.fly.f2{animation-duration:6.5s;animation-delay:-2s}.fly.f3{animation-duration:4.2s;animation-delay:-1s}
+@keyframes float{0%,100%{transform:translate(0,0);opacity:.9}50%{transform:translate(8px,-12px);opacity:.35}}
+
+/* mission */
+.card{background:var(--n-panel);border:1px solid var(--n-line);border-radius:18px;padding:12px 14px}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.card-h b{font-family:var(--a-display);font-weight:800;font-size:17px}
+.card-h span{font-size:13px;color:var(--n-moon);font-weight:700}
+.task{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:5px 0;font-size:15px}
+.task::before{content:"";width:18px;height:18px;border-radius:50%;border:2px solid var(--n-line);flex:none}
+.task.done{color:var(--n-muted);text-decoration:line-through}
+.task.done::before{background:var(--n-moon);border-color:var(--n-moon);box-shadow:inset 0 0 0 3px var(--n-panel)}
+
+/* continue */
+.cont{display:flex;align-items:center;gap:12px;background:var(--n-panel2);border:1px solid var(--n-line);border-radius:18px;padding:12px 12px 12px 14px}
+.cont .txt{flex:1;line-height:1.2;min-width:0}
+.cont .txt small{font-size:12px;color:var(--n-muted);display:block}
+.cont .txt b{font-family:var(--a-display);font-weight:800;font-size:18px;display:block}
+.cont .txt span{font-size:13px;color:var(--n-moon)}
+.play{width:56px;height:56px;border-radius:50%;background:var(--n-moon);display:grid;place-items:center;box-shadow:0 0 0 6px rgba(242,209,107,.15);flex:none}
+
+/* bottom nav */
+.nav{position:absolute;left:0;right:0;bottom:0;height:76px;background:var(--n-deep);border-top:1px solid var(--n-line);display:flex;justify-content:space-around;align-items:flex-start;padding-top:10px;z-index:10}
+.nav a{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--n-muted);text-decoration:none;position:relative}
+.nav a.on{color:var(--n-moon)}
+.nav a.on::after{content:"";position:absolute;bottom:-8px;width:20px;height:3px;border-radius:2px;background:var(--n-moon)}
+.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* map */
+.mtop{display:flex;align-items:center;gap:10px}
+.back{width:36px;height:36px;border-radius:50%;background:var(--n-panel);border:1px solid var(--n-line);display:grid;place-items:center;flex:none}
+.mtop .t{flex:1;line-height:1.15}
+.mtop .t b{font-family:var(--a-display);font-weight:800;font-size:20px;display:block}
+.mtop .t span{font-size:12px;color:var(--n-muted)}
+.stars{font-weight:700;font-size:14px;color:var(--n-moon);background:var(--n-panel);border:1px solid var(--n-line);border-radius:999px;padding:4px 10px}
+.map{position:absolute;left:0;right:0;top:92px;bottom:76px;overflow:hidden}
+.map svg.trail{position:absolute;inset:0;width:100%;height:100%}
+.node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--n-muted)}
+.node i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--a-display);font-weight:800;font-size:18px;font-style:normal}
+.node.done i{background:var(--n-panel2);border:2px solid var(--n-moon);color:var(--n-moon)}
+.node.now i{width:58px;height:58px;background:var(--n-moon);color:var(--n-sky);font-size:22px;box-shadow:0 0 0 8px rgba(242,209,107,.18),0 0 0 18px rgba(242,209,107,.07);animation:glow 2.4s ease-in-out infinite}
+.node.now{color:var(--n-moon);font-weight:700}
+.node.lock i{background:var(--n-deep);border:2px dashed var(--n-line);color:var(--n-line)}
+.node .st{letter-spacing:1px;color:var(--n-moon)}
+.node.boss i{width:56px;height:56px}
+@keyframes glow{50%{box-shadow:0 0 0 12px rgba(242,209,107,.12),0 0 0 26px rgba(242,209,107,.04)}}
+.sheet{position:absolute;left:10px;right:10px;bottom:86px;z-index:8;background:var(--n-panel);border:1px solid var(--n-line);border-radius:20px;padding:12px 14px}
+.sheet b{font-family:var(--a-display);font-weight:800;font-size:18px;display:block;line-height:1.1}
+.sheet p{margin:2px 0 10px;font-size:13px;color:var(--n-muted)}
+.chips{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.chip{font-size:12px;background:var(--n-panel2);border-radius:999px;padding:3px 9px;color:var(--n-text)}
+.start{display:block;width:100%;background:var(--n-moon);color:var(--n-sky);font-family:var(--a-display);font-weight:800;font-size:18px;border-radius:14px;padding:8px;text-align:center}
+
+/* design system strip */
+.sys{margin-top:56px;border-top:1px solid var(--line);padding-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px}
+.sys h3{font-family:var(--f-display);font-weight:800;font-size:18px;margin:0 0 10px}
+.sw{display:flex;flex-wrap:wrap;gap:8px}
+.sw div{width:64px;font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.sw i{height:38px;border-radius:8px;border:1px solid var(--line);display:block}
+.typesample{background:var(--n-sky);color:var(--n-text);border-radius:12px;padding:14px 16px}
+.typesample b{font-family:var(--a-display);font-weight:800;font-size:26px;display:block;line-height:1.05}
+.typesample span{font-size:14px;color:var(--n-muted)}
+.sys ul{margin:0;padding-left:18px;color:var(--muted);font-size:15px}
+.sys li{margin-bottom:4px}
+
+@media (prefers-reduced-motion:reduce){.fly,.node.now i{animation:none}}
+</style>
+
+<div class="wrap">
+  <h1>Night safari: the whole app after dark</h1>
+  <p class="lead">The home page and the habitat map, both in the night style. The flashlight, the moon, and fireflies show up as the app's own visual language: the moon tracks your streak, the stage you're on glows like a lantern, and your partner creature waits under a spotlight.</p>
+
+  <div class="pair">
+    <!-- HOME -->
+    <div class="col">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="scroll">
+          <div class="hdr">
+            <div class="avatar">A</div>
+            <div class="hi"><b>Good evening, Ana</b><span>Night Ranger · Lv 6</span></div>
+            <div class="gems">
+              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2h8l3 4-7 8-7-8z" fill="#7fd8ff"/><path d="M1 6h14M5.5 2 8 14 10.5 2" stroke="#3aa3d6" stroke-width="1" fill="none"/></svg>
+              320
+            </div>
+          </div>
+
+          <div class="streak">
+            <div class="lbl"><b>5-night streak</b>Come back tomorrow</div>
+            <div class="phases" aria-label="Streak this week">
+              <div class="ph full"><i></i>M</div><div class="ph full"><i></i>T</div><div class="ph full"><i></i>W</div><div class="ph full"><i></i>T</div><div class="ph today"><i></i>F</div><div class="ph"><i></i>S</div><div class="ph"><i></i>S</div>
+            </div>
+          </div>
+
+          <div class="hero">
+            <div class="beam"></div>
+            <svg class="scene" viewBox="0 0 306 200" preserveAspectRatio="xMidYMid slice" aria-label="Tarsi the tarsier on a branch under a flashlight beam" role="img">
+              <path d="M-10 168 C80 158 200 166 320 150" stroke="#5a3b22" stroke-width="9" fill="none"/>
+              <path d="M306 0 C270 20 290 60 250 76 C280 90 300 70 306 56z M0 200 C20 170 60 176 66 200z M240 200 C250 182 290 176 306 186 V200z" fill="#1b4f35"/>
+              <g transform="translate(140 34) scale(.66)">
+                <path d="M148 166 Q192 140 178 92" stroke="#a8703f" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <ellipse cx="100" cy="150" rx="44" ry="36" fill="#a8703f"/>
+                <ellipse cx="52" cy="50" rx="18" ry="25" fill="#c99160"/><ellipse cx="52" cy="54" rx="9" ry="15" fill="#d98b7a"/>
+                <ellipse cx="148" cy="50" rx="18" ry="25" fill="#c99160"/><ellipse cx="148" cy="54" rx="9" ry="15" fill="#d98b7a"/>
+                <circle cx="100" cy="96" r="54" fill="#c99160"/>
+                <circle cx="77" cy="94" r="24" fill="#e8c25a"/><circle cx="123" cy="94" r="24" fill="#e8c25a"/>
+                <circle cx="77" cy="95" r="15" fill="#120d08"/><circle cx="123" cy="95" r="15" fill="#120d08"/>
+                <circle cx="83" cy="89" r="4" fill="#fff"/><circle cx="129" cy="89" r="4" fill="#fff"/>
+                <path d="M92 122 q8 6 16 0" stroke="#5a3b22" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <circle cx="72" cy="182" r="8" fill="#c99160"/><circle cx="128" cy="182" r="8" fill="#c99160"/>
+              </g>
+            </svg>
+            <span class="fly" style="left:40px;top:70px"></span><span class="fly f2" style="left:110px;top:40px"></span><span class="fly f3" style="left:276px;top:120px"></span>
+            <div class="tag"><b>Tarsi</b><span>Your partner</span></div>
+            <div class="evo"><span>4 quizzes to evolve</span><div class="meter"><i></i></div></div>
+          </div>
+
+          <div class="card">
+            <div class="card-h"><b>Tonight's mission</b><span>+30 gems</span></div>
+            <button class="btn-reset task done" aria-pressed="true">Find 2 creatures</button>
+            <button class="btn-reset task" aria-pressed="false">Color 1 creature</button>
+            <button class="btn-reset task" aria-pressed="false">Finish 1 stage</button>
+          </div>
+
+          <div class="cont">
+            <div class="txt"><small>Continue</small><b>Rainforest · Stage 4</b><span>★ 12 of 15</span></div>
+            <button class="btn-reset play" aria-label="Continue stage 4">
+              <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M7 4 L18 11 L7 18z" fill="#0e1430"/></svg>
+            </button>
+          </div>
+        </div>
+        <nav class="nav">
+          <a class="on" href="#home"><svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg>Home</a>
+          <a href="#map"><svg viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z M9 4v14 M15 6v14"/></svg>Map</a>
+          <a href="#dex"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z M5 17a3 3 0 0 1 3-3h11"/></svg>Dex</a>
+          <a href="#badges"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M8.5 13 7 21l5-3 5 3-1.5-8"/></svg>Badges</a>
+        </nav>
+      </div>
+      <h2>Home</h2>
+      <ul>
+        <li><b>Moon-phase streak</b>: each day's moon fills in. Today is half full until you play.</li>
+        <li><b>Partner under the spotlight</b>: the flashlight beam frames Tarsi, with fireflies drifting by.</li>
+        <li><b>Tonight's mission</b>: 3 daily tasks for gems. Tap them to check off.</li>
+        <li><b>Continue</b>: one big moon-colored button to jump back in.</li>
+      </ul>
+    </div>
+
+    <!-- MAP -->
+    <div class="col">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="scroll" style="padding-bottom:0">
+          <div class="mtop">
+            <div class="back"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ecebff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></div>
+            <div class="t"><b>Rainforest</b><span>6 stages · 1 boss</span></div>
+            <div class="stars">★ 12/15</div>
+          </div>
+        </div>
+        <div class="map">
+          <svg class="trail" viewBox="0 0 320 552" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 0 C40 40 10 110 50 140 C10 150 0 130 0 120z M320 60 C280 90 300 150 262 170 C300 180 320 160 320 150z M0 330 C40 310 70 360 40 400 C20 410 0 400 0 390z M320 300 C290 320 280 380 320 400z" fill="#1b4f35"/>
+            <path d="M80 500 C200 480 250 430 230 390 C210 340 80 350 90 290 C100 230 240 240 240 180 C240 120 110 120 110 60" fill="none" stroke="#313b7a" stroke-width="6" stroke-dasharray="2 12" stroke-linecap="round"/>
+            <path d="M80 500 C200 480 250 430 230 390 C210 340 80 350 90 290" fill="none" stroke="#f2d16b" stroke-width="6" stroke-dasharray="2 12" stroke-linecap="round" opacity=".8"/>
+          </svg>
+          <div class="node done" style="left:25%;top:90%"><i>1</i><span class="st">★★★</span></div>
+          <div class="node done" style="left:72%;top:70%"><i>2</i><span class="st">★★☆</span></div>
+          <div class="node done" style="left:28%;top:52%"><i>3</i><span class="st">★★★</span></div>
+          <div class="node now" style="left:72%;top:33%"><i>4</i>Stage 4</div>
+          <div class="node lock" style="left:34%;top:11%"><i>5</i>Locked</div>
+        </div>
+        <div class="sheet">
+          <b>Stage 4: Food chains</b>
+          <p>Find who eats who in the rainforest at night.</p>
+          <div class="chips"><span class="chip">8 questions</span><span class="chip">2 creatures hiding</span><span class="chip">~5 min</span></div>
+          <button class="btn-reset start">Start with flashlight</button>
+        </div>
+        <nav class="nav">
+          <a href="#home"><svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg>Home</a>
+          <a class="on" href="#map"><svg viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z M9 4v14 M15 6v14"/></svg>Map</a>
+          <a href="#dex"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z M5 17a3 3 0 0 1 3-3h11"/></svg>Dex</a>
+          <a href="#badges"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M8.5 13 7 21l5-3 5 3-1.5-8"/></svg>Badges</a>
+        </nav>
+      </div>
+      <h2>Habitat map</h2>
+      <ul>
+        <li><b>Lantern stages</b>: finished stages are lit, the current one glows, and locked ones stay dark.</li>
+        <li><b>Moonlit trail</b>: the path lights up as you progress.</li>
+        <li><b>Stage sheet</b>: what you'll learn, how many creatures hide, and how long it takes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sys">
+    <div>
+      <h3>Colors</h3>
+      <div class="sw">
+        <div><i style="background:#0e1430"></i>Night sky</div>
+        <div><i style="background:#182050"></i>Panel</div>
+        <div><i style="background:#f2d16b"></i>Moonlight</div>
+        <div><i style="background:#ecebff"></i>Text</div>
+        <div><i style="background:#1b4f35"></i>Jungle</div>
+        <div><i style="background:#ff8a7a"></i>Hearts</div>
+      </div>
+    </div>
+    <div>
+      <h3>Type</h3>
+      <div class="typesample"><b>Good evening, Ana</b><span>Baloo 2 for titles and buttons. Atkinson Hyperlegible for questions and facts.</span></div>
+    </div>
+    <div>
+      <h3>Rules that keep it readable</h3>
+      <ul>
+        <li>Navy, never pure black, so it doesn't feel scary</li>
+        <li>Moon yellow only for things you can tap or earn</li>
+        <li>High-contrast text for use outdoors in daylight</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.task').forEach(function(t){
+  t.addEventListener('click', function(){
+    var on = t.classList.toggle('done');
+    t.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+});
+document.querySelectorAll('.nav a').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); }); });
+</script>

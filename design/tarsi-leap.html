@@ -1,0 +1,207 @@
+<meta charset="utf-8">
+<title>Tarsi Tree Leap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Sniglet:wght@400;800&display=swap">
+<style>
+/* Layout: three tappable forest scenes, one per leap option for Tarsi. */
+:root{
+  --bg:#eef0f6; --fg:#171a2b; --muted:#585d78; --line:#d4d7e4; --surface:#fbfbfe; --accent:#c4552c;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-game:"Sniglet","Segoe UI",system-ui,sans-serif;
+  --text:#fff4dc;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1120;--fg:#e6e7f2;--muted:#9a9db8;--line:#272b45;--surface:#171a2e;--accent:#f0a07a;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.5;padding:0 20px;margin:0}
+.wrap{max-width:900px;margin:0 auto;padding-block:40px 64px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,42px);line-height:1.05;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:64ch;margin:0 0 26px}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px}
+.card{display:flex;flex-direction:column;gap:6px;min-width:0}
+.card h3{font-family:var(--f-display);font-weight:800;font-size:19px;margin:6px 0 0}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.tag{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.rec{display:inline-block;background:var(--accent);color:var(--surface);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:2px}
+.learn{font-size:13px;color:var(--fg);border-left:3px solid var(--accent);padding-left:8px;margin-top:2px}
+.play{align-self:flex-start;font:inherit;font-weight:700;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:5px 14px;border-radius:99px;cursor:pointer}
+.play:hover{border-color:var(--accent)}
+button:focus-visible{outline:3px solid #f2b23c;outline-offset:2px}
+
+.scene{position:relative;height:250px;border-radius:14px;overflow:hidden;cursor:pointer;background:linear-gradient(#141638,#232861);border:none;padding:0;width:100%;display:block}
+.scene svg.bd{position:absolute;inset:0;width:100%;height:100%}
+.scene .hint{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-family:var(--f-body);font-size:11px;color:rgba(255,244,220,.6);pointer-events:none}
+.trunk{position:absolute;top:-10px;bottom:-10px;right:18px;width:30px;background:#5b3a1f;border-radius:6px;box-shadow:3px 0 0 rgba(0,0,0,.35)}
+.trunk::before,.trunk::after{content:"";position:absolute;left:8px;width:12px;height:3px;border-radius:2px;background:#7a4e2a}
+.trunk::before{top:70px}.trunk::after{top:150px}
+.perch{position:absolute;left:10px;top:78px;width:96px;height:9px;border-radius:5px;background:#7a4e2a;box-shadow:0 3px 0 rgba(0,0,0,.35);transform:rotate(-4deg)}
+.mover{position:absolute;left:50%;bottom:28px;width:110px;height:110px;margin-left:-55px;transform-origin:50% 100%}
+.mover svg{width:110px;height:110px;display:block;overflow:visible}
+.mover .bob{animation:bob 2.6s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.fx{position:absolute;inset:0;pointer-events:none}
+
+.pupils{transform-box:view-box;transition:transform .2s}
+.look .pupils{animation:look 1s ease-in-out}
+@keyframes look{0%,100%{transform:none}25%,40%{transform:translateX(-7px)}60%,80%{transform:translateX(7px)}}
+.tail{transform-box:view-box;transform-origin:146px 168px}
+.leaping .tail{animation:tail .5s ease-in-out infinite}
+@keyframes tail{50%{transform:rotate(-14deg)}}
+
+/* A: leap to the trunk, cling, look around, leap back */
+.cling{animation:cling 2.4s ease-in-out}
+@keyframes cling{
+  0%{transform:none}
+  9%{transform:translateY(4px) scale(1.12,.84)}
+  22%{transform:translate(calc(var(--dx) * .5),-92px) rotate(18deg) scale(.92,1.12)}
+  34%{transform:translate(var(--dx),-70px) rotate(6deg) scale(1.04,.96)}
+  38%,64%{transform:translate(var(--dx),-74px) rotate(4deg)}
+  70%{transform:translate(var(--dx),-70px) rotate(2deg) scale(1.08,.9)}
+  80%{transform:translate(calc(var(--dx) * .5),-92px) rotate(-18deg) scale(.92,1.12)}
+  92%{transform:translateY(3px) scale(1.12,.86)}
+  100%{transform:none}}
+/* B: a big backflip, straight up and down */
+.flip{animation:flip 1.5s cubic-bezier(.4,0,.3,1)}
+@keyframes flip{
+  0%{transform:none}
+  12%{transform:translateY(4px) scale(1.12,.84)}
+  30%{transform:translateY(-80px) scale(.94,1.1)}
+  70%{transform:translateY(-80px) rotate(-360deg)}
+  88%{transform:translateY(3px) rotate(-360deg) scale(1.12,.86)}
+  100%{transform:rotate(-360deg)}}
+/* C: up to the little branch and back */
+.branch{animation:branch 2.5s ease-in-out}
+@keyframes branch{
+  0%{transform:none}
+  9%{transform:translateY(4px) scale(1.12,.84)}
+  24%{transform:translate(calc(var(--bx) * .5),-160px) rotate(-16deg) scale(.92,1.12)}
+  36%{transform:translate(var(--bx),var(--by)) scale(1.12,.86)}
+  42%,64%{transform:translate(var(--bx),var(--by))}
+  70%{transform:translate(var(--bx),var(--by)) scale(1.1,.88)}
+  82%{transform:translate(calc(var(--bx) * .5),-160px) rotate(16deg) scale(.92,1.12)}
+  93%{transform:translateY(3px) scale(1.12,.86)}
+  100%{transform:none}}
+
+.leaf{position:absolute;width:10px;height:6px;border-radius:0 100% 0 100%;background:#3a9563;animation:leaf 1.4s ease-in forwards}
+@keyframes leaf{0%{transform:translate(0,0) rotate(0);opacity:1}50%{transform:translate(10px,30px) rotate(90deg)}100%{transform:translate(-6px,70px) rotate(200deg);opacity:0}}
+.word{position:absolute;font-family:var(--f-game);font-weight:800;font-size:18px;color:var(--text);text-shadow:2px 2px 0 rgba(0,0,0,.4);white-space:nowrap;animation:pop 1.1s ease-out forwards}
+@keyframes pop{0%{transform:scale(.3);opacity:0}25%{transform:scale(1.15);opacity:1}70%{transform:scale(1);opacity:1}100%{transform:translateY(-12px);opacity:0}}
+.notes{margin-top:34px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 18px;max-width:70ch}
+.notes b{font-family:var(--f-display)}
+.notes p{margin:4px 0;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <h1>Tarsi’s tree leap</h1>
+  <p class="lead">Right now, tapping Tarsi makes it hop. These give it a real tarsier leap, to match Pawi’s swim and Haribon’s flight. Tap a scene, or its Play button, to see it.</p>
+
+  <div class="row">
+    <div class="card">
+      <button class="scene" data-move="cling" data-trunk="1" aria-label="Play Trunk cling"></button>
+      <span class="tag">Option A<span class="rec">Recommended</span></span>
+      <h3>Trunk cling</h3>
+      <p>Leaps across to a tree trunk, clings on, looks left and right with its big eyes, then leaps back to the branch.</p>
+      <p class="learn">Teaches: tarsiers cling to upright tree trunks and leap from tree to tree.</p>
+      <button class="play">Play</button>
+    </div>
+    <div class="card">
+      <button class="scene" data-move="flip" aria-label="Play Backflip"></button>
+      <span class="tag">Option B</span>
+      <h3>Backflip</h3>
+      <p>Springs straight up, does a full backflip, and sticks the landing. Short, and needs no extra trees.</p>
+      <p class="learn">Just for fun.</p>
+      <button class="play">Play</button>
+    </div>
+    <div class="card">
+      <button class="scene" data-move="branch" data-perch="1" aria-label="Play Branch to branch"></button>
+      <span class="tag">Option C</span>
+      <h3>Branch to branch</h3>
+      <p>Leaps up to a higher branch, lands, looks around, and leaps back down.</p>
+      <p class="learn">Teaches: tarsiers can leap many times their own body length.</p>
+      <button class="play">Play</button>
+    </div>
+  </div>
+
+  <div class="notes">
+    <p><b>What changes on the home screen:</b> for A, a tree trunk is added at the side of Tarsi’s scene (only when Tarsi is the partner). C would add a small branch instead. B needs nothing new.</p>
+    <p><b>Why A:</b> it’s what real tarsiers do, and it gives Tarsi a move as special as Pawi’s and Haribon’s.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var TARSI =
+    '<g class="tail"><path d="M146 168 C190 160 200 120 182 88" stroke="#8a5a30" stroke-width="10" fill="none" stroke-linecap="round"/></g>' +
+    '<ellipse cx="100" cy="152" rx="46" ry="36" fill="#b8763e"/><ellipse cx="100" cy="162" rx="25" ry="20" fill="#e8c094"/>' +
+    '<ellipse cx="50" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="50" cy="56" rx="10" ry="16" fill="#f2a7b5"/>' +
+    '<ellipse cx="150" cy="52" rx="20" ry="27" fill="#d99a5c"/><ellipse cx="150" cy="56" rx="10" ry="16" fill="#f2a7b5"/>' +
+    '<circle cx="100" cy="98" r="56" fill="#e0a96d"/>' +
+    '<circle cx="77" cy="94" r="25" fill="#f6ead0"/><circle cx="123" cy="94" r="25" fill="#f6ead0"/>' +
+    '<circle cx="77" cy="95" r="18" fill="#f2b23c"/><circle cx="123" cy="95" r="18" fill="#f2b23c"/>' +
+    '<g class="pupils"><circle cx="78" cy="96" r="11" fill="#2b1d10"/><circle cx="122" cy="96" r="11" fill="#2b1d10"/>' +
+    '<circle cx="83" cy="90" r="4.5" fill="#fff"/><circle cx="127" cy="90" r="4.5" fill="#fff"/></g>' +
+    '<circle cx="56" cy="120" r="8" fill="#f2a7b5" opacity=".7"/><circle cx="144" cy="120" r="8" fill="#f2a7b5" opacity=".7"/>' +
+    '<path d="M94 119h12l-6 7z" fill="#7a4b26"/><path d="M90 130q10 8 20 0" stroke="#7a4b26" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    '<circle cx="73" cy="184" r="9" fill="#e0a96d"/><circle cx="127" cy="184" r="9" fill="#e0a96d"/>';
+  var BD =
+    '<svg class="bd" viewBox="0 0 260 250" preserveAspectRatio="none" aria-hidden="true">' +
+    '<circle cx="36" cy="34" r="12" fill="#f6e3a8"/>' +
+    '<path d="M0 200 Q130 170 260 196 V250 H0z" fill="#1f4a3a"/>' +
+    '<path d="M-10 150 q40 6 58 44 q-48 -6 -58 -44z" fill="#2d6a4c"/>' +
+    '<path d="M-10 214 q30 -40 70 -26 q-20 30 -70 26z" fill="#2f7a55"/>' +
+    '<path d="M-10 226 Q130 210 270 224" stroke="#7a4e2a" stroke-width="10" fill="none" stroke-linecap="round"/></svg>';
+
+  document.querySelectorAll('.scene').forEach(function(sc){
+    sc.innerHTML = BD + (sc.dataset.trunk ? '<div class="trunk"></div>' : '') + (sc.dataset.perch ? '<div class="perch"></div>' : '') +
+      '<div class="mover"><div class="bob"><svg viewBox="0 0 200 200" aria-hidden="true">' + TARSI + '</svg></div></div>' +
+      '<div class="fx"></div><span class="hint">Tap Tarsi</span>';
+  });
+
+  var DUR = {cling:2400, flip:1500, branch:2500};
+
+  function spawn(fx, cls, x, y, text){
+    var e = document.createElement('i');
+    e.className = cls; e.style.left = x + 'px'; e.style.top = y + 'px';
+    if (text) e.textContent = text;
+    fx.appendChild(e);
+    setTimeout(function(){ e.remove(); }, 1600);
+  }
+  function leaves(sc, fx, x, y){
+    for (var i = 0; i < 3; i++) spawn(fx, 'leaf', x + i * 12 - 12, y + (i % 2) * 6);
+  }
+
+  function play(sc){
+    var mover = sc.querySelector('.mover'), svg = mover.querySelector('svg'), fx = sc.querySelector('.fx');
+    var move = sc.dataset.move, w = sc.clientWidth, h = sc.clientHeight;
+    (sc._timers || []).forEach(clearTimeout); sc._timers = [];
+    function later(ms, fn){ sc._timers.push(setTimeout(fn, ms)); }
+    mover.className = 'mover'; svg.classList.remove('look', 'leaping');
+    // Where Tarsi lands: hugging the trunk, or on the little branch.
+    mover.style.setProperty('--dx', (w - 18 - 15 - w / 2) + 'px');
+    mover.style.setProperty('--bx', (10 + 48 - w / 2) + 'px');
+    mover.style.setProperty('--by', -(h - 28 - 82) + 'px');
+    void mover.offsetWidth;
+    mover.classList.add(move); svg.classList.add('leaping');
+    if (move === 'cling'){
+      later(820, function(){ leaves(sc, fx, w - 40, 110); svg.classList.add('look'); });
+      later(1600, function(){ svg.classList.remove('look'); });
+    } else if (move === 'flip'){
+      later(1300, function(){ leaves(sc, fx, w / 2, h - 40); });
+      later(1350, function(){ spawn(fx, 'word', w / 2 + 40, h - 140, 'ta-da!'); });
+    } else {
+      later(900, function(){ leaves(sc, fx, 50, 74); svg.classList.add('look'); });
+      later(1700, function(){ svg.classList.remove('look'); });
+    }
+    later(DUR[move], function(){ mover.className = 'mover'; svg.classList.remove('look', 'leaping'); });
+  }
+
+  document.querySelectorAll('.card').forEach(function(card){
+    var sc = card.querySelector('.scene');
+    sc.addEventListener('click', function(){ play(sc); });
+    card.querySelector('.play').addEventListener('click', function(){ play(sc); });
+  });
+})();
+</script>
